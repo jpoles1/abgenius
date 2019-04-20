@@ -22,7 +22,12 @@ const referenceList: ResourceData[] = [
     {
         name: 'American Thoracic Society - Guide to Interpretation of ABGs',
         url: 'http://www.thoracic.org/professionals/clinical-resources/critical-care/clinical-education/abgs.php',
-        notes: 'Good resource to learn to quickly interpret ABGs',
+        notes: 'Good resource to learn to quickly interpret ABGs with a stepwise algorithm',
+    },
+    {
+        name: 'GlobalRPh - COMMON LABORATORY VALUES FOR ABG',
+        url: 'https://globalrph.com/common-laboratory-lab-values-abgs/',
+        notes: 'Quality set of reference ranges with lots of other great info',
     },
 ];
 
