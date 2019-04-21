@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <v-toolbar app>
       <v-toolbar-title class="headline">
         <span>ABG</span>
@@ -8,11 +8,11 @@
       <v-spacer></v-spacer>
       <v-btn
         flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href="https://github.com/jpoles1/abgenius"
         target="_blank"
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>fas fa-external-link-alt</v-icon>
+        <span class="mr-2">FAQ</span>
+        <v-icon>fas fa-question-circle</v-icon>
       </v-btn>
     </v-toolbar>
 
