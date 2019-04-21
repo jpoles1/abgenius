@@ -22,6 +22,7 @@ export const RefRngs: { [testName: string]: RefRange | undefined } = {
   'SaO2': {lower: 95, upper: 100},
   'SvO2': {lower: 50, upper: 70},
   'Na': {lower: 135, upper: 145},
+  'K': {lower: 3.5, upper: 5.1},
   'Cl': {lower: 98, upper: 106},
   'Albumin': {lower: 3.5, upper: 5.5}, // in g/dL
 };
@@ -45,12 +46,20 @@ export enum DisturbType {
 }
 // Lab Panel Types
 export interface ABGResults {
+  // Demographics
   patientAge?: number;
   patientSex?: BiologicalSex;
+  // ABG
   pH?: number;
   bicarb?: number;
   PaO2?: number;
   PaCO2?: number;
+  // Electrolytes
+  Na?: number;
+  K?: number;
+  Cl?: number;
+  Albumin?: number;
+  Lactate?: number;
 }
 // BloodGas stores the information regarding a patient and their ABG values
 export class BloodGas {

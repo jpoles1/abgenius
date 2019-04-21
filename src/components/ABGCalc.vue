@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-form v-model="validABG">
+      <center><h2>Patient Demographics</h2></center><br>
       <v-layout text-xs-center wrap justify-space-around>
         <v-select
           v-model="userBloodGas.abg.patientSex"
@@ -11,30 +12,50 @@
         <v-text-field 
           v-model="userBloodGas.abg.patientAge" 
           type="number" label="Patient Age"
-          class="numeric-input" step="1"
+          outline class="numeric-input" step="1"
         ></v-text-field>
       </v-layout>
+      <center><h2>ABG</h2></center><br>
       <v-layout text-xs-center wrap justify-space-around>
         <v-text-field 
           v-model="userBloodGas.abg.pH" 
           type="number" label="Serum pH"
-          class="numeric-input" step="0.01"
+          outline class="numeric-input" step="0.01"
           min="0" max="14"
         ></v-text-field>
         <v-text-field 
           v-model="userBloodGas.abg.bicarb" 
           type="number" label="Serum Bicarb"
-          class="numeric-input" step="0.5"
+          outline class="numeric-input" step="0.5"
         ></v-text-field>
         <v-text-field 
           v-model="userBloodGas.abg.PaCO2" 
           type="number" label="Serum PaCO2"
-          class="numeric-input" step="0.5"
+          outline class="numeric-input" step="0.5"
         ></v-text-field>
         <v-text-field 
           v-model="userBloodGas.abg.PaO2" 
           type="number" label="Serum PaO2"
-          class="numeric-input" step="0.5"
+          outline class="numeric-input" step="0.5"
+        ></v-text-field>
+      </v-layout>
+      <center><h2>Electrolytes</h2></center><br>
+      <v-layout text-xs-center wrap justify-space-around>
+        <v-text-field 
+          v-model="userBloodGas.abg.Na" 
+          type="number" label="Serum Sodium"
+          outline class="numeric-input" step="0.01"
+          min="0" max="14"
+        ></v-text-field>
+        <v-text-field 
+          v-model="userBloodGas.abg.Cl" 
+          type="number" label="Serum Chloride"
+          outline class="numeric-input" step="0.5"
+        ></v-text-field>
+        <v-text-field 
+          v-model="userBloodGas.abg.K" 
+          type="number" label="Serum Potassium"
+          outline class="numeric-input" step="0.5"
         ></v-text-field>
       </v-layout>
     </v-form>
@@ -72,6 +93,14 @@
         <b>Primary Disturbance:</b>&nbsp;{{primaryDisturbance}}
       </v-chip>
       <v-chip>
+        <v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(secondaryDisturbance)'>
+          <v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(secondaryDisturbance)'>
+            fa-wind
+          </v-icon>
+          <v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(secondaryDisturbance)'>
+            fa-vial
+          </v-icon>
+        </v-avatar>
         <b>Secondary Disturbance:</b>&nbsp;{{secondaryDisturbance}}
       </v-chip>
     </v-layout>
@@ -101,6 +130,10 @@
             bicarb: BG.RefRngMidpoint('aBicarb'),
             PaCO2: BG.RefRngMidpoint('PaCO2'),
             PaO2: BG.RefRngMidpoint('PaO2'),
+            Na: BG.RefRngMidpoint('Na'),
+            K: BG.RefRngMidpoint('K'),
+            Cl: BG.RefRngMidpoint('Cl'),
+            Albumin: BG.RefRngMidpoint('Albumin'),
           },
         }),
         o2Disturbance: BG.DisturbType.Normal,
@@ -119,6 +152,7 @@
           this.o2Disturbance = this.userBloodGas.o2Disturbance();
           this.pHDisturbance = this.userBloodGas.phDisturbance();
           this.primaryDisturbance = this.userBloodGas.guessPrimaryDisturbance();
+          this.secondaryDisturbance = this.userBloodGas.guessSecondaryDisturbance();
         },
         deep: true,
       },
@@ -136,8 +170,9 @@
     margin: 14px 0px;
   }
   .numeric-input{
-    max-width: 220px;
-    margin: 0px 10px;
+    max-width: 180px;
+    width: 180px;
+    margin: 0px 10px !important;
   }
   #info-chips .v-chip{
     margin: 12px 12px;
