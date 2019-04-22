@@ -42,6 +42,7 @@ export enum DisturbType {
   RespAcid = 'Respiratory Acidosis',
   MetAlk = 'Metabolic Alkalosis',
   RespAlk = 'Respiratory Alkaolosis',
+  AnionGap = 'Anion Gap',
   Unknown = 'Unknown',
 }
 // Lab Panel Types
@@ -69,6 +70,9 @@ export class BloodGas {
   }
   public validABG(): boolean {
     return this.abg.pH !== undefined && this.abg.bicarb !== undefined && this.abg.PaCO2 !== undefined;
+  }
+  public validLytes(): boolean {
+    return this.abg.Na !== undefined && this.abg.bicarb !== undefined && this.abg.Cl !== undefined;
   }
   public phDisturbance(): DisturbType {
     if (!this.validABG()) return DisturbType.Unknown;
@@ -99,8 +103,11 @@ export class BloodGas {
     }
     return DisturbType.Unknown;
   }
-  public serumAnionGap(concNa: number, concCl: number, concBicarb: number): number {
-    return concNa - (concCl + concBicarb);
+  public serumAnionGap(): [number | undefined, DisturbType] {
+    if (!this.validLytes()) return [undefined, DisturbType.Unknown];
+    const anionGap = this.abg.Na! - (this.abg.Cl! + this.abg.bicarb!) + (this.abg.K ? this.abg.K : 0);
+    if (anionGap > 14) return [anionGap, DisturbType.AnionGap];
+    return [anionGap, DisturbType.Unknown];
   }
   public wintersFormula(): RefRange {
     const lowerLimit = (1.5 * this.abg.bicarb!) + 8 - 2;
@@ -117,11 +124,11 @@ export class BloodGas {
   public adjustedPaO2(): RefRange {
     if (this.abg.patientAge === undefined) return RefRngs.PaO2!;
     // New Born – Acceptable range 40-70 mm Hg.
-    if (this.abg.patientAge <= 1 && this.abg.patientAge > 0) return {lower: 40, upper: 70};
+    if (this.abg.patientAge <= 1 && this.abg.patientAge >= 0) return {lower: 40, upper: 70};
     // Elderly: Subtract 1 mm Hg from the minimal 80 mm Hg level for every year over 60 years of age:  80 – (age- 60)
     if (this.abg.patientAge >= 60) {
       const adjLowerBound = 80 - (this.abg.patientAge - 60);
-      return {lower: adjLowerBound, upper: RefRngs.PaO2!.upper};
+      return {lower: Math.max(adjLowerBound, 55), upper: RefRngs.PaO2!.upper};
     }
     return RefRngs.PaO2!;
   }
