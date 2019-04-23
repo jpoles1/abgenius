@@ -3,7 +3,7 @@
         <h2>References</h2>
         <ul>
             <li v-for="(ref, refID) in references" :key="refID">
-                <a href="ref.url">
+                <a :href="ref.url" target="_blank">
                     {{ref.name}}
                 </a>
             </li>
