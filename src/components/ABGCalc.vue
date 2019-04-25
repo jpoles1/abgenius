@@ -2,12 +2,12 @@
   <v-container>
     <v-form v-model="validABG">
       <center><h2>Patient Demographics</h2></center><br>
-      <v-layout text-xs-center wrap justify-space-around>
+      <v-layout text-xs-center wrap justify-center>
         <v-select
           v-model="userBloodGas.abg.patientSex"
           :items='["Male", "Female"]'
           label="Patient Sex"
-          outline style="max-width: 200px;"
+          outline class="numeric-input"
         ></v-select>
         <v-text-field 
           v-model.number="userBloodGas.abg.patientAge" 
@@ -16,7 +16,7 @@
         ></v-text-field>
       </v-layout>
       <center><h2>ABG</h2></center><br>
-      <v-layout text-xs-center wrap justify-space-around>
+      <v-layout text-xs-center wrap justify-center>
         <v-tooltip top>
           <template v-slot:activator="{ on }">
             <div v-on="on">
@@ -79,7 +79,7 @@
         </v-tooltip>
       </v-layout>
       <center><h2>Electrolytes</h2></center><br>
-      <v-layout text-xs-center wrap justify-space-around>
+      <v-layout text-xs-center wrap justify-center>
          <v-tooltip top>
           <template v-slot:activator="{ on }">
             <div v-on="on">
@@ -158,25 +158,23 @@
             fa-vial
           </v-icon>
         </v-avatar>
-        <b>Primary Disturbance:</b>&nbsp;{{primaryDisturbance}}
+        <b>Primary:</b>&nbsp;{{primaryDisturbance}}
       </v-chip>
       <v-chip>
-        <v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(secondaryDisturbance)'>
-          <v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(secondaryDisturbance)'>
+        <v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(secondaryDisturbance[0])'>
+          <v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(secondaryDisturbance[0])'>
             fa-wind
           </v-icon>
-          <v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(secondaryDisturbance)'>
+          <v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(secondaryDisturbance[0])'>
             fa-vial
           </v-icon>
         </v-avatar>
-        <b>Secondary Disturbance:</b>&nbsp;{{secondaryDisturbance}}
+        <b>Secondary:</b>&nbsp;{{secondaryDisturbance[1] ? secondaryDisturbance[1] : ''}} {{secondaryDisturbance[0]}}
       </v-chip>
       <v-chip v-if="serumAnionGap[0] != undefined">
         <b>Anion Gap:</b>&nbsp;{{serumAnionGap[0]}}
       </v-chip>
     </v-layout>
-    <hr>
-    {{userBloodGas}}
     <hr>
     <br>
     <ReferenceList/>
@@ -214,7 +212,7 @@
         o2Disturbance: BG.DisturbType.Normal,
         pHDisturbance: BG.DisturbType.Normal,
         primaryDisturbance: BG.DisturbType.Unknown,
-        secondaryDisturbance: BG.DisturbType.Unknown,
+        secondaryDisturbance: [BG.DisturbType.Unknown, undefined],
         tertiaryDisturbance: BG.DisturbType.Unknown,
         inputDebounce: undefined as number | undefined,
       };
@@ -260,7 +258,7 @@
   });
 </script>
 
-<style>
+<style scpped>
   hr{
     margin: 14px 0px;
   }
@@ -269,7 +267,12 @@
     width: 180px;
     margin: 0px 10px !important;
   }
+  .numeric-input.primary--text, .numeric-input .primary--text{
+    color: #e7ea78 !important;
+    caret-color: #e7ea78 !important;
+    border-color: #e7ea78 !important;
+  }
   #info-chips .v-chip{
-    margin: 12px 12px;
+    margin: 14px 12px;
   }
 </style>
