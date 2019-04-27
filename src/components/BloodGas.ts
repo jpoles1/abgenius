@@ -3,9 +3,8 @@ export interface RefRange {
   upper: number;
   lower: number;
 }
-export function RefRngMidpoint(testName: string): number | undefined {
-  if (RefRngs[testName] === undefined) return undefined;
-  if (RefRngs[testName]!.lower === undefined && RefRngs[testName]!.upper === undefined) return undefined;
+export function RefRngMidpoint(testName: string): number {
+  if (RefRngs[testName] === undefined) throw new Error('Invalid reference range key!');
   return (RefRngs[testName]!.lower + RefRngs[testName]!.upper) / 2;
 }
 
@@ -32,8 +31,11 @@ enum BiologicalSex {
   Male,
   Female,
 }
+
 export enum DisturbType {
   Normal = 'Normal',
+  Acute = 'Acute',
+  Chronic = 'Chronic',
   Acidemia = 'Acidemia',
   Alkalemia = 'Alkalemia',
   Hypoxemia = 'Hypoxemia',
@@ -41,7 +43,7 @@ export enum DisturbType {
   MetAcid = 'Metabolic Acidosis',
   RespAcid = 'Respiratory Acidosis',
   MetAlk = 'Metabolic Alkalosis',
-  RespAlk = 'Respiratory Alkaolosis',
+  RespAlk = 'Respiratory Alkalosis',
   AnionGap = 'Anion Gap',
   Unknown = 'Unknown',
 }
@@ -71,37 +73,80 @@ export class BloodGas {
   public validABG(): boolean {
     return this.abg.pH !== undefined && this.abg.bicarb !== undefined && this.abg.PaCO2 !== undefined;
   }
+  public pHExpected(): number {
+    return 6.1 + Math.log10(this.abg.bicarb! / (0.03 * this.abg.PaCO2!));
+  }
+  public realisticABG(): boolean {
+    if (!this.validABG()) return false;
+    const tolerance = 0.4;
+    console.log(this.abg.pH, this.pHExpected());
+    // does not account for anion gap?
+    return this.pHExpected().between(this.abg.pH! - tolerance, this.abg.pH! + tolerance);
+  }
   public validLytes(): boolean {
     return this.abg.Na !== undefined && this.abg.bicarb !== undefined && this.abg.Cl !== undefined;
   }
   public phDisturbance(): DisturbType {
-    if (!this.validABG()) return DisturbType.Unknown;
+    if (this.abg.pH === undefined) return DisturbType.Unknown;
     if (this.abg.pH! > RefRngs.apH!.upper) return DisturbType.Alkalemia;
     if (this.abg.pH! < RefRngs.apH!.lower) return DisturbType.Acidemia;
     return DisturbType.Normal;
   }
   public guessPrimaryDisturbance(): DisturbType {
-    if (this.validABG()) {
-      if (this.abg.pH! > RefRngs.apH!.upper) {
+    const pHmidpoint = RefRngMidpoint('apH');
+    if (this.validABG() && pHmidpoint) {
+      if (this.abg.pH! >= pHmidpoint) {
         if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) return DisturbType.MetAlk;
         if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.RespAlk;
       }
-      if (this.abg.pH! < RefRngs.apH!.lower) {
+      if (this.abg.pH! < pHmidpoint) {
         if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) return DisturbType.RespAcid;
         if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.MetAcid;
       }
     }
     return DisturbType.Unknown;
   }
-  public guessSecondaryDisturbance(): DisturbType {
+  public expectedBicarb = (adjFactor: number): number => {
+    return RefRngMidpoint('aBicarb') + (adjFactor * (this.abg.PaCO2! - RefRngMidpoint('PaCO2')!));
+  }
+  public guessSecondaryDisturbance(): [DisturbType, DisturbType | undefined] {
     if (this.validABG()) {
       const compensatedPaCO2 = this.wintersFormula();
       const primaryDisturbance = this.guessPrimaryDisturbance();
-      if (primaryDisturbance === DisturbType.MetAlk) {
-        if (this.abg.PaCO2! > compensatedPaCO2.lower) return DisturbType.RespAcid;
+
+      if (primaryDisturbance === DisturbType.RespAlk) {
+        // Check if observed bicarb is in range expected for chronic compensation.
+        if (this.abg.bicarb! < this.expectedBicarb(0.5)) {
+          return [DisturbType.MetAcid, DisturbType.Chronic];
+        }
+        if (this.abg.bicarb! < this.expectedBicarb(0.2)) {
+          return [DisturbType.MetAcid, DisturbType.Acute];
+        }
+        if (this.abg.bicarb! >= RefRngMidpoint('aBicarb')) {
+          return [DisturbType.MetAlk, undefined];
+        }
+        return [DisturbType.MetAcid, undefined];
       }
+      if (primaryDisturbance === DisturbType.RespAcid) {
+        // Check if observed bicarb is in range expected for chronic compensation.
+        if (this.abg.bicarb! > this.expectedBicarb(0.35)) {
+          return [DisturbType.MetAlk, DisturbType.Chronic];
+        }
+        if (this.abg.bicarb! > this.expectedBicarb(0.1)) {
+          return [DisturbType.MetAlk, DisturbType.Acute];
+        }
+        if (this.abg.bicarb! <= RefRngMidpoint('aBicarb')) {
+          return [DisturbType.MetAcid, undefined];
+        }
+        return [DisturbType.MetAlk, undefined];
+      }
+          /*if (primaryDisturbance === DisturbType.MetAlk) {
+      if (this.abg.PaCO2! > compensatedPaCO2.lower) return [DisturbType.RespAcid, undefined];
+    }*/
+
+      return [DisturbType.Normal, undefined];
     }
-    return DisturbType.Unknown;
+    return [DisturbType.Unknown, undefined];
   }
   public serumAnionGap(): [number | undefined, DisturbType] {
     if (!this.validLytes()) return [undefined, DisturbType.Unknown];
@@ -124,7 +169,7 @@ export class BloodGas {
   public adjustedPaO2(): RefRange {
     if (this.abg.patientAge === undefined) return RefRngs.PaO2!;
     // New Born – Acceptable range 40-70 mm Hg.
-    if (this.abg.patientAge <= 1 && this.abg.patientAge >= 0) return {lower: 40, upper: 70};
+    if (this.abg.patientAge.between(0, 1)) return {lower: 40, upper: 70};
     // Elderly: Subtract 1 mm Hg from the minimal 80 mm Hg level for every year over 60 years of age:  80 – (age- 60)
     if (this.abg.patientAge >= 60) {
       const adjLowerBound = 80 - (this.abg.patientAge - 60);
@@ -133,3 +178,13 @@ export class BloodGas {
     return RefRngs.PaO2!;
   }
 }
+
+declare global {
+  interface Number {
+    between(a: number, b: number): boolean;
+  }
+}
+Number.prototype.between = function(a: number, b: number): boolean {
+  return this >= Math.min.apply(Math, [a, b]) && this <= Math.max.apply(Math, [a, b]);
+};
+
