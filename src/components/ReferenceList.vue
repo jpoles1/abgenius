@@ -34,6 +34,10 @@ const referenceList: ResourceData[] = [
         url: 'https://www.tandfonline.com/doi/abs/10.3810/pgm.2000.03.957',
     },
     {
+        name: 'Baillie, J. K. (2008). Simple, easily memorised “rules of thumb” for the rapid assessment of physiological compensation for respiratory acid-base disorders. Thorax, 63(3), 289-290.',
+        url: 'https://thorax.bmj.com/content/63/3/289',
+    },
+    {
         name: 'Verma, A. K., & Roach, P. (2010). The interpretation of arterial blood gases. Aust Prescr, 33(4), 124-129.',
         url: 'https://www.researchgate.net/profile/Peter_Mansfield/publication/242711303_Editorial_Can_pharmaceutical_companies_contribute_to_the_quality_use_of_medicines/links/0a85e52eaf67fb5567000000/Editorial-Can-pharmaceutical-companies-contribute-to-the-quality-use-of-medicines.pdf#page=28',
     },
