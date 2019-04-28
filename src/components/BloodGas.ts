@@ -79,7 +79,6 @@ export class BloodGas {
   public realisticABG(): boolean {
     if (!this.validABG()) return false;
     const tolerance = 0.4;
-    console.log(this.abg.pH, this.pHExpected());
     // does not account for anion gap?
     return this.pHExpected().between(this.abg.pH! - tolerance, this.abg.pH! + tolerance);
   }
@@ -97,11 +96,10 @@ export class BloodGas {
     if (this.validABG() && pHmidpoint) {
       if (this.abg.pH! >= pHmidpoint) {
         if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) return DisturbType.MetAlk;
-        if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.RespAlk;
-      }
-      if (this.abg.pH! < pHmidpoint) {
+        else if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.RespAlk;
+      } else if (this.abg.pH! < pHmidpoint) {
         if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) return DisturbType.RespAcid;
-        if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.MetAcid;
+        else if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.MetAcid;
       }
     }
     return DisturbType.Unknown;
@@ -111,7 +109,6 @@ export class BloodGas {
   }
   public guessSecondaryDisturbance(): [DisturbType, DisturbType | undefined] {
     if (this.validABG()) {
-      const compensatedPaCO2 = this.wintersFormula();
       const primaryDisturbance = this.guessPrimaryDisturbance();
 
       if (primaryDisturbance === DisturbType.RespAlk) {
@@ -140,10 +137,16 @@ export class BloodGas {
         }
         return [DisturbType.MetAlk, undefined];
       }
-          /*if (primaryDisturbance === DisturbType.MetAlk) {
-      if (this.abg.PaCO2! > compensatedPaCO2.lower) return [DisturbType.RespAcid, undefined];
-    }*/
-
+      if (primaryDisturbance === DisturbType.MetAlk) {
+        const compensatedPaCO2 = 40 + (0.6 * (this.abg.bicarb! - 25)) ;
+        if (this.abg.PaCO2! < compensatedPaCO2) return [DisturbType.RespAlk, undefined];
+        if (this.abg.PaCO2! >= RefRngMidpoint('PaCO2')) return [DisturbType.RespAcid, undefined];
+      }
+      if (primaryDisturbance === DisturbType.MetAcid) {
+        const compensatedPaCO2 = this.wintersFormula();
+        if (this.abg.PaCO2! > compensatedPaCO2.lower) return [DisturbType.RespAcid, undefined];
+        if (this.abg.PaCO2! <= RefRngMidpoint('PaCO2')) return [DisturbType.RespAlk, undefined];
+      }
       return [DisturbType.Normal, undefined];
     }
     return [DisturbType.Unknown, undefined];
@@ -152,7 +155,7 @@ export class BloodGas {
     if (!this.validLytes()) return [undefined, DisturbType.Unknown];
     const anionGap = this.abg.Na! - (this.abg.Cl! + this.abg.bicarb!) + (this.abg.K ? this.abg.K : 0);
     if (anionGap > 14) return [anionGap, DisturbType.AnionGap];
-    return [anionGap, DisturbType.Unknown];
+    return [anionGap, DisturbType.Normal];
   }
   public wintersFormula(): RefRange {
     const lowerLimit = (1.5 * this.abg.bicarb!) + 8 - 2;

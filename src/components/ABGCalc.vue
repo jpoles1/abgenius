@@ -74,7 +74,7 @@
             </div>
           </template>
           <span>
-            Ref Range: {{"(" + adjustedPaO2.lower + " - " + adjustedPaO2.upper + ")"}}
+            Ref Range: {{"(" + results.adjustedPaO2.lower + " - " + results.adjustedPaO2.upper + ")"}}
           </span>
         </v-tooltip>
       </v-layout>
@@ -129,53 +129,54 @@
     </v-form>
     <hr>
     <v-layout wrap justify-space-around id="info-chips">
-      <v-chip>
-        <v-avatar class="error" v-if="o2Disturbance != 'Normal'">        
-          <v-icon v-if="o2Disturbance == 'Hyperoxemia'">fas fa-arrow-up</v-icon>
-          <v-icon v-if="o2Disturbance == 'Hypoxemia'">fas fa-arrow-down</v-icon>
+      <v-chip @click="activateChipInfo('O2')">
+        <v-avatar class="error" v-if="results.o2Disturbance != 'Normal'">        
+          <v-icon v-if="results.o2Disturbance == 'Hyperoxemia'">fas fa-arrow-up</v-icon>
+          <v-icon v-if="results.o2Disturbance == 'Hypoxemia'">fas fa-arrow-down</v-icon>
         </v-avatar>
         <v-avatar class="success" v-else>        
           <v-icon small>fas fa-check</v-icon>
         </v-avatar>
-        <b>Blood Oxygen:</b>&nbsp;{{o2Disturbance}}
+        <b>Blood Oxygen:</b>&nbsp;{{results.o2Disturbance}}
       </v-chip>
-      <v-chip>
-        <v-avatar class="error" v-if="pHDisturbance != 'Normal'">        
-          <v-icon v-if="pHDisturbance == 'Alkalemia'">fas fa-arrow-up</v-icon>
-          <v-icon v-if="pHDisturbance == 'Acidemia'">fas fa-arrow-down</v-icon>
+      <v-chip @click="activateChipInfo('pH')">
+        <v-avatar class="error" v-if="results.pHDisturbance != 'Normal'">        
+          <v-icon v-if="results.pHDisturbance == 'Alkalemia'">fas fa-arrow-up</v-icon>
+          <v-icon v-if="results.pHDisturbance == 'Acidemia'">fas fa-arrow-down</v-icon>
         </v-avatar>
         <v-avatar class="success" v-else>        
           <v-icon small>fas fa-check</v-icon>
         </v-avatar>
-        <b>Blood pH:</b>&nbsp;{{pHDisturbance}}
+        <b>Blood pH:</b>&nbsp;{{results.pHDisturbance}}
       </v-chip>
-      <v-chip>
-        <v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(primaryDisturbance)'>
-          <v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(primaryDisturbance)'>
+      <v-chip @click="activateChipInfo('primary')">
+        <v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(results.primaryDisturbance)'>
+          <v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.primaryDisturbance)'>
             fa-wind
           </v-icon>
-          <v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(primaryDisturbance)'>
+          <v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.primaryDisturbance)'>
             fa-vial
           </v-icon>
         </v-avatar>
-        <b>Primary:</b>&nbsp;{{primaryDisturbance}}
+        <b>Primary:</b>&nbsp;{{results.primaryDisturbance}}
       </v-chip>
-      <v-chip>
-        <v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(secondaryDisturbance[0])'>
-          <v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(secondaryDisturbance[0])'>
+      <v-chip @click="activateChipInfo('secondary')">
+        <v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(results.secondaryDisturbance[0])'>
+          <v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.secondaryDisturbance[0])'>
             fa-wind
           </v-icon>
-          <v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(secondaryDisturbance[0])'>
+          <v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.secondaryDisturbance[0])'>
             fa-vial
           </v-icon>
         </v-avatar>
-        <b>Secondary:</b>&nbsp;{{secondaryDisturbance[1] ? secondaryDisturbance[1] : ''}} {{secondaryDisturbance[0]}}
+        <b>Secondary:</b>&nbsp;{{results.secondaryDisturbance[1] ? results.secondaryDisturbance[1] : ''}} {{results.secondaryDisturbance[0]}}
       </v-chip>
-      <v-chip v-if="serumAnionGap[0] != undefined">
-        <b>Anion Gap:</b>&nbsp;{{serumAnionGap[0]}}
+      <v-chip v-if="results.serumAnionGap[0] != undefined">
+        <b>Anion Gap:</b>&nbsp;{{results.serumAnionGap[0]}}
       </v-chip>
     </v-layout>
     <hr>
+    <CalcInfoPanel :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
     <br>
     <ReferenceList/>
   </v-container>
@@ -183,15 +184,19 @@
 
 <script lang="ts">
   import * as BG from './BloodGas';
+  import CalcInfoPanel from './CalcInfoPanel.vue';
   import ReferenceList from './ReferenceList.vue';
 
   import Vue from 'vue';
+  import goTo from 'vuetify/lib/components/Vuetify/goTo';
   export default Vue.extend({
     components: {
+      CalcInfoPanel,
       ReferenceList,
     },
     data() {
       return {
+        activeChip: undefined as string | undefined,
         validABG: true,
         refRngs: BG.RefRngs,
         userBloodGas: new BG.BloodGas({
@@ -207,13 +212,16 @@
             Albumin: BG.RefRngMidpoint('Albumin'),
           },
         }),
-        serumAnionGap: [undefined, BG.DisturbType.Unknown] as [number | undefined, BG.DisturbType],
-        adjustedPaO2: {lower: 80, upper: 100} as BG.RefRange,
-        o2Disturbance: BG.DisturbType.Normal,
-        pHDisturbance: BG.DisturbType.Normal,
-        primaryDisturbance: BG.DisturbType.Unknown,
-        secondaryDisturbance: [BG.DisturbType.Unknown, undefined],
-        tertiaryDisturbance: BG.DisturbType.Unknown,
+        results: {
+          serumAnionGap: [undefined, BG.DisturbType.Unknown] as [number | undefined, BG.DisturbType],
+          adjustedPaO2: {lower: 80, upper: 100} as BG.RefRange,
+          pHExpected: 7.4,
+          o2Disturbance: BG.DisturbType.Normal,
+          pHDisturbance: BG.DisturbType.Normal,
+          primaryDisturbance: BG.DisturbType.Unknown,
+          secondaryDisturbance: [BG.DisturbType.Unknown, undefined],
+          tertiaryDisturbance: BG.DisturbType.Unknown,
+        },
         inputDebounce: undefined as number | undefined,
       };
     },
@@ -233,12 +241,16 @@
         const urlQuery = Object.assign({}, this.userBloodGas.abg);
         // @ts-ignore
         this.$router.replace({query: urlQuery});
-        this.adjustedPaO2 = this.userBloodGas.adjustedPaO2();
-        this.o2Disturbance = this.userBloodGas.o2Disturbance();
-        this.pHDisturbance = this.userBloodGas.phDisturbance();
-        this.primaryDisturbance = this.userBloodGas.guessPrimaryDisturbance();
-        this.secondaryDisturbance = this.userBloodGas.guessSecondaryDisturbance();
-        this.serumAnionGap = this.userBloodGas.serumAnionGap();
+        this.results = {
+          adjustedPaO2: this.userBloodGas.adjustedPaO2(),
+          o2Disturbance: this.userBloodGas.o2Disturbance(),
+          pHDisturbance: this.userBloodGas.phDisturbance(),
+          primaryDisturbance: this.userBloodGas.guessPrimaryDisturbance(),
+          secondaryDisturbance: this.userBloodGas.guessSecondaryDisturbance(),
+          pHExpected: this.userBloodGas.pHExpected(),
+          serumAnionGap: this.userBloodGas.serumAnionGap(),
+          tertiaryDisturbance: BG.DisturbType.Unknown,
+        };
       },
       decodeURL() {
         let urlData = Object.assign({}, this.$route.query);
@@ -249,10 +261,19 @@
         }, {});
         Object.assign(this.userBloodGas.abg, urlData);
       },
+      activateChipInfo(chipID: string) {
+        if (this.activeChip === chipID) {
+          this.activeChip = undefined;
+          return;
+        }
+        this.activeChip = chipID;
+        goTo('#info-chips');
+      },
     },
     mounted() {
       this.$nextTick(() => {
         this.decodeURL();
+        this.updateBloodGas();
       });
     },
   });
