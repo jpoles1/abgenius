@@ -120,6 +120,9 @@ describe('Blood gas scenarios', () => {
         expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.MetAcid, undefined]);
     });
     test('Met Acidosis', () => {
+        // Primary: Metabolic Acidosis
+        // Secondary Respiratory Alkalosis
+        // Additional Metabolic Alkalosis.
         const scenario1 = new BG.BloodGas({
             abg: {
                 pH: 7.21,

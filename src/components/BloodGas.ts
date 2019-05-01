@@ -174,7 +174,7 @@ export class BloodGas {
     // New Born – Acceptable range 40-70 mm Hg.
     if (this.abg.patientAge.between(0, 1)) return {lower: 40, upper: 70};
     // Elderly: Subtract 1 mm Hg from the minimal 80 mm Hg level for every year over 60 years of age:  80 – (age- 60)
-    if (this.abg.patientAge >= 60) {
+    if (this.abg.patientAge >= 60 && this.abg.patientAge < 90) {
       const adjLowerBound = 80 - (this.abg.patientAge - 60);
       return {lower: Math.max(adjLowerBound, 55), upper: RefRngs.PaO2!.upper};
     }

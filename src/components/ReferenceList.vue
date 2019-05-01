@@ -1,8 +1,17 @@
 <template>
     <div>
         <h2>References</h2>
-        <ul id="reference-list">
+        <ul class="reference-list">
             <li v-for="(ref, refID) in references" :key="refID">
+                <a :href="ref.url" target="_blank">
+                    {{ref.name}}
+                </a>
+            </li>
+        </ul>
+        <br><br>
+        <h2>Other Learning Resources</h2>
+        <ul class="reference-list">
+            <li v-for="(ref, refID) in learningReferences" :key="refID">
                 <a :href="ref.url" target="_blank">
                     {{ref.name}}
                 </a>
@@ -34,6 +43,17 @@ const referenceList: ResourceData[] = [
         url: 'https://www.tandfonline.com/doi/abs/10.3810/pgm.2000.03.957',
     },
     {
+        name: '\"Interpretation of Arterial Blood Gases.\" Pocket ICU Management, PocketMedicine.com, Inc, 2010. Anesthesia Central.',
+        url: 'https://anesth.unboundmedicine.com/anesthesia/view/Pocket-ICU-Management/534207/all/Interpretation_of_Arterial_Blood_Gases',
+    },
+    {
+        name: 'Stolmeijer, R., Bouma, H. R., Zijlstra, J. G., Drost-de Klerck, A. M., Ter Maaten, J. C., & Ligtenberg, J. J. M. (2018). A systematic review of the effects of hyperoxia in acutely ill patients: should we aim for less?. BioMed research international, 2018.',
+        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5977014/',
+    },
+];
+
+const learningReferenceList = [
+    {
         name: 'Baillie, J. K. (2008). Simple, easily memorised “rules of thumb” for the rapid assessment of physiological compensation for respiratory acid-base disorders. Thorax, 63(3), 289-290.',
         url: 'https://thorax.bmj.com/content/63/3/289',
     },
@@ -56,22 +76,24 @@ export default {
     data() {
         return {
             references: referenceList,
+            learningReferences: learningReferenceList,
         };
     },
 };
 </script>
 
 <style scoped>
-    #reference-list a{
+    .reference-list a{
         color: white;
         text-decoration: none;
         transition: 600ms;
     }
-    #reference-list a:hover{
-        color: #e7ea78;
+    .reference-list a:hover{
+        /*color: #e7ea78;*/
+        color: #f6aeae;
         text-decoration: underline;
     }
-    #reference-list li{
+    .reference-list li{
         margin-bottom: 4px;
     }
 </style>
