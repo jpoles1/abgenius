@@ -43,15 +43,15 @@ describe("BloodGas utilities", () => {
     });
     test("Anion Gap", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({abg: {}});
-        expect(scenario1.serumAnionGap()).toEqual([undefined, BG.DisturbType.Unknown]);
+        expect(scenario1.serumAnionGap()).toEqual({gap: NaN, disturb: BG.DisturbType.Unknown});
         scenario1.abg = {
             bicarb: 32,
             Na: 145,
             Cl: 105,
         };
-        expect(scenario1.serumAnionGap()).toEqual([8, BG.DisturbType.Normal]);
+        expect(scenario1.serumAnionGap()).toEqual({gap: 8, disturb: BG.DisturbType.Normal});
         scenario1.abg.Cl = 95;
-        expect(scenario1.serumAnionGap()).toEqual([18, BG.DisturbType.AnionGap]);
+        expect(scenario1.serumAnionGap()).toEqual({gap: 18, disturb: BG.DisturbType.AnionGap});
     });
     test("Winters Formula", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({
@@ -81,7 +81,7 @@ describe("Blood gas scenarios", () => {
         expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Normal);
         expect(scenario1.guessPrimaryDisturbance()).toEqual(BG.DisturbType.Normal);
         expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.Normal, undefined]);
-        expect(scenario1.serumAnionGap()).toEqual([9, BG.DisturbType.Normal]);
+        expect(scenario1.serumAnionGap()).toEqual({gap: 9, disturb: BG.DisturbType.Normal});
 
     });
     test("pH Disturbances", () => {
@@ -127,7 +127,7 @@ describe("Blood gas scenarios", () => {
         });
         expect(scenario1.realisticABG()).toEqual(true);
         expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Acidemia);
-        expect(scenario1.serumAnionGap()).toEqual([8, BG.DisturbType.Normal]);
+        expect(scenario1.serumAnionGap()).toEqual({gap: 8, disturb: BG.DisturbType.Normal});
         expect(scenario1.guessPrimaryDisturbance()).toEqual(BG.DisturbType.RespAcid);
         expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.MetAlk, BG.DisturbType.Acute]);
         scenario1.abg.bicarb = 50;
@@ -152,7 +152,7 @@ describe("Blood gas scenarios", () => {
         });
         expect(scenario1.realisticABG()).toEqual(true);
         expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Acidemia);
-        expect(scenario1.serumAnionGap()).toEqual([18, BG.DisturbType.AnionGap]);
+        expect(scenario1.serumAnionGap()).toEqual({gap: 18, disturb: BG.DisturbType.AnionGap});
         expect(scenario1.guessPrimaryDisturbance()).toEqual(BG.DisturbType.MetAcid);
         expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.RespAlk, undefined]);
     });

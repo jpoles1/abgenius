@@ -12,6 +12,7 @@ export const RefRngs: { [testName: string]: RefRange | undefined } = {
   // Arterial and Venous pH
   "apH": {lower: 7.35, upper: 7.45},
   "vpH": {lower: 7.31, upper: 7.42},
+  // Arterial and Venous O2
   "PaO2": {lower: 80, upper: 100},
   "PvO2": {lower: 28, upper: 48},
   "aBicarb": {lower: 22, upper: 28},
@@ -24,6 +25,7 @@ export const RefRngs: { [testName: string]: RefRange | undefined } = {
   "K": {lower: 3.5, upper: 5.1},
   "Cl": {lower: 98, upper: 106},
   "Albumin": {lower: 3.5, upper: 5.5}, // in g/dL
+  "AnionGap": {lower: 6, upper: 14},
 };
 
 // Patient Characteristic Enums
@@ -45,8 +47,15 @@ export enum DisturbType {
   MetAlk = "Metabolic Alkalosis",
   RespAlk = "Respiratory Alkalosis",
   AnionGap = "Anion Gap",
+  DeltaGap = "Delta Gap",
   Unknown = "Unknown",
 }
+
+export interface Gap {
+  disturb: DisturbType;
+  gap: number;
+}
+
 // Lab Panel Types
 export interface ABGResults {
   // Demographics
@@ -154,11 +163,20 @@ export class BloodGas {
     }
     return [DisturbType.Unknown, undefined];
   }
-  public serumAnionGap(): [number | undefined, DisturbType] {
-    if (!this.validLytes()) return [undefined, DisturbType.Unknown];
-    const anionGap = this.abg.Na! - (this.abg.Cl! + this.abg.bicarb!); // + (this.abg.K ? this.abg.K : 0);
-    if (anionGap > 14) return [anionGap, DisturbType.AnionGap];
-    return [anionGap, DisturbType.Normal];
+  public serumAnionGap(): Gap {
+    if (!this.validLytes()) return {disturb: DisturbType.Unknown, gap: NaN};
+    const anionGap = this.abg.Na! - (this.abg.Cl! + this.abg.bicarb!);
+    if (anionGap > RefRngs.AnionGap!.upper) return {disturb: DisturbType.AnionGap, gap: anionGap};
+    return {disturb: DisturbType.Normal, gap: anionGap};
+  }
+  public serumDeltaGap(): Gap {
+    // Ref: Wrenn, K. (1990). The delta (Δ) gap: An approach to mixed acid-base disorders. Annals of emergency medicine.
+    if (!this.validLytes()) return {disturb: DisturbType.Unknown, gap: NaN};
+    const deltaAnionGap = this.serumAnionGap().gap - RefRngs.AnionGap!.upper;
+    const deltaBicarb = RefRngs.aBicarb!.lower - this.abg.bicarb!;
+    const deltaGap = deltaAnionGap - deltaBicarb;
+    if (Math.abs(deltaGap) > 6) return {disturb: DisturbType.AnionGap, gap: deltaGap};
+    return {gap: deltaGap, disturb: DisturbType.Normal};
   }
   public wintersFormula(): RefRange {
     const lowerLimit = (1.5 * this.abg.bicarb!) + 8 - 2;

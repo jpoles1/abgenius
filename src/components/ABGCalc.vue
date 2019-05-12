@@ -171,8 +171,8 @@
         </v-avatar>
         <b>Secondary:</b>&nbsp;{{results.secondaryDisturbance[1] ? results.secondaryDisturbance[1] : ''}} {{results.secondaryDisturbance[0]}}
       </v-chip>
-      <v-chip v-if="results.serumAnionGap[0] != undefined">
-        <b>Anion Gap:</b>&nbsp;{{results.serumAnionGap[0]}}
+      <v-chip v-if="results.serumAnionGap.disturb != undefined" @click="activateChipInfo('anionGap')">
+        <b>Anion Gap:</b>&nbsp;{{results.serumAnionGap.disturb}} ({{results.serumAnionGap.gap}})
       </v-chip>
     </v-layout>
     <hr>
@@ -213,7 +213,7 @@
           },
         }),
         results: {
-          serumAnionGap: [undefined, BG.DisturbType.Unknown] as [number | undefined, BG.DisturbType],
+          serumAnionGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
           adjustedPaO2: {lower: 80, upper: 100} as BG.RefRange,
           pHExpected: 7.4,
           o2Disturbance: BG.DisturbType.Normal,

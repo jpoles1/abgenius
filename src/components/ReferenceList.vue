@@ -54,6 +54,10 @@ const referenceList: ResourceData[] = [
         name: "Stolmeijer, R., Bouma, H. R., Zijlstra, J. G., Drost-de Klerck, A. M., Ter Maaten, J. C., & Ligtenberg, J. J. M. (2018). A systematic review of the effects of hyperoxia in acutely ill patients: should we aim for less?. BioMed research international, 2018.",
         url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5977014/",
     },
+    {
+        name: "Wrenn, K. (1990). The delta (Δ) gap: An approach to mixed acid-base disorders. Annals of emergency medicine, 19(11), 1310-1313.",
+        url: "https://www.sciencedirect.com/science/article/pii/S0196064405822929",
+    },
 ];
 
 const learningReferenceList = [
