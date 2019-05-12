@@ -110,7 +110,7 @@
             Ref Range: {{"(" + refRngs.Cl.lower + " - " + refRngs.Cl.upper + ")"}}
           </span>
         </v-tooltip>
-        <v-tooltip top>
+        <!-- <v-tooltip top>
           <template v-slot:activator="{ on }">
             <div v-on="on">
               <v-text-field
@@ -123,6 +123,21 @@
           </template>
           <span>
             Ref Range: {{"(" + refRngs.K.lower + " - " + refRngs.K.upper + ")"}}
+          </span>
+        </v-tooltip> -->
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <div v-on="on">
+              <v-text-field
+                v-model.number="userBloodGas.abg.Albumin" 
+                type="number" label='Serum Albumin'
+                outline class="numeric-input" step="0.5"
+                min="0"
+              ></v-text-field>
+            </div>
+          </template>
+          <span>
+            Ref Range: {{"(" + refRngs.Albumin.lower + " - " + refRngs.Albumin.upper + ")"}}
           </span>
         </v-tooltip>
       </v-layout>
