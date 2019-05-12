@@ -24,7 +24,7 @@
                 v-model.number="userBloodGas.abg.pH" 
                 type="number" label='Serum pH'
                 outline class="numeric-input" step="0.01"
-                min="0" max="14"
+                min="6" max="14"
               ></v-text-field>
             </div>
           </template>
@@ -183,12 +183,12 @@
 </template>
 
 <script lang="ts">
-  import * as BG from './BloodGas';
-  import CalcInfoPanel from './CalcInfoPanel.vue';
-  import ReferenceList from './ReferenceList.vue';
+  import * as BG from "./BloodGas";
+  import CalcInfoPanel from "./CalcInfoPanel.vue";
+  import ReferenceList from "./ReferenceList.vue";
 
-  import Vue from 'vue';
-  import goTo from 'vuetify/lib/components/Vuetify/goTo';
+  import Vue from "vue";
+  import goTo from "vuetify/lib/components/Vuetify/goTo";
   export default Vue.extend({
     components: {
       CalcInfoPanel,
@@ -202,14 +202,14 @@
         userBloodGas: new BG.BloodGas({
           abg: {
             patientAge: undefined,
-            pH: BG.RefRngMidpoint('apH'),
-            bicarb: BG.RefRngMidpoint('aBicarb'),
-            PaCO2: BG.RefRngMidpoint('PaCO2'),
-            PaO2: BG.RefRngMidpoint('PaO2'),
-            Na: BG.RefRngMidpoint('Na'),
-            K: BG.RefRngMidpoint('K'),
-            Cl: BG.RefRngMidpoint('Cl'),
-            Albumin: BG.RefRngMidpoint('Albumin'),
+            pH: BG.RefRngMidpoint("apH"),
+            bicarb: BG.RefRngMidpoint("aBicarb"),
+            PaCO2: BG.RefRngMidpoint("PaCO2"),
+            PaO2: BG.RefRngMidpoint("PaO2"),
+            Na: BG.RefRngMidpoint("Na"),
+            K: BG.RefRngMidpoint("K"),
+            Cl: BG.RefRngMidpoint("Cl"),
+            Albumin: BG.RefRngMidpoint("Albumin"),
           },
         }),
         results: {
@@ -266,14 +266,14 @@
           this.activeChip = undefined;
           return;
         }
-        if (chipID === 'primary' && ['Normal', 'Unknown'].includes(this.results.primaryDisturbance)) {
+        if (chipID === "primary" && ["Normal", "Unknown"].includes(this.results.primaryDisturbance)) {
           return;
         }
-        if (chipID === 'secondary' && ['Normal', 'Unknown'].includes(this.results.secondaryDisturbance[0])) {
+        if (chipID === "secondary" && ["Normal", "Unknown"].includes(this.results.secondaryDisturbance[0])) {
           return;
         }
         this.activeChip = chipID;
-        goTo('#info-chips');
+        goTo("#info-chips");
       },
     },
     mounted() {

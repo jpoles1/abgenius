@@ -94,8 +94,8 @@
 </template>
 
 <script lang="ts">
-import * as BG from './BloodGas';
-import Vue from 'vue';
+import * as BG from "./BloodGas";
+import Vue from "vue";
 export default Vue.extend({
     props: {
         activeChip: String,

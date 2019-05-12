@@ -1,11 +1,11 @@
-import * as BG from '../../src/components/BloodGas';
+import * as BG from "../../src/components/BloodGas";
 
-describe('BloodGas utilities', () => {
-    test('Finding reference range midpoint', () => {
-        expect(BG.RefRngMidpoint('apH')).toEqual(7.4);
-        expect(() => { BG.RefRngMidpoint('z'); }).toThrow();
+describe("BloodGas utilities", () => {
+    test("Finding reference range midpoint", () => {
+        expect(BG.RefRngMidpoint("apH")).toEqual(7.4);
+        expect(() => { BG.RefRngMidpoint("z"); }).toThrow();
     });
-    test('Age-based O2 sat compensation', () => {
+    test("Age-based O2 sat compensation", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({abg: {}});
         expect(scenario1.adjustedPaO2()).toEqual({lower: 80, upper: 100});
         scenario1.abg.patientAge = 24;
@@ -20,7 +20,7 @@ describe('BloodGas utilities', () => {
         scenario1.abg.patientAge = 0;
         expect(scenario1.o2Disturbance()).toBe(BG.DisturbType.Hyperoxemia);
     });
-    test('Validates ABG values', () => {
+    test("Validates ABG values", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({abg: {}});
         expect(scenario1.realisticABG()).toBe(false);
         expect(scenario1.validABG()).toBe(false);
@@ -31,7 +31,7 @@ describe('BloodGas utilities', () => {
         scenario1.abg.PaCO2 = 80;
         expect(scenario1.validABG()).toBe(true);
     });
-    test('Validates electrolyte values', () => {
+    test("Validates electrolyte values", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({abg: {}});
         expect(scenario1.validLytes()).toBe(false);
         scenario1.abg.bicarb = 22;
@@ -41,7 +41,7 @@ describe('BloodGas utilities', () => {
         scenario1.abg.Na = 142;
         expect(scenario1.validLytes()).toBe(true);
     });
-    test('Anion Gap', () => {
+    test("Anion Gap", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({abg: {}});
         expect(scenario1.serumAnionGap()).toEqual([undefined, BG.DisturbType.Unknown]);
         scenario1.abg = {
@@ -53,7 +53,7 @@ describe('BloodGas utilities', () => {
         scenario1.abg.Cl = 95;
         expect(scenario1.serumAnionGap()).toEqual([18, BG.DisturbType.AnionGap]);
     });
-    test('Winters Formula', () => {
+    test("Winters Formula", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({
             abg: {
                 pH: 7.25,
@@ -65,26 +65,26 @@ describe('BloodGas utilities', () => {
     });
 });
 
-describe('Blood gas scenarios', () => {
-    test('Normal Sample', () => {
+describe("Blood gas scenarios", () => {
+    test("Normal Sample", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({
             abg: {
                 pH: 7.4,
                 bicarb: 25,
                 PaCO2: 40,
                 PaO2: 90,
-                Na: 140,
-                Cl: 102,
-                K: 4.3,
+                Na: 138,
+                Cl: 104,
+                K: 4,
             },
         });
         expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Normal);
         expect(scenario1.guessPrimaryDisturbance()).toEqual(BG.DisturbType.Normal);
         expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.Normal, undefined]);
-        expect(scenario1.serumAnionGap()).toEqual([17.3, BG.DisturbType.AnionGap]);
+        expect(scenario1.serumAnionGap()).toEqual([9, BG.DisturbType.Normal]);
 
     });
-    test('pH Disturbances', () => {
+    test("pH Disturbances", () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({abg: {}});
         expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Unknown);
         scenario1.abg.pH = 7.46;
@@ -94,7 +94,7 @@ describe('Blood gas scenarios', () => {
         scenario1.abg.pH = 7.36;
         expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Normal);
     });
-    test('Resp Alkalosis', () => {
+    test("Resp Alkalosis", () => {
         const scenario1 = new BG.BloodGas({
             abg: {},
         });
@@ -115,7 +115,7 @@ describe('Blood gas scenarios', () => {
         scenario1.abg.bicarb = 30;
         expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.MetAlk, undefined]);
     });
-    test('Resp Acidosis', () => {
+    test("Resp Acidosis", () => {
         const scenario1 = new BG.BloodGas({
             abg: {
                 pH: 7.21,
@@ -137,7 +137,7 @@ describe('Blood gas scenarios', () => {
         scenario1.abg.bicarb = 10;
         expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.MetAcid, undefined]);
     });
-    test('Met Acidosis', () => {
+    test("Met Acidosis", () => {
         // Primary: Metabolic Acidosis
         // Secondary Respiratory Alkalosis
         // Additional Metabolic Alkalosis.
@@ -156,7 +156,7 @@ describe('Blood gas scenarios', () => {
         expect(scenario1.guessPrimaryDisturbance()).toEqual(BG.DisturbType.MetAcid);
         expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.RespAlk, undefined]);
     });
-    test('Met Alkalosis', () => {
+    test("Met Alkalosis", () => {
         const scenario1 = new BG.BloodGas({
             abg: {
                 pH: 7.55,

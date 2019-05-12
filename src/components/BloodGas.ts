@@ -4,26 +4,26 @@ export interface RefRange {
   lower: number;
 }
 export function RefRngMidpoint(testName: string): number {
-  if (RefRngs[testName] === undefined) throw new Error('Invalid reference range key!');
+  if (RefRngs[testName] === undefined) throw new Error("Invalid reference range key!");
   return (RefRngs[testName]!.lower + RefRngs[testName]!.upper) / 2;
 }
 
 export const RefRngs: { [testName: string]: RefRange | undefined } = {
   // Arterial and Venous pH
-  'apH': {lower: 7.35, upper: 7.45},
-  'vpH': {lower: 7.31, upper: 7.42},
-  'PaO2': {lower: 80, upper: 100},
-  'PvO2': {lower: 28, upper: 48},
-  'aBicarb': {lower: 22, upper: 28},
-  'vBicarb': {lower: 19, upper: 25},
-  'PaCO2': {lower: 35, upper: 45},
-  'PvCO2': {lower: 38, upper: 52},
-  'SaO2': {lower: 95, upper: 100},
-  'SvO2': {lower: 50, upper: 70},
-  'Na': {lower: 135, upper: 145},
-  'K': {lower: 3.5, upper: 5.1},
-  'Cl': {lower: 98, upper: 106},
-  'Albumin': {lower: 3.5, upper: 5.5}, // in g/dL
+  "apH": {lower: 7.35, upper: 7.45},
+  "vpH": {lower: 7.31, upper: 7.42},
+  "PaO2": {lower: 80, upper: 100},
+  "PvO2": {lower: 28, upper: 48},
+  "aBicarb": {lower: 22, upper: 28},
+  "vBicarb": {lower: 19, upper: 25},
+  "PaCO2": {lower: 35, upper: 45},
+  "PvCO2": {lower: 38, upper: 52},
+  "SaO2": {lower: 95, upper: 100},
+  "SvO2": {lower: 50, upper: 70},
+  "Na": {lower: 135, upper: 145},
+  "K": {lower: 3.5, upper: 5.1},
+  "Cl": {lower: 98, upper: 106},
+  "Albumin": {lower: 3.5, upper: 5.5}, // in g/dL
 };
 
 // Patient Characteristic Enums
@@ -33,19 +33,19 @@ enum BiologicalSex {
 }
 
 export enum DisturbType {
-  Normal = 'Normal',
-  Acute = 'Acute',
-  Chronic = 'Chronic',
-  Acidemia = 'Acidemia',
-  Alkalemia = 'Alkalemia',
-  Hypoxemia = 'Hypoxemia',
-  Hyperoxemia = 'Hyperoxemia',
-  MetAcid = 'Metabolic Acidosis',
-  RespAcid = 'Respiratory Acidosis',
-  MetAlk = 'Metabolic Alkalosis',
-  RespAlk = 'Respiratory Alkalosis',
-  AnionGap = 'Anion Gap',
-  Unknown = 'Unknown',
+  Normal = "Normal",
+  Acute = "Acute",
+  Chronic = "Chronic",
+  Acidemia = "Acidemia",
+  Alkalemia = "Alkalemia",
+  Hypoxemia = "Hypoxemia",
+  Hyperoxemia = "Hyperoxemia",
+  MetAcid = "Metabolic Acidosis",
+  RespAcid = "Respiratory Acidosis",
+  MetAlk = "Metabolic Alkalosis",
+  RespAlk = "Respiratory Alkalosis",
+  AnionGap = "Anion Gap",
+  Unknown = "Unknown",
 }
 // Lab Panel Types
 export interface ABGResults {
@@ -92,7 +92,7 @@ export class BloodGas {
     return DisturbType.Normal;
   }
   public guessPrimaryDisturbance(): DisturbType {
-    const pHmidpoint = RefRngMidpoint('apH');
+    const pHmidpoint = RefRngMidpoint("apH");
     if (this.validABG()) {
       // Expected pH change due to PaCO2 = 0.8 * (40 - PaCO2)
       // PaCO2 change due to
@@ -108,7 +108,7 @@ export class BloodGas {
     return DisturbType.Unknown;
   }
   public expectedBicarb = (adjFactor: number): number => {
-    return RefRngMidpoint('aBicarb') + (adjFactor * (this.abg.PaCO2! - RefRngMidpoint('PaCO2')!));
+    return RefRngMidpoint("aBicarb") + (adjFactor * (this.abg.PaCO2! - RefRngMidpoint("PaCO2")!));
   }
   public guessSecondaryDisturbance(): [DisturbType, DisturbType | undefined] {
     if (this.validABG()) {
@@ -122,7 +122,7 @@ export class BloodGas {
         if (this.abg.bicarb! < this.expectedBicarb(0.2)) {
           return [DisturbType.MetAcid, DisturbType.Acute];
         }
-        if (this.abg.bicarb! >= RefRngMidpoint('aBicarb')) {
+        if (this.abg.bicarb! >= RefRngMidpoint("aBicarb")) {
           return [DisturbType.MetAlk, undefined];
         }
         return [DisturbType.MetAcid, undefined];
@@ -135,7 +135,7 @@ export class BloodGas {
         if (this.abg.bicarb! > this.expectedBicarb(0.1)) {
           return [DisturbType.MetAlk, DisturbType.Acute];
         }
-        if (this.abg.bicarb! <= RefRngMidpoint('aBicarb')) {
+        if (this.abg.bicarb! <= RefRngMidpoint("aBicarb")) {
           return [DisturbType.MetAcid, undefined];
         }
         return [DisturbType.MetAlk, undefined];
@@ -143,12 +143,12 @@ export class BloodGas {
       if (primaryDisturbance === DisturbType.MetAlk) {
         const compensatedPaCO2 = 40 + (0.6 * (this.abg.bicarb! - 25)) ;
         if (this.abg.PaCO2! < compensatedPaCO2) return [DisturbType.RespAlk, undefined];
-        if (this.abg.PaCO2! >= RefRngMidpoint('PaCO2')) return [DisturbType.RespAcid, undefined];
+        if (this.abg.PaCO2! >= RefRngMidpoint("PaCO2")) return [DisturbType.RespAcid, undefined];
       }
       if (primaryDisturbance === DisturbType.MetAcid) {
         const compensatedPaCO2 = this.wintersFormula();
         if (this.abg.PaCO2! > compensatedPaCO2.lower) return [DisturbType.RespAcid, undefined];
-        if (this.abg.PaCO2! <= RefRngMidpoint('PaCO2')) return [DisturbType.RespAlk, undefined];
+        if (this.abg.PaCO2! <= RefRngMidpoint("PaCO2")) return [DisturbType.RespAlk, undefined];
       }
       return [DisturbType.Normal, undefined];
     }
@@ -156,7 +156,7 @@ export class BloodGas {
   }
   public serumAnionGap(): [number | undefined, DisturbType] {
     if (!this.validLytes()) return [undefined, DisturbType.Unknown];
-    const anionGap = this.abg.Na! - (this.abg.Cl! + this.abg.bicarb!) + (this.abg.K ? this.abg.K : 0);
+    const anionGap = this.abg.Na! - (this.abg.Cl! + this.abg.bicarb!); // + (this.abg.K ? this.abg.K : 0);
     if (anionGap > 14) return [anionGap, DisturbType.AnionGap];
     return [anionGap, DisturbType.Normal];
   }
