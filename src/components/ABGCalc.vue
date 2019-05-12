@@ -219,7 +219,7 @@
           o2Disturbance: BG.DisturbType.Normal,
           pHDisturbance: BG.DisturbType.Normal,
           primaryDisturbance: BG.DisturbType.Unknown,
-          secondaryDisturbance: [BG.DisturbType.Unknown, undefined],
+          secondaryDisturbance: [BG.DisturbType.Unknown, undefined] as [BG.DisturbType, BG.DisturbType | undefined],
           tertiaryDisturbance: BG.DisturbType.Unknown,
         },
         inputDebounce: undefined as number | undefined,
@@ -264,6 +264,12 @@
       activateChipInfo(chipID: string) {
         if (this.activeChip === chipID) {
           this.activeChip = undefined;
+          return;
+        }
+        if (chipID === 'primary' && ['Normal', 'Unknown'].includes(this.results.primaryDisturbance)) {
+          return;
+        }
+        if (chipID === 'secondary' && ['Normal', 'Unknown'].includes(this.results.secondaryDisturbance[0])) {
           return;
         }
         this.activeChip = chipID;

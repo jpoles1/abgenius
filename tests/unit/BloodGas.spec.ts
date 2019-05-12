@@ -66,6 +66,24 @@ describe('BloodGas utilities', () => {
 });
 
 describe('Blood gas scenarios', () => {
+    test('Normal Sample', () => {
+        const scenario1: BG.BloodGas = new BG.BloodGas({
+            abg: {
+                pH: 7.4,
+                bicarb: 25,
+                PaCO2: 40,
+                PaO2: 90,
+                Na: 140,
+                Cl: 102,
+                K: 4.3,
+            },
+        });
+        expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Normal);
+        expect(scenario1.guessPrimaryDisturbance()).toEqual(BG.DisturbType.Normal);
+        expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.Normal, undefined]);
+        expect(scenario1.serumAnionGap()).toEqual([17.3, BG.DisturbType.AnionGap]);
+
+    });
     test('pH Disturbances', () => {
         const scenario1: BG.BloodGas = new BG.BloodGas({abg: {}});
         expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Unknown);

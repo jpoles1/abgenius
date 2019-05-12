@@ -8,12 +8,15 @@
                         PaO<sub>2</sub> is a measurement of the partial pressure of the oxygen disolved in an ABG sample. 
                         This value can be measured using a Clark electrode.
                         Physiologically appropriate values typically range between:
-                        <ul>
+                        <ul style="margin: 10px 0;">
                             <li>
-                                For Adults > 60: 80 to 100
+                                <u>Age > 60</u>: &nbsp;&nbsp;&nbsp;&nbsp; (80 - (age - 60)) to 100
                             </li>
                             <li>
-                                For Adults: 80 to 100
+                                <u>Newborns</u>: &nbsp;&nbsp; 40 to 70
+                            </li>
+                            <li>
+                                <u>Otherwise</u>: &nbsp;&nbsp; 80 to 100
                             </li>
                         </ul>
 

@@ -93,14 +93,17 @@ export class BloodGas {
   }
   public guessPrimaryDisturbance(): DisturbType {
     const pHmidpoint = RefRngMidpoint('apH');
-    if (this.validABG() && pHmidpoint) {
+    if (this.validABG()) {
+      // Expected pH change due to PaCO2 = 0.8 * (40 - PaCO2)
+      // PaCO2 change due to
       if (this.abg.pH! >= pHmidpoint) {
-        if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) return DisturbType.MetAlk;
+        if (this.abg.bicarb! > RefRngs.aBicarb!.upper) return DisturbType.MetAlk;
         else if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.RespAlk;
       } else if (this.abg.pH! < pHmidpoint) {
+        if (this.abg.bicarb! < RefRngs.aBicarb!.lower) return DisturbType.MetAcid;
         if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) return DisturbType.RespAcid;
-        else if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.MetAcid;
       }
+      return DisturbType.Normal;
     }
     return DisturbType.Unknown;
   }
@@ -172,7 +175,7 @@ export class BloodGas {
   public adjustedPaO2(): RefRange {
     if (this.abg.patientAge === undefined) return RefRngs.PaO2!;
     // New Born – Acceptable range 40-70 mm Hg.
-    if (this.abg.patientAge.between(0, 1)) return {lower: 40, upper: 70};
+    if (this.abg.patientAge === 0) return {lower: 40, upper: 70};
     // Elderly: Subtract 1 mm Hg from the minimal 80 mm Hg level for every year over 60 years of age:  80 – (age- 60)
     if (this.abg.patientAge >= 60 && this.abg.patientAge < 90) {
       const adjLowerBound = 80 - (this.abg.patientAge - 60);
