@@ -197,6 +197,15 @@
         </v-avatar>
         <b>Anion Gap:</b>&nbsp; {{results.serumAnionGap.gap}}
       </v-chip>
+      <v-chip v-if="results.serumDeltaGap.disturb != undefined && results.serumAnionGap.disturb == 'Anion Gap'" @click="activateChipInfo('deltaGap')">
+        <v-avatar class="error" v-if="results.serumDeltaGap.disturb == 'Anion Gap'">        
+          <v-icon>fas fa-arrows-alt-h</v-icon>
+        </v-avatar>
+        <v-avatar class="success" v-if="results.serumDeltaGap.disturb == 'Normal'">        
+          <v-icon small>fas fa-check</v-icon>
+        </v-avatar>
+        <b>Delta Gap:</b>&nbsp; {{results.serumDeltaGap.gap}}
+      </v-chip>
     </v-layout>
     <hr>
     <CalcInfoPanel :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
@@ -239,6 +248,7 @@
         }),
         results: {
           serumAnionGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
+          serumDeltaGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
           adjustedPaO2: {lower: 80, upper: 100} as BG.RefRange,
           pHExpected: 7.4,
           o2Disturbance: BG.DisturbType.Normal,
@@ -274,6 +284,7 @@
           secondaryDisturbance: this.userBloodGas.guessSecondaryDisturbance(),
           pHExpected: this.userBloodGas.pHExpected(),
           serumAnionGap: this.userBloodGas.serumAnionGap(),
+          serumDeltaGap: this.userBloodGas.serumDeltaGap(),
           tertiaryDisturbance: BG.DisturbType.Unknown,
         };
       },
