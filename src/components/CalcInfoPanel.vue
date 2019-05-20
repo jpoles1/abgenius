@@ -88,9 +88,30 @@
                         </center>
                         <br>
                     </div>
-                    <div v-if="activeChip == 'anionGap'" key="anionGap">
-                        <Gamblegram :abg="abg" :results="results"/>
-                    </div>
+                    <v-container v-if="activeChip == 'anionGap'" key="anionGap">
+                        <v-layout row justify-center wrap>
+                            <v-flex md7 sm12 style="margin-bottom: 30px;">
+                                <Gamblegram :abg="abg" :results="results"/>
+                            </v-flex>
+                            <v-flex md5 style="background-color: #333; padding: 22px; box-shadow: 0px 0px 5px #202020 inset;">
+                                <p>
+                                    This plot provides a visual representation of the balance between the "strong" anions and cations disolved in the serum. 
+                                    Interpretation relies on the following rules:
+                                    <ul>
+                                        <li>
+                                            Human serum is electroneutral, so the concentrations of anions and cations should cancel out.
+                                        </li>
+                                        <li>
+                                            We measure the charged particles present in the highest concentrations in serum, because they have the strongest effects on the overall balance of charges.
+                                        </li>
+                                        <li>
+                                            We cannot measure every charged species, so we must estimate the gap between the unknown anions and unknown cations, termed the anion gap. 
+                                        </li>
+                                    </ul>
+                                </p>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
                 </transition>
             </div>
             <hr>

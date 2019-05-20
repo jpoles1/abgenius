@@ -36,12 +36,12 @@ export default Vue.extend({
             const ionData = {
                 "Anions": [
                     {name: "Na⁺", value: this.abg.Na, color: "#27556C"},
-                    {name: "Other", value: this.abg.K, color: "#032536"},
+                    // {name: "Other", value: this.abg.K, color: "#032536"},
                 ],
                 "Cations": [
                     {name: "Cl⁻", value: this.abg.Cl, color: "#BD5E7D"},
                     {name: "HCO3⁻", value: this.abg.bicarb, color: "#973253"},
-                    {name: "Albumin", value: this.abg.Albumin * 2.5, color: "#711331"},
+                    // {name: "Albumin", value: this.abg.Albumin * 2.5, color: "#711331"},
                 ],
             } as  {[id: string]: Ion[]};
             const ionSums = {} as {[id: string]: number};
@@ -67,6 +67,8 @@ export default Vue.extend({
                 .append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
+                    .style("margin", "auto")
+                    .style("display", "block");
             // Add title
             svg.append("text")
                 .attr("x", (width / 2) + margin.left)
@@ -111,7 +113,7 @@ export default Vue.extend({
                 .attr("transform", (d: any) => "translate(" + x(d) + ", 0)")
                 .selectAll("rect")
                 // enter a second time = loop subgroup per subgroup to add all rectangles
-                .data((d) => plotData[d].filter((x: any) => x.value > 0).map((ion: any) => Object.assign(ion, {"grp": d})))
+                .data((d) => plotData[d].filter((ion: any) => ion.value > 0).map((ion: any) => Object.assign(ion, {"grp": d})))
                 .enter();
             barContainer.append("rect")
                 .attr("x", 0)
@@ -126,6 +128,7 @@ export default Vue.extend({
                 .text((d: any) => "[" + d.name + "] = " + d.value.toFixed(1))
                 .style("text-anchor", "middle")
                 .style("font-size", "8pt")
+                .style("transition-duration", "0.6s")
                 .on("mouseover", function(d) {
                     d3.select(this).style("font-size", "10pt");
                 })
