@@ -195,7 +195,7 @@
         <v-avatar class="success" v-if="results.serumAnionGap.disturb == 'Normal'">        
           <v-icon small>fas fa-check</v-icon>
         </v-avatar>
-        <b>Anion Gap:</b>&nbsp;{{results.serumAnionGap.disturb}} ({{results.serumAnionGap.gap}})
+        <b>Anion Gap:</b>&nbsp; {{results.serumAnionGap.gap}}
       </v-chip>
     </v-layout>
     <hr>

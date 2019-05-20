@@ -167,6 +167,7 @@ export class BloodGas {
     if (!this.validLytes()) return {disturb: DisturbType.Unknown, gap: NaN};
     const anionGap = this.abg.Na! - (this.abg.Cl! + this.abg.bicarb!);
     if (anionGap > RefRngs.AnionGap!.upper) return {disturb: DisturbType.AnionGap, gap: anionGap};
+    if (anionGap < RefRngs.AnionGap!.lower) return {disturb: DisturbType.AnionGap, gap: anionGap};
     return {disturb: DisturbType.Normal, gap: anionGap};
   }
   public serumDeltaGap(): Gap {

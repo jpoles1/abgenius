@@ -34,13 +34,17 @@ const referenceList: ResourceData[] = [
         notes: "Good resource to learn to quickly interpret ABGs with a stepwise algorithm",
     },
     {
-        name: "GlobalRPh - COMMON LABORATORY VALUES FOR ABG",
-        url: "https://globalrph.com/common-laboratory-lab-values-abgs/",
-        notes: "Quality set of reference ranges with lots of other great info",
+        name: "Emmett, M. (2016). Approach to the patient with a negative anion gap. American Journal of Kidney Diseases, 67(1), 143-150.",
+        url: "https://www.sciencedirect.com/science/article/pii/S0272638615010550",
     },
     {
         name: "Fall, P. J. (2000). A stepwise approach to acid-base disorders: practical patient evaluation for metabolic acidosis and other conditions. Postgraduate Medicine, 107(3), 249-263.",
         url: "https://www.tandfonline.com/doi/abs/10.3810/pgm.2000.03.957",
+    },
+    {
+        name: "GlobalRPh - COMMON LABORATORY VALUES FOR ABG",
+        url: "https://globalrph.com/common-laboratory-lab-values-abgs/",
+        notes: "Quality set of reference ranges with lots of other great info",
     },
     {
         name: "\"Interpretation of Arterial Blood Gases.\" Pocket ICU Management, PocketMedicine.com, Inc, 2010. Anesthesia Central.",
