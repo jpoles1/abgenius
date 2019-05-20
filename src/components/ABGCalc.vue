@@ -1,21 +1,23 @@
 <template>
   <v-container>
     <v-form v-model="validABG">
-      <center><h2>Patient Demographics</h2></center><br>
-      <v-layout text-xs-center wrap justify-center>
-        <v-select
-          v-model="userBloodGas.abg.patientSex"
-          :items='["Male", "Female"]'
-          label="Patient Sex"
-          outline class="numeric-input"
-        ></v-select>
-        <v-text-field 
-          v-model.number="userBloodGas.abg.patientAge" 
-          type="number" label="Patient Age"
-          outline class="numeric-input" step="1"
-        ></v-text-field>
-      </v-layout>
-      <center><h2>ABG</h2></center><br>
+      <div v-if="showDemographics">
+        <center><h2>Patient Demographics</h2></center><br>
+        <v-layout text-xs-center wrap justify-center>
+          <v-select
+            v-model="userBloodGas.abg.patientSex"
+            :items='["Male", "Female"]'
+            label="Patient Sex"
+            outline class="numeric-input"
+          ></v-select>
+          <v-text-field 
+            v-model.number="userBloodGas.abg.patientAge" 
+            type="number" label="Patient Age"
+            outline class="numeric-input" step="1"
+          ></v-text-field>
+        </v-layout>
+      </div>
+      <center><h2>Arterial Blood Gas</h2></center><br>
       <v-layout text-xs-center wrap justify-center>
         <v-tooltip top>
           <template v-slot:activator="{ on }">
@@ -62,7 +64,7 @@
             Ref Range: {{"(" + refRngs.PaCO2.lower + " - " + refRngs.PaCO2.upper + ")"}}
           </span>
         </v-tooltip>
-        <v-tooltip top>
+        <v-tooltip top v-if="showPaO2">
           <template v-slot:activator="{ on }">
             <div v-on="on">
               <v-text-field
@@ -144,7 +146,7 @@
     </v-form>
     <hr>
     <v-layout wrap justify-space-around id="info-chips">
-      <v-chip @click="activateChipInfo('O2')">
+      <v-chip @click="activateChipInfo('O2')" v-if="showPaO2">
         <v-avatar class="error" v-if="results.o2Disturbance != 'Normal'">        
           <v-icon v-if="results.o2Disturbance == 'Hyperoxemia'">fas fa-arrow-up</v-icon>
           <v-icon v-if="results.o2Disturbance == 'Hypoxemia'">fas fa-arrow-down</v-icon>
@@ -187,6 +189,12 @@
         <b>Secondary:</b>&nbsp;{{results.secondaryDisturbance[1] ? results.secondaryDisturbance[1] : ''}} {{results.secondaryDisturbance[0]}}
       </v-chip>
       <v-chip v-if="results.serumAnionGap.disturb != undefined" @click="activateChipInfo('anionGap')">
+        <v-avatar class="error" v-if="results.serumAnionGap.disturb == 'Anion Gap'">        
+          <v-icon>fas fa-arrows-alt-h</v-icon>
+        </v-avatar>
+        <v-avatar class="success" v-if="results.serumAnionGap.disturb == 'Normal'">        
+          <v-icon small>fas fa-check</v-icon>
+        </v-avatar>
         <b>Anion Gap:</b>&nbsp;{{results.serumAnionGap.disturb}} ({{results.serumAnionGap.gap}})
       </v-chip>
     </v-layout>
@@ -211,6 +219,8 @@
     },
     data() {
       return {
+        showDemographics: false,
+        showPaO2: false,
         activeChip: undefined as string | undefined,
         validABG: true,
         refRngs: BG.RefRngs,
