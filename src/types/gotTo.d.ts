@@ -1,1 +1,1 @@
-declare module 'vuetify/lib/components/Vuetify/goTo';
+declare module "vuetify/lib/components/Vuetify/goTo";
