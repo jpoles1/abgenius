@@ -160,15 +160,6 @@
 			</v-layout>
 		</v-form>
 		<hr>
-		<v-btn color="primary" @click="randomizeABG">
-			Randomize
-		</v-btn>
-		<v-btn color="primary" @click="generateABG">
-			Generate
-		</v-btn>
-		<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 250px;"/>
-		{{results.disturbances}}
-		<hr>
 		<v-layout wrap justify-space-around id="info-chips">
 			<v-chip @click="activateChipInfo('O2')" v-if="showPaO2">
 				<v-avatar class="error" v-if="results.o2Disturbance != 'Normal'">        
@@ -237,6 +228,26 @@
 		<hr>
 		<CalcInfoPanel :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
 		<br>
+		<v-expansion-panel>
+			<v-expansion-panel-content>
+				<template v-slot:header>
+					<div>Auto-Generate ABG</div>
+				</template>
+				<v-card style="padding: 20px; box-shadow: 0px 0px 5px #202020 inset !important;">
+					<div style="margin: auto; width: 260px;">
+						<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 250px;"/>
+						<br>
+						<v-btn color="primary" @click="randomizeABG">
+							Randomize
+						</v-btn>
+						<v-btn color="primary" @click="generateABG">
+							Generate
+						</v-btn>
+					</div>
+				</v-card>
+			</v-expansion-panel-content>
+		</v-expansion-panel>
+		<br><br>
 		<ReferenceList/>
 	</v-container>
 </template>
