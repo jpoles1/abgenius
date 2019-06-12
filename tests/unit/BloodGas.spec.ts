@@ -88,17 +88,19 @@ describe("Blood gas scenarios", () => {
 		});
 		expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Normal);
 		expect(scenario1.guessDisturbances()).toEqual([[BG.DisturbType.Normal]]);
-		expect(scenario1.guessPrimaryDisturbance()).toEqual(BG.DisturbType.Normal);
-		expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.Normal]);
 		expect(scenario1.serumAnionGap()).toEqual({gap: 9, disturb: BG.DisturbType.Normal});
-		expect(scenario1.serumDeltaGap()).toEqual({gap: -2, disturb: BG.DisturbType.Normal});
+		expect(scenario1.serumDeltaGap()).toEqual({gap: 0, disturb: BG.DisturbType.Normal});
 	});
 	test("Incomplete Cases", () => {
 		const scenario1 = new BG.BloodGas({
 			abg: {},
 		});
-		expect(scenario1.guessPrimaryDisturbance()).toEqual(BG.DisturbType.Unknown);
-		expect(scenario1.guessSecondaryDisturbance()).toEqual([BG.DisturbType.Unknown]);
+		expect(scenario1.guessDisturbances()).toEqual([[BG.DisturbType.Unknown]]);
+		scenario1.abg = {
+			pH: 7.4,
+			bicarb: 25,
+			PaCO2: 40,
+		};
 		expect(scenario1.guessDisturbances()).toEqual([[BG.DisturbType.Unknown]]);
 	});
 	test("Respiratory Acidosis", () => {
@@ -130,7 +132,72 @@ describe("Blood gas scenarios", () => {
 		expect(scenario2.phDisturbance()).toEqual(BG.DisturbType.Normal);
 		expect(scenario2.serumAnionGap()).toEqual({gap: 7, disturb: BG.DisturbType.Normal});
 		expect(scenario2.guessDisturbances()).toEqual([
-			[BG.DisturbType.RespAcid, BG.DisturbType.Chronic],
+			[BG.DisturbType.RespAcid, BG.DisturbType.Compensated],
+			[BG.DisturbType.MetAlk],
+		].sort());
+		const scenario3 = new BG.BloodGas({
+			abg: {
+				pH: 7.33,
+				PaCO2: 57,
+				bicarb: 29,
+				Na: 137,
+				Cl: 99,
+			},
+		});
+		expect(scenario3.realisticABG()).toEqual(true);
+		expect(scenario3.phDisturbance()).toEqual(BG.DisturbType.Acidemia);
+		expect(scenario3.serumAnionGap()).toEqual({gap: 9, disturb: BG.DisturbType.Normal});
+		expect(scenario3.guessDisturbances()).toEqual([
+			[BG.DisturbType.RespAcid],
+			[BG.DisturbType.MetAlk],
+		].sort());
+	});
+	test("Respiratory Alkalosis", () => {
+		const scenario1 = new BG.BloodGas({
+			abg: {
+				pH: 7.54,
+				PaCO2: 25,
+				bicarb: 22,
+				Na: 137,
+				Cl: 104,
+			},
+		});
+		expect(scenario1.realisticABG()).toEqual(true);
+		expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Alkalemia);
+		expect(scenario1.serumAnionGap()).toEqual({gap: 11, disturb: BG.DisturbType.Normal});
+		expect(scenario1.guessDisturbances()).toEqual([
+			[BG.DisturbType.RespAlk],
+		]);
+		const scenario2 = new BG.BloodGas({
+			abg: {
+				pH: 7.44,
+				PaCO2: 30,
+				bicarb: 21,
+				Na: 136,
+				Cl: 106,
+			},
+		});
+		expect(scenario2.realisticABG()).toEqual(true);
+		expect(scenario2.phDisturbance()).toEqual(BG.DisturbType.Normal);
+		expect(scenario2.serumAnionGap()).toEqual({gap: 9, disturb: BG.DisturbType.Normal});
+		expect(scenario2.guessDisturbances()).toEqual([
+			[BG.DisturbType.RespAlk, BG.DisturbType.Compensated],
+			[BG.DisturbType.MetAcid, BG.DisturbType.Hyperchloremic],
+		].sort());
+		const scenario3 = new BG.BloodGas({
+			abg: {
+				pH: 7.33,
+				PaCO2: 57,
+				bicarb: 29,
+				Na: 137,
+				Cl: 99,
+			},
+		});
+		expect(scenario3.realisticABG()).toEqual(true);
+		expect(scenario3.phDisturbance()).toEqual(BG.DisturbType.Acidemia);
+		expect(scenario3.serumAnionGap()).toEqual({gap: 9, disturb: BG.DisturbType.Normal});
+		expect(scenario3.guessDisturbances()).toEqual([
+			[BG.DisturbType.RespAcid],
 			[BG.DisturbType.MetAlk],
 		].sort());
 	});

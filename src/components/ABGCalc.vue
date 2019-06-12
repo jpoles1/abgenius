@@ -127,8 +127,8 @@
 						Ref Range: {{"(" + refRngs.K.lower + " - " + refRngs.K.upper + ")"}}
 					</span>
 				</v-tooltip> -->
-				<v-tooltip top>
-					<template v-slot:activator="{ on }">
+					<v-tooltip top>
+					<template v-slot:activator="{ on }" v-if="userBloodGas.abg.Albumin">
 						<div v-on="on">
 							<v-text-field
 								v-model.number="userBloodGas.abg.Albumin" 
@@ -160,7 +160,15 @@
 			</v-layout>
 		</v-form>
 		<hr>
+		<v-btn color="primary" @click="randomizeABG">
+			Randomize
+		</v-btn>
+		<v-btn color="primary" @click="generateABG">
+			Generate
+		</v-btn>
+		<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 250px;"/>
 		{{results.disturbances}}
+		<hr>
 		<v-layout wrap justify-space-around id="info-chips">
 			<v-chip @click="activateChipInfo('O2')" v-if="showPaO2">
 				<v-avatar class="error" v-if="results.o2Disturbance != 'Normal'">        
@@ -172,6 +180,12 @@
 				</v-avatar>
 				<b>Blood Oxygen:</b>&nbsp;{{results.o2Disturbance}}
 			</v-chip>
+			<v-chip @click="activateChipInfo('pH')" v-if="!results.realisticABG">
+				<v-avatar class="error">        
+					<v-icon>fas fa-question</v-icon>
+				</v-avatar>
+				<b>Check ABG</b>
+			</v-chip>
 			<v-chip @click="activateChipInfo('pH')">
 				<v-avatar class="error" v-if="results.pHDisturbance != 'Normal'">        
 					<v-icon v-if="results.pHDisturbance == 'Alkalemia'">fas fa-arrow-up</v-icon>
@@ -182,27 +196,24 @@
 				</v-avatar>
 				<b>Blood pH:</b>&nbsp;{{results.pHDisturbance}}
 			</v-chip>
-			<v-chip @click="activateChipInfo('primary')">
-				<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(results.primaryDisturbance)'>
-					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.primaryDisturbance)'>
+			<v-chip v-for="(disturb, disturbIndex) in results.disturbances" :key="disturbIndex">
+				<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
+					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
 						fa-wind
 					</v-icon>
-					<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.primaryDisturbance)'>
+					<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
 						fa-vial
 					</v-icon>
 				</v-avatar>
-				<b>Primary:</b>&nbsp;{{results.primaryDisturbance}}
-			</v-chip>
-			<v-chip @click="activateChipInfo('secondary')">
-				<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(results.secondaryDisturbance[0])'>
-					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.secondaryDisturbance[0])'>
-						fa-wind
-					</v-icon>
-					<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.secondaryDisturbance[0])'>
-						fa-vial
-					</v-icon>
+				<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
+					<v-icon small>fas fa-check</v-icon>
 				</v-avatar>
-				<b>Secondary:</b>&nbsp;{{results.secondaryDisturbance[1] ? results.secondaryDisturbance[1] : ''}} {{results.secondaryDisturbance[0]}}
+				<div v-if="disturb[0] == 'Normal'">
+					No Acid Base Disorder
+				</div>
+				<div v-else>
+					{{disturb[1]}} {{disturb[0]}}
+				</div>
 			</v-chip>
 			<v-chip v-if="results.serumAnionGap.disturb != undefined" @click="activateChipInfo('anionGap')">
 				<v-avatar class="error" v-if="results.serumAnionGap.disturb == 'Anion Gap'">        
@@ -211,7 +222,7 @@
 				<v-avatar class="success" v-if="results.serumAnionGap.disturb == 'Normal'">        
 					<v-icon small>fas fa-check</v-icon>
 				</v-avatar>
-				<b>Anion Gap:</b>&nbsp; {{results.serumAnionGap.gap}}
+				<b>Anion Gap:</b>&nbsp; {{results.serumAnionGap.gap.toFixed(1)}}
 			</v-chip>
 			<v-chip v-if="results.serumDeltaGap.disturb != undefined && results.serumAnionGap.disturb == 'Anion Gap'" @click="activateChipInfo('deltaGap')">
 				<v-avatar class="error" v-if="results.serumDeltaGap.disturb == 'Anion Gap'">        
@@ -220,7 +231,7 @@
 				<v-avatar class="success" v-if="results.serumDeltaGap.disturb == 'Normal'">        
 					<v-icon small>fas fa-check</v-icon>
 				</v-avatar>
-				<b>Delta Gap:</b>&nbsp; {{results.serumDeltaGap.gap}}
+				<b>Delta Gap:</b>&nbsp; {{results.serumDeltaGap.gap.toFixed(1)}}
 			</v-chip>
 		</v-layout>
 		<hr>
@@ -232,6 +243,7 @@
 
 <script lang="ts">
 	import * as BG from "./BloodGas";
+	import { abgGenerators, generateRandABG } from "./BloodGasGen";
 	import CalcInfoPanel from "./CalcInfoPanel.vue";
 	import ReferenceList from "./ReferenceList.vue";
 
@@ -244,6 +256,8 @@
 		},
 		data() {
 			return {
+				abgGenPick: Object.keys(abgGenerators)[0],
+				abgGenOptions: Object.keys(abgGenerators),
 				showDemographics: false,
 				showPaO2: false,
 				showLactate: false,
@@ -260,7 +274,7 @@
 						Na: BG.RefRngMidpoint("Na"),
 						K: BG.RefRngMidpoint("K"),
 						Cl: BG.RefRngMidpoint("Cl"),
-						Albumin: BG.RefRngMidpoint("Albumin"),
+						Albumin: undefined, // BG.RefRngMidpoint("Albumin"),
 						Lactate: 0.6,
 					},
 				}),
@@ -269,10 +283,9 @@
 					serumDeltaGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
 					adjustedPaO2: {lower: 80, upper: 100} as BG.RefRange,
 					pHExpected: 7.4,
+					realisticABG: true,
 					o2Disturbance: BG.DisturbType.Normal,
 					pHDisturbance: BG.DisturbType.Normal,
-					primaryDisturbance: BG.DisturbType.Unknown,
-					secondaryDisturbance: [BG.DisturbType.Unknown, undefined] as BG.DisturbType[],
 					disturbances: [[BG.DisturbType.Unknown]] as BG.DisturbType[][],
 					tertiaryDisturbance: BG.DisturbType.Unknown,
 				},
@@ -291,6 +304,14 @@
 			},
 		},
 		methods: {
+			randomizeABG() {
+				const randABG = generateRandABG();
+				this.userBloodGas = randABG[0];
+			},
+			generateABG() {
+				const genABG = abgGenerators[this.abgGenPick]()[0];
+				this.userBloodGas = genABG;
+			},
 			updateBloodGas() {
 				const urlQuery = Object.assign({}, this.userBloodGas.abg);
 				// @ts-ignore
@@ -299,8 +320,7 @@
 					adjustedPaO2: this.userBloodGas.adjustedPaO2(),
 					o2Disturbance: this.userBloodGas.o2Disturbance(),
 					pHDisturbance: this.userBloodGas.phDisturbance(),
-					primaryDisturbance: this.userBloodGas.guessPrimaryDisturbance(),
-					secondaryDisturbance: this.userBloodGas.guessSecondaryDisturbance(),
+					realisticABG: this.userBloodGas.realisticABG(),
 					disturbances: this.userBloodGas.guessDisturbances(),
 					pHExpected: this.userBloodGas.pHExpected(),
 					serumAnionGap: this.userBloodGas.serumAnionGap(),
@@ -311,8 +331,10 @@
 			decodeURL() {
 				let urlData = Object.assign({}, this.$route.query);
 				urlData = Object.keys(urlData).reduce((agg: any, key: string): any => {
-					const numericParsed = parseFloat(urlData[key].toString());
-					agg[key] = isNaN(numericParsed) ? urlData[key] : numericParsed;
+					if (urlData[key] !== undefined) {
+						const numericParsed = parseFloat(urlData[key].toString());
+						agg[key] = isNaN(numericParsed) ? urlData[key] : numericParsed;
+					}
 					return agg;
 				}, {});
 				Object.assign(this.userBloodGas.abg, urlData);
@@ -320,12 +342,6 @@
 			activateChipInfo(chipID: string) {
 				if (this.activeChip === chipID) {
 					this.activeChip = undefined;
-					return;
-				}
-				if (chipID === "primary" && ["Normal", "Unknown"].includes(this.results.primaryDisturbance)) {
-					return;
-				}
-				if (chipID === "secondary" && ["Normal", "Unknown"].includes(this.results.secondaryDisturbance[0])) {
 					return;
 				}
 				this.activeChip = chipID;

@@ -27,7 +27,8 @@ export const RefRngs: { [testName: string]: RefRange | undefined } = {
 	"Albumin": {lower: 3.5, upper: 5.5}, // in g/dL
 	"aLactate": {lower: 0.5, upper: 1.5},
 	"aLactateCrit": {lower: 0.5, upper: 2},
-	"AnionGap": {lower: 6, upper: 14},
+	// (Kellum, 2005)
+	"AnionGap": {lower: 4, upper: 12},
 };
 
 // Patient Characteristic Enums
@@ -38,8 +39,7 @@ enum BiologicalSex {
 
 export enum DisturbType {
 	Normal = "Normal",
-	Acute = "Acute",
-	Chronic = "Chronic",
+	Compensated = "Compensated",
 	Acidemia = "Acidemia",
 	Alkalemia = "Alkalemia",
 	Hypoxemia = "Hypoxemia",
@@ -88,9 +88,15 @@ export class BloodGas {
 	public pHExpected(): number {
 		return 6.1 + Math.log10(this.abg.bicarb! / (0.03 * this.abg.PaCO2!));
 	}
+	public co2Expected(): number {
+		return (1 / 3) * this.abg.bicarb! * Math.pow(10, (81 / 10) - this.abg.pH!);
+	}
+	public bicarbExpected(): number {
+		return 3 * this.abg.PaCO2! * Math.pow(10, this.abg.pH! - (81 / 10));
+	}
 	public realisticABG(): boolean {
 		if (!this.validABG()) return false;
-		const tolerance = 0.4;
+		const tolerance = 0.05;
 		// does not account for anion gap?
 		return this.pHExpected().between(this.abg.pH! - tolerance, this.abg.pH! + tolerance);
 	}
@@ -103,136 +109,8 @@ export class BloodGas {
 		if (this.abg.pH! < RefRngs.apH!.lower) return DisturbType.Acidemia;
 		return DisturbType.Normal;
 	}
-	public guessDisturbances(): DisturbType[][] {
-		const disturbList: DisturbType[][] = [];
-		const pHmidpoint = RefRngMidpoint("apH");
-		// Do we have a valid ABG: pH, PaCO2, HCO3
-		if (this.validABG()) {
-			// Do we have the required electrolytes: Na, Cl, HCO3
-			if (this.validLytes()) {
-				// Do we have a low bicarb, or an anion gap?
-				if (this.abg.bicarb! < RefRngs.aBicarb!.lower || this.serumAnionGap().disturb === DisturbType.AnionGap) {
-					// Do we have an anion gap?
-					if (this.serumAnionGap().disturb === DisturbType.AnionGap) {
-						// We have an anion gap metabolic acidosis
-						disturbList.push([DisturbType.MetAcid, DisturbType.AnionGap]);
-						// Do we have a delta gap?
-						if (this.serumDeltaGap().gap > 6) {
-							// We have a superimposed metabolic alkalosis
-							// Rise in AG is more than fall in HCO3
-							disturbList.push([DisturbType.MetAlk]);
-						} else if (this.serumDeltaGap().gap < -6) {
-							// We have a non-gap, hyperchloremic metabolic acidosis
-							// Rise in AG is less than fall in HCO3
-							disturbList.push([DisturbType.MetAcid, DisturbType.Hyperchloremic]);
-						}
-					} else {
-						// We have a non-gap metabolic acidosis
-						disturbList.push([DisturbType.MetAcid]);
-					}
-				}
-				if (this.abg.bicarb! > RefRngs.aBicarb!.upper) {
-					// We have a metabolic alkalosis
-					disturbList.push([DisturbType.MetAlk]);
-				}
-				// Do we have a low PaCO2
-				if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) {
-					// We have a respiratory alkalosis
-					const hasMetAcid = disturbList.filter((x) => x[0] === DisturbType.MetAcid).length > 0;
-					const compensated = this.abg.bicarb! > this.expectedBicarb(0.5);
-					if (hasMetAcid && compensated) {
-							disturbList.push([DisturbType.RespAlk, DisturbType.Chronic]);
-					} else {
-						disturbList.push([DisturbType.RespAlk]);
-					}
-				}
-				// Do we have a high PaCO2
-				if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) {
-					// We have a respiratory acidosis
-					const hasMetAlk = disturbList.filter((x) => x[0] === DisturbType.MetAlk).length > 0;
-					const compensated = this.abg.bicarb! < this.expectedBicarb(0.4);
-					if (hasMetAlk && compensated) {
-						if (this.abg.bicarb! < this.expectedBicarb(0.4)) {
-							disturbList.push([DisturbType.RespAcid, DisturbType.Chronic]);
-						}
-					} else {
-						disturbList.push([DisturbType.RespAcid]);
-					}
-				}
-			} else {
-				disturbList.push([this.guessPrimaryDisturbance()]);
-				disturbList.push(this.guessSecondaryDisturbance() as DisturbType[]);
-			}
-		} else {
-			disturbList.push([DisturbType.Unknown]);
-		}
-		if (disturbList.length === 0) {
-			disturbList.push([DisturbType.Normal]);
-		}
-		return disturbList.sort();
-	}
-	public guessPrimaryDisturbance(): DisturbType {
-		const pHmidpoint = RefRngMidpoint("apH");
-		if (this.validABG()) {
-			// Expected pH change due to PaCO2 = 0.8 * (40 - PaCO2)
-			// PaCO2 change due to
-			if (this.abg.pH! >= pHmidpoint) {
-				if (this.abg.bicarb! > RefRngs.aBicarb!.upper) return DisturbType.MetAlk;
-				else if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) return DisturbType.RespAlk;
-			} else if (this.abg.pH! < pHmidpoint) {
-				if (this.abg.bicarb! < RefRngs.aBicarb!.lower) return DisturbType.MetAcid;
-				if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) return DisturbType.RespAcid;
-			}
-			return DisturbType.Normal;
-		}
-		return DisturbType.Unknown;
-	}
 	public expectedBicarb = (adjFactor: number): number => {
 		return RefRngMidpoint("aBicarb") + (adjFactor * (this.abg.PaCO2! - RefRngMidpoint("PaCO2")!));
-	}
-	public guessSecondaryDisturbance(): DisturbType[] {
-		if (this.validABG()) {
-			const primaryDisturbance = this.guessPrimaryDisturbance();
-
-			if (primaryDisturbance === DisturbType.RespAlk) {
-				// Check if observed bicarb is in range expected for chronic compensation.
-				if (this.abg.bicarb! < this.expectedBicarb(0.5)) {
-					return [DisturbType.MetAcid, DisturbType.Chronic];
-				}
-				if (this.abg.bicarb! < this.expectedBicarb(0.2)) {
-					return [DisturbType.MetAcid, DisturbType.Acute];
-				}
-				if (this.abg.bicarb! >= RefRngMidpoint("aBicarb")) {
-					return [DisturbType.MetAlk];
-				}
-				return [DisturbType.MetAcid];
-			}
-			if (primaryDisturbance === DisturbType.RespAcid) {
-				// Check if observed bicarb is in range expected for chronic compensation.
-				if (this.abg.bicarb! > this.expectedBicarb(0.35)) {
-					return [DisturbType.MetAlk, DisturbType.Chronic];
-				}
-				if (this.abg.bicarb! > this.expectedBicarb(0.1)) {
-					return [DisturbType.MetAlk, DisturbType.Acute];
-				}
-				if (this.abg.bicarb! <= RefRngMidpoint("aBicarb")) {
-					return [DisturbType.MetAcid];
-				}
-				return [DisturbType.MetAlk];
-			}
-			if (primaryDisturbance === DisturbType.MetAlk) {
-				const compensatedPaCO2 = 40 + (0.6 * (this.abg.bicarb! - 25)) ;
-				if (this.abg.PaCO2! < compensatedPaCO2) return [DisturbType.RespAlk];
-				if (this.abg.PaCO2! >= RefRngMidpoint("PaCO2")) return [DisturbType.RespAcid];
-			}
-			if (primaryDisturbance === DisturbType.MetAcid) {
-				const compensatedPaCO2 = this.wintersFormula();
-				if (this.abg.PaCO2! > compensatedPaCO2.lower) return [DisturbType.RespAcid];
-				if (this.abg.PaCO2! <= RefRngMidpoint("PaCO2")) return [DisturbType.RespAlk];
-			}
-			return [DisturbType.Normal];
-		}
-		return [DisturbType.Unknown];
 	}
 	public serumAnionGap(): Gap {
 		if (!this.validLytes()) return {disturb: DisturbType.Unknown, gap: NaN};
@@ -272,6 +150,65 @@ export class BloodGas {
 			return {lower: Math.max(adjLowerBound, 55), upper: RefRngs.PaO2!.upper};
 		}
 		return RefRngs.PaO2!;
+	}
+	public guessDisturbances(): DisturbType[][] {
+		const disturbList: DisturbType[][] = [];
+		const pHmidpoint = RefRngMidpoint("apH");
+		// Do we have a valid ABG: pH, PaCO2, HCO3
+		// Do we have the required electrolytes: Na, Cl, HCO3
+		if (this.validABG() && this.validLytes()) {
+			// Do we have a low bicarb, or an anion gap?
+			if (this.abg.bicarb! < RefRngs.aBicarb!.lower || this.serumAnionGap().gap > RefRngs.AnionGap!.upper) {
+				// Do we have an anion gap?
+				if (this.serumAnionGap().disturb === DisturbType.AnionGap) {
+					// We have an anion gap metabolic acidosis
+					disturbList.push([DisturbType.MetAcid, DisturbType.AnionGap]);
+					// Do we have a delta gap?
+					if (this.serumDeltaGap().gap > 6) {
+						// We have a superimposed metabolic alkalosis
+						// Rise in AG is more than fall in HCO3
+						disturbList.push([DisturbType.MetAlk]);
+					} else if (this.serumDeltaGap().gap < -6) {
+						// We have a superimposed non-gap, hyperchloremic metabolic acidosis
+						// Rise in AG is less than fall in HCO3
+						disturbList.push([DisturbType.MetAcid, DisturbType.Hyperchloremic]);
+					}
+				} else {
+					// We have a non-gap metabolic acidosis
+					disturbList.push([DisturbType.MetAcid, DisturbType.Hyperchloremic]);
+				}
+			}
+			if (this.abg.bicarb! > RefRngs.aBicarb!.upper) {
+				// We have a metabolic alkalosis
+				disturbList.push([DisturbType.MetAlk]);
+			}
+			// Do we have a low PaCO2
+			if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) {
+				// We have a respiratory alkalosis
+				const compensated = this.abg.pH!.between(RefRngs.apH!.lower, RefRngs.apH!.upper);
+				if (compensated) {
+					disturbList.push([DisturbType.RespAlk, DisturbType.Compensated]);
+				} else {
+					disturbList.push([DisturbType.RespAlk]);
+				}
+			}
+			// Do we have a high PaCO2
+			if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) {
+				// We have a respiratory acidosis
+				const compensated = this.abg.pH!.between(RefRngs.apH!.lower, RefRngs.apH!.upper);
+				if (compensated) {
+					disturbList.push([DisturbType.RespAcid, DisturbType.Compensated]);
+				} else {
+					disturbList.push([DisturbType.RespAcid]);
+				}
+			}
+		} else {
+			disturbList.push([DisturbType.Unknown]);
+		}
+		if (disturbList.length === 0) {
+			disturbList.push([DisturbType.Normal]);
+		}
+		return disturbList.sort();
 	}
 }
 

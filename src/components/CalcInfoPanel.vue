@@ -27,12 +27,13 @@
 						</p>
 					</div>
 					<div v-if="activeChip == 'pH'" key="pH">
-						<center style="margin-bottom: 8px;"><h2>Interpreting: pH values</h2></center>
+						<center style="margin-bottom: 8px; text-align: center;"><h2>Interpreting: pH values</h2></center>
 						<hr>
-						<p>
+						<p style="text-align: center;">
 							Normal human body pH is typically estimated to range between 7.35 and 7.45. 
 							When values fall below this range, it is called an <u>acidemia</u>, as the blood is abnormally acidic.
 							Above this range, and you will have an <u>alkalemia</u>, as the blood is abnormally basic.
+							The terms acidosis and alkalosis are used to describe the processes which result in these pH perturbations.
 						</p>
 						<p class="subheading font-weight-medium" style="text-align: center;"> 
 							This ABG sample had a pH of <u class="font-weight-black">{{abg.pH}}</u> and is thus classified as <u class="font-weight-black">{{results.pHDisturbance.toUpperCase()}}</u>.
@@ -46,8 +47,8 @@
 							Expected pH = 6.1 + log10({{abg.bicarb}} / (0.03 * {{abg.PaCO2}})) = <u class="font-weight-bold">{{results.pHExpected.toFixed(2)}}</u>
 						</p>
 						<p class="subheading font-weight-medium" style="text-align: center;">
-							<span v-if="results.pHExpected.between(abg.pH - 0.4, abg.pH + 0.4)">
-								Expected pH approximates ABG pH;  likely <u class="font-weight-black">VALID</u>.
+							<span v-if="results.realisticABG">
+								Expected pH approximates ABG pH, so ABG is likely <u class="font-weight-black">VALID</u>.
 							</span>
 							<span v-else>
 								Expected pH differs from ABG pH; possibly <u class="font-weight-black">INVALID</u>.

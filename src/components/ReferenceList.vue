@@ -51,6 +51,10 @@ const referenceList: ResourceData[] = [
 		url: "https://anesth.unboundmedicine.com/anesthesia/view/Pocket-ICU-Management/534207/all/Interpretation_of_Arterial_Blood_Gases",
 	},
 	{
+		name: "Kellum, J. A. (2005). Clinical review: reunification of acid–base physiology. Critical Care, 9(5), 500.",
+		url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1297616/",
+	},
+	{
 		name: "Spencer, C., & Butler, J. (2010). Survival after cardiac arrest and severe lactic acidosis (pH 6.61) due to haemorrhage. Emergency Medicine Journal, 27(10), 800-801.",
 		url: "https://emj.bmj.com/content/27/10/800.long",
 	},
