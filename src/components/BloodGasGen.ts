@@ -109,7 +109,7 @@ export const abgGenerators: {[disturb: string]: () => [BG.BloodGas, BG.DisturbTy
 		);
 		return [newGas, [[BG.DisturbType.RespAlk]]];
 	},
-	"Chronic Respiratory Acidosis": () => {
+	"Compensated Respiratory Acidosis": () => {
 		// Adjusted PaCO2
 		const newGas = new BG.BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(BG.RefRngs.PaCO2!.upper + 1, upperLimitPaCO2, 0);
@@ -121,9 +121,9 @@ export const abgGenerators: {[disturb: string]: () => [BG.BloodGas, BG.DisturbTy
 			newGas.abg.Na - (BG.RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[BG.DisturbType.RespAcid, BG.DisturbType.Compensated], [BG.DisturbType.MetAlk]]];
+		return [newGas, [[BG.DisturbType.RespAcid], [BG.DisturbType.MetAlk]]];
 	},
-	"Chronic Respiratory Alkalosis": () => {
+	"Compensated Respiratory Alkalosis": () => {
 		// Adjusted PaCO2
 		const newGas = new BG.BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, BG.RefRngs.PaCO2!.lower, 0);
@@ -135,6 +135,6 @@ export const abgGenerators: {[disturb: string]: () => [BG.BloodGas, BG.DisturbTy
 			newGas.abg.Na - (BG.RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[BG.DisturbType.RespAlk, BG.DisturbType.Compensated], [BG.DisturbType.MetAcid, BG.DisturbType.Hyperchloremic]]];
+		return [newGas, [[BG.DisturbType.RespAlk], [BG.DisturbType.MetAcid, BG.DisturbType.Hyperchloremic]]];
 	},
 };

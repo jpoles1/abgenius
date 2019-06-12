@@ -39,7 +39,7 @@ enum BiologicalSex {
 
 export enum DisturbType {
 	Normal = "Normal",
-	Compensated = "Compensated",
+	Chronic = "Chronic",
 	Acidemia = "Acidemia",
 	Alkalemia = "Alkalemia",
 	Hypoxemia = "Hypoxemia",
@@ -185,22 +185,12 @@ export class BloodGas {
 			// Do we have a low PaCO2
 			if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) {
 				// We have a respiratory alkalosis
-				const compensated = this.abg.pH!.between(RefRngs.apH!.lower, RefRngs.apH!.upper);
-				if (compensated) {
-					disturbList.push([DisturbType.RespAlk, DisturbType.Compensated]);
-				} else {
-					disturbList.push([DisturbType.RespAlk]);
-				}
+				disturbList.push([DisturbType.RespAlk]);
 			}
 			// Do we have a high PaCO2
 			if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) {
 				// We have a respiratory acidosis
-				const compensated = this.abg.pH!.between(RefRngs.apH!.lower, RefRngs.apH!.upper);
-				if (compensated) {
-					disturbList.push([DisturbType.RespAcid, DisturbType.Compensated]);
-				} else {
-					disturbList.push([DisturbType.RespAcid]);
-				}
+				disturbList.push([DisturbType.RespAcid]);
 			}
 		} else {
 			disturbList.push([DisturbType.Unknown]);

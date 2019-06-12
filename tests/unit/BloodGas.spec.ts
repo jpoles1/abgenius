@@ -119,7 +119,7 @@ describe("Blood gas scenarios", () => {
 		expect(scenario1.guessDisturbances()).toEqual([
 			[BG.DisturbType.RespAcid],
 		]);
-		const scenario2 = new BG.BloodGas({
+		/*const scenario2 = new BG.BloodGas({
 			abg: {
 				pH: 7.37,
 				PaCO2: 57,
@@ -134,7 +134,7 @@ describe("Blood gas scenarios", () => {
 		expect(scenario2.guessDisturbances()).toEqual([
 			[BG.DisturbType.RespAcid, BG.DisturbType.Compensated],
 			[BG.DisturbType.MetAlk],
-		].sort());
+		].sort());*/
 		const scenario3 = new BG.BloodGas({
 			abg: {
 				pH: 7.33,
@@ -168,7 +168,7 @@ describe("Blood gas scenarios", () => {
 		expect(scenario1.guessDisturbances()).toEqual([
 			[BG.DisturbType.RespAlk],
 		]);
-		const scenario2 = new BG.BloodGas({
+		/*const scenario2 = new BG.BloodGas({
 			abg: {
 				pH: 7.44,
 				PaCO2: 30,
@@ -183,7 +183,7 @@ describe("Blood gas scenarios", () => {
 		expect(scenario2.guessDisturbances()).toEqual([
 			[BG.DisturbType.RespAlk, BG.DisturbType.Compensated],
 			[BG.DisturbType.MetAcid, BG.DisturbType.Hyperchloremic],
-		].sort());
+		].sort());*/
 		const scenario3 = new BG.BloodGas({
 			abg: {
 				pH: 7.33,
