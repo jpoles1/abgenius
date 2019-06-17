@@ -1,7 +1,5 @@
 <template>
 	<v-container>
-		<center><h1>ABGenius Quiz</h1></center>
-		<hr>
 		<div>
 			<center><h2>Arterial Blood Gas</h2></center><br>
 			<v-layout text-xs-center wrap justify-center>
@@ -9,7 +7,7 @@
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
 							<v-text-field readonly
-								v-model.number="userBloodGas.abg.pH" 
+								v-model.number="genBloodGas.abg.pH" 
 								type="number" label='Serum pH'
 								outline class="numeric-input" step="0.01"
 								min="6" max="14"
@@ -24,7 +22,7 @@
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
 							<v-text-field readonly
-								v-model.number="userBloodGas.abg.bicarb" 
+								v-model.number="genBloodGas.abg.bicarb" 
 								type="number" label='Serum Bicarb'
 								outline class="numeric-input" step="0.5"
 								min="0"
@@ -39,7 +37,7 @@
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
 							<v-text-field readonly
-								v-model.number="userBloodGas.abg.PaCO2" 
+								v-model.number="genBloodGas.abg.PaCO2" 
 								type="number" label='PaCO2'
 								outline class="numeric-input" step="0.5"
 								min="0"
@@ -57,7 +55,7 @@
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
 							<v-text-field readonly
-								v-model.number="userBloodGas.abg.Na" 
+								v-model.number="genBloodGas.abg.Na" 
 								type="number" label='Serum Sodium'
 								outline class="numeric-input" step="0.5"
 								min="0"
@@ -72,7 +70,7 @@
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
 							<v-text-field readonly
-								v-model.number="userBloodGas.abg.Cl" 
+								v-model.number="genBloodGas.abg.Cl" 
 								type="number" label='Serum Chloride'
 								outline class="numeric-input" step="0.5"
 								min="0"
@@ -134,8 +132,56 @@
 				</v-sheet>
 			</div>
 		</div>
-		<div v-else>
-			
+		<div v-else style="display: flex; justify-content: center; flex-wrap: wrap;">
+			<div>
+				<b style="margin-right: 20px;">Genius Answer:</b>
+				<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex">
+					<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
+						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
+							fa-wind
+						</v-icon>
+						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
+							fa-vial
+						</v-icon>
+					</v-avatar>
+					<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
+						<v-icon small>fas fa-check</v-icon>
+					</v-avatar>
+					<div v-if="disturb[0] == 'Normal'">
+						No Acid Base Disorder
+					</div>
+					<div v-else>
+						{{disturb[1]}} {{disturb[0]}}
+					</div>
+				</v-chip>
+			</div>
+			<br class="flex-break">
+			<div>
+				<b style="margin-right: 20px;">Your Answer:</b>
+				<v-chip v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex">
+					<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
+						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
+							fa-wind
+						</v-icon>
+						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
+							fa-vial
+						</v-icon>
+					</v-avatar>
+					<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
+						<v-icon small>fas fa-check</v-icon>
+					</v-avatar>
+					<div v-if="disturb[0] == 'Normal'">
+						No Acid Base Disorder
+					</div>
+					<div v-else>
+						{{disturb[1]}} {{disturb[0]}}
+					</div>
+				</v-chip>
+			</div>
+			<br class="flex-break">
+			<v-btn color="primary" @click="nextABG">
+				Next ABG
+			</v-btn>
 		</div>
 	</v-container>
 </template>
@@ -151,7 +197,7 @@
 				answerSumitted: false,
 				disturbToAdd: undefined as BG.DisturbType | undefined,
 				refRngs: BG.RefRngs,
-				userBloodGas: new BG.BloodGas({
+				genBloodGas: new BG.BloodGas({
 					abg: {
 						pH: BG.RefRngMidpoint("apH"),
 						bicarb: BG.RefRngMidpoint("aBicarb"),
@@ -181,14 +227,22 @@
 				this.learnerAnswer.splice(disturbIndex, 1);
 			},
 			submitAnswer() {
-
+				this.answerSumitted = true;
+				if (this.learnerAnswer.length === 0) {
+					this.learnerAnswer = [];
+				}
+			},
+			nextABG() {
+				const randomGen = Object.keys(abgGenerators)[Math.floor(Math.random() * Object.keys(abgGenerators).length)];
+				this.answerSumitted = false;
+				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
 			},
 		},
 		computed: {
 			addableDisturb(): BG.DisturbType[] {
 				const primaryDisturb = [BG.DisturbType.MetAcid, BG.DisturbType.MetAlk, BG.DisturbType.RespAcid, BG.DisturbType.RespAlk];
 				return primaryDisturb.filter((disturb) => {
-					if (disturb === BG.DisturbType.MetAcid) {
+					if (disturb === BG.DisturbType.MetAcid && this.learnerAnswer.filter((x) => x[0] === BG.DisturbType.MetAcid).length < 3) {
 						return true;
 					}
 					if ([BG.DisturbType.RespAcid, BG.DisturbType.RespAlk].includes(disturb)) {
@@ -200,14 +254,18 @@
 		},
 		mounted() {
 			this.$nextTick(function() {
-				const randomGen = Object.keys(abgGenerators)[Math.floor(Math.random() * Object.keys(abgGenerators).length)];
-				[this.userBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
+				this.nextABG();
 			});
 		},
 	});
 </script>
 
 <style>
+	.flex-break {
+		width: 100%;
+		content: '';
+		margin: 20px 0;
+	}
 	.answer-disturb-box {
 		min-width: 240px;
 		min-height: 160px;
