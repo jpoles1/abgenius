@@ -127,7 +127,7 @@
 						Ref Range: {{"(" + refRngs.K.lower + " - " + refRngs.K.upper + ")"}}
 					</span>
 				</v-tooltip> -->
-					<v-tooltip top>
+				<v-tooltip top>
 					<template v-slot:activator="{ on }" v-if="userBloodGas.abg.Albumin">
 						<div v-on="on">
 							<v-text-field
@@ -253,10 +253,10 @@
 </template>
 
 <script lang="ts">
-	import * as BG from "./BloodGas";
-	import { abgGenerators, generateRandABG } from "./BloodGasGen";
-	import CalcInfoPanel from "./CalcInfoPanel.vue";
-	import ReferenceList from "./ReferenceList.vue";
+	import * as BG from "@/components/BloodGas";
+	import { abgGenerators, generateRandABG } from "@/components/BloodGasGen";
+	import CalcInfoPanel from "@/components/CalcInfoPanel.vue";
+	import ReferenceList from "@/components/ReferenceList.vue";
 
 	import Vue from "vue";
 	import goTo from "vuetify/lib/components/Vuetify/goTo";

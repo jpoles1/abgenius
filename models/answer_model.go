@@ -7,5 +7,5 @@ type Answer struct {
 	ID        bson.ObjectId `bson:"_id" json:"_id"`
 	LearnerID bson.ObjectId `bson:"lid" json:"lid"`
 	Learner   [][]string    `bson:"learner" json:"learner"`
-	Genus     [][]string    `bson:"genius" json:"genius"`
+	Genius    [][]string    `bson:"genius" json:"genius"`
 }

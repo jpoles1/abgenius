@@ -1,17 +1,8 @@
 <template>
 	<div class="home">
-		<ABGCalc/>
+		<h1>Welcome to ABGenius</h1>
 	</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import ABGCalc from "@/components/ABGCalc.vue"; // @ is an alias to /src
-
-@Component({
-	components: {
-		ABGCalc,
-	},
-})
-export default class Home extends Vue {}
 </script>
