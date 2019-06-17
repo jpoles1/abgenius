@@ -83,6 +83,19 @@ export function generateRandABG(UserpH?: number): [BG.BloodGas, BG.DisturbType[]
 const upperLimitPaCO2 = 75;
 const lowerLimitPaCO2 = 12;
 export const abgGenerators: {[disturb: string]: () => [BG.BloodGas, BG.DisturbType[][]]} = {
+	"Normal": () => {
+		const newGas = new BG.BloodGas({abg: {}});
+		newGas.abg.pH = randFloat(BG.RefRngMidpoint("apH") - 0.02, BG.RefRngMidpoint("apH") + 0.02, 2);
+		newGas.abg.PaCO2 = randFloat(BG.RefRngMidpoint("PaCO2") - 2, BG.RefRngMidpoint("PaCO2") + 2, 0);
+		newGas.abg.bicarb = floatFix(newGas.bicarbExpected(), 0);
+		newGas.abg.Na = randFloat(BG.RefRngs.Na!.lower, BG.RefRngs.Na!.upper, 0);
+		newGas.abg.Cl = randFloat(
+			newGas.abg.Na - (BG.RefRngs.AnionGap!.upper - 1 + newGas.abg.bicarb!),
+			newGas.abg.Na - (BG.RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
+			0,
+		);
+		return [newGas, [[BG.DisturbType.Normal]]];
+	},
 	"Acute Respiratory Acidosis": () => {
 		const newGas = new BG.BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(BG.RefRngs.PaCO2!.upper + 1, upperLimitPaCO2, 0);
