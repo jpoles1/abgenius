@@ -29,6 +29,7 @@ export const RefRngs: { [testName: string]: RefRange | undefined } = {
 	"aLactateCrit": {lower: 0.5, upper: 2},
 	// (Kellum, 2005)
 	"AnionGap": {lower: 4, upper: 12},
+	"DeltaGap": {lower: -6, upper: 6},
 };
 
 // Patient Characteristic Enums
@@ -125,7 +126,7 @@ export class BloodGas {
 		const deltaAnionGap = this.serumAnionGap().gap - RefRngs.AnionGap!.upper;
 		const deltaBicarb = RefRngs.aBicarb!.lower - this.abg.bicarb!;
 		const deltaGap = deltaAnionGap - deltaBicarb;
-		if (Math.abs(deltaGap) > 6) return {disturb: DisturbType.AnionGap, gap: deltaGap};
+		if (Math.abs(deltaGap) > RefRngs.DeltaGap!.upper) return {disturb: DisturbType.AnionGap, gap: deltaGap};
 		return {gap: deltaGap, disturb: DisturbType.Normal};
 	}
 	public wintersFormula(): RefRange {
@@ -164,18 +165,18 @@ export class BloodGas {
 					// We have an anion gap metabolic acidosis
 					disturbList.push([DisturbType.MetAcid, DisturbType.AnionGap]);
 					// Do we have a delta gap?
-					if (this.serumDeltaGap().gap > 6) {
+					if (this.serumDeltaGap().gap > RefRngs.DeltaGap!.upper) {
 						// We have a superimposed metabolic alkalosis
 						// Rise in AG is more than fall in HCO3
 						disturbList.push([DisturbType.MetAlk]);
-					} else if (this.serumDeltaGap().gap < -6) {
+					} else if (this.serumDeltaGap().gap < RefRngs.DeltaGap!.lower) {
 						// We have a superimposed non-gap, hyperchloremic metabolic acidosis
 						// Rise in AG is less than fall in HCO3
 						disturbList.push([DisturbType.MetAcid, DisturbType.Hyperchloremic]);
 					}
 				} else {
 					// We have a non-gap metabolic acidosis
-					disturbList.push([DisturbType.MetAcid, DisturbType.Hyperchloremic]);
+					disturbList.push([DisturbType.MetAcid]);
 				}
 			}
 			if (this.abg.bicarb! > RefRngs.aBicarb!.upper) {
