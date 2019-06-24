@@ -187,6 +187,10 @@
 </template>
 
 <script lang="ts">
+	const flatten = <T extends {}>(arr: T[][]): T[] => {
+		return  [].concat(...arr as any);
+	};
+	
 	import * as BG from "@/components/BloodGas";
 	import { abgGenerators, generateRandABG } from "@/components/BloodGasGen";
 
@@ -246,9 +250,9 @@
 						return true;
 					}
 					if ([BG.DisturbType.RespAcid, BG.DisturbType.RespAlk].includes(disturb)) {
-						return this.learnerAnswer.flat().filter((x) => [BG.DisturbType.RespAcid, BG.DisturbType.RespAlk].includes(x)).length === 0;
+						return flatten(this.learnerAnswer).filter((x) => [BG.DisturbType.RespAcid, BG.DisturbType.RespAlk].includes(x)).length === 0;
 					}
-					return this.learnerAnswer.flat().filter((x) => x === disturb).length === 0;
+					return flatten(this.learnerAnswer).filter((x) => x === disturb).length === 0;
 				});
 			},
 		},

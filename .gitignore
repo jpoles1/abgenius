@@ -2,3 +2,4 @@ vendor
 logs
 .env
 abgenius
+node_modules
