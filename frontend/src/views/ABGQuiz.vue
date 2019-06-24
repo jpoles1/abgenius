@@ -240,6 +240,7 @@
 				const randomGen = Object.keys(abgGenerators)[Math.floor(Math.random() * Object.keys(abgGenerators).length)];
 				this.answerSumitted = false;
 				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
+				this.learnerAnswer = [];
 			},
 		},
 		computed: {
