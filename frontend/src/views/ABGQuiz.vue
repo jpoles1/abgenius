@@ -86,18 +86,30 @@
 		<hr>
 		<div id="answer-container" v-if="!answerSumitted">
 			<center>
-				<h2>Interpret this ABG:</h2>
-				<v-select
-					style="width: 300px; max-width: 100%; text-align: center; text-align-last: center;"
-					:items="addableDisturb"
-					v-model="disturbToAdd"
-				></v-select>
-				<v-btn @click="addDisturb" color="orange">
-					Add Acid-Base Disturbance
-				</v-btn>
-				<v-btn @click="submitAnswer" color="blue">
-					Submit Answer
-				</v-btn>
+				<h2>Interpret this ABG (click to add):</h2>
+				<br>
+				<div>
+					<v-chip v-for="(disturb, disturbIndex) in addableDisturb" :key="disturbIndex" @click="addDisturb(disturb)">
+						<v-avatar v-if='!["Normal", "Unknown"].includes(disturb)'>
+							<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
+								fa-wind
+							</v-icon>
+							<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb)'>
+								fa-vial
+							</v-icon>
+						</v-avatar>
+						<v-avatar class="success" v-if="disturb == 'Normal'">        
+							<v-icon small>fas fa-check</v-icon>
+						</v-avatar>
+						<div v-if="disturb == 'Normal'">
+							No Acid Base Disorder
+						</div>
+						<div v-else>
+							{{disturb}}
+						</div>
+					</v-chip>
+					<br><br>
+				</div>
 			</center>
 			<hr>
 			<div style="display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap;">
@@ -131,6 +143,12 @@
 					</div>
 				</v-sheet>
 			</div>
+			<hr>
+			<center>
+				<v-btn @click="submitAnswer" color="blue">
+					Submit Answer
+				</v-btn>
+			</center>
 		</div>
 		<div v-else style="display: flex; justify-content: center; flex-wrap: wrap;">
 			<div>
@@ -218,12 +236,13 @@
 			};
 		},
 		methods: {
-			addDisturb() {
-				if (this.disturbToAdd === undefined) return;
-				if (this.disturbToAdd === BG.DisturbType.MetAcid) {
-					this.learnerAnswer.push([this.disturbToAdd!, BG.DisturbType.Hyperchloremic]);
+			addDisturb(disturbToAdd: BG.DisturbType | undefined) {
+				disturbToAdd = disturbToAdd || this.disturbToAdd
+				if (disturbToAdd === undefined) return;
+				if (disturbToAdd === BG.DisturbType.MetAcid) {
+					this.learnerAnswer.push([disturbToAdd!, BG.DisturbType.Hyperchloremic]);
 				} else {
-					this.learnerAnswer.push([this.disturbToAdd!]);
+					this.learnerAnswer.push([disturbToAdd!]);
 				}
 				this.disturbToAdd = undefined;
 			},
