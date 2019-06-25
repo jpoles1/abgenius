@@ -155,14 +155,16 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 	},
 	"Anion Gap Metabolic Acidosis": () => {
 		const newGas = new BloodGas({abg: {}});
-		newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, 0);
+		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
+		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, 0);
+		const randDeltaGap =  randFloat(RefRngs.DeltaGap!.lower + 1, RefRngs.DeltaGap!.upper - 1, 0);
+		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
+		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
+		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, 0);
 		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.lower, RefRngs.PaCO2!.upper, 0);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, 0);
-		const randAnionGap = randFloat(RefRngs.AnionGap!.upper, upperLimitAG, 0);
-		const randDeltaGap =  randFloat(RefRngs.DeltaGap!.lower + 1, RefRngs.DeltaGap!.upper - 1, 0);
-		// DeltaGap = DeltaAG - DeltaBicarb
-		// DeltaGap = Na - Cl - Bicarb - AG.upper - Bicarb.lower + Bicarb
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap]]];
