@@ -88,27 +88,22 @@
 			<center>
 				<h2>Interpret this ABG (click to add):</h2>
 				<br>
-				<div>
-					<v-chip v-for="(disturb, disturbIndex) in addableDisturb" :key="disturbIndex" @click="addDisturb(disturb)">
-						<v-avatar v-if='!["Normal", "Unknown"].includes(disturb)'>
-							<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
-								fa-wind
-							</v-icon>
-							<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb)'>
-								fa-vial
-							</v-icon>
-						</v-avatar>
-						<v-avatar class="success" v-if="disturb == 'Normal'">        
-							<v-icon small>fas fa-check</v-icon>
-						</v-avatar>
-						<div v-if="disturb == 'Normal'">
-							No Acid Base Disorder
-						</div>
-						<div v-else>
+				<div v-if="addableDisturb.length > 0">
+					<v-btn round v-for="(disturb, disturbIndex) in addableDisturb" :key="disturbIndex" @click="addDisturb(disturb)">	
+						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
+							fa-wind
+						</v-icon>
+						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb)'>
+							fa-vial
+						</v-icon>
+						<div style="margin: 0 12px;">
 							{{disturb}}
 						</div>
-					</v-chip>
+					</v-btn>
 					<br><br>
+				</div>
+				<div v-else style="margin-bottom: 20px;">
+					<i>No additional disturbances to add.</i>
 				</div>
 			</center>
 			<hr>
@@ -237,7 +232,7 @@
 		},
 		methods: {
 			addDisturb(disturbToAdd: BG.DisturbType | undefined) {
-				disturbToAdd = disturbToAdd || this.disturbToAdd
+				disturbToAdd = disturbToAdd || this.disturbToAdd;
 				if (disturbToAdd === undefined) return;
 				if (disturbToAdd === BG.DisturbType.MetAcid) {
 					this.learnerAnswer.push([disturbToAdd!, BG.DisturbType.Hyperchloremic]);
@@ -252,7 +247,7 @@
 			submitAnswer() {
 				this.answerSumitted = true;
 				if (this.learnerAnswer.length === 0) {
-					this.learnerAnswer = [];
+					this.learnerAnswer = [[BG.DisturbType.Normal]];
 				}
 			},
 			nextABG() {
@@ -292,7 +287,7 @@
 	}
 	.answer-disturb-box {
 		min-width: 240px;
-		min-height: 160px;
+		min-height: 120px;
 		max-width: 33%;
 		padding: 12px 18px;
 		display: flex;
