@@ -126,7 +126,7 @@ export class BloodGas {
 		const deltaAnionGap = this.serumAnionGap().gap - RefRngs.AnionGap!.upper;
 		const deltaBicarb = RefRngs.aBicarb!.lower - this.abg.bicarb!;
 		const deltaGap = deltaAnionGap - deltaBicarb;
-		if (Math.abs(deltaGap) > RefRngs.DeltaGap!.upper) return {disturb: DisturbType.AnionGap, gap: deltaGap};
+		if (Math.abs(deltaGap) > RefRngs.DeltaGap!.upper) return {disturb: DisturbType.DeltaGap, gap: deltaGap};
 		return {gap: deltaGap, disturb: DisturbType.Normal};
 	}
 	public wintersFormula(): RefRange {

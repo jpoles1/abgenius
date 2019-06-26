@@ -84,6 +84,33 @@
 			</v-layout>
 		</div>
 		<hr>
+		<center>
+			<v-btn color="blue-grey darken-3" @click="showGaps=true" v-show="!showGaps">
+				<i>Peak at Gap Calculations</i>
+			</v-btn>
+			<div v-if="showGaps" style="display: flex; justify-content: center;">
+				<v-chip>
+					<v-avatar class="error" v-if="genBloodGas.serumAnionGap().disturb == 'Anion Gap'">        
+						<v-icon>fas fa-arrows-alt-h</v-icon>
+					</v-avatar>
+					<v-avatar class="success" v-if="genBloodGas.serumAnionGap().disturb == 'Normal'">        
+						<v-icon small>fas fa-check</v-icon>
+					</v-avatar>
+					<b>Anion Gap:</b>&nbsp; {{genBloodGas.serumAnionGap().gap.toFixed(1)}}
+				</v-chip>
+				<div style="width: 20px"></div>
+				<v-chip>
+					<v-avatar class="error" v-if="genBloodGas.serumDeltaGap().disturb == 'Delta Gap'">        
+						<v-icon>fas fa-arrows-alt-h</v-icon>
+					</v-avatar>
+					<v-avatar class="success" v-if="genBloodGas.serumDeltaGap().disturb == 'Normal'">        
+						<v-icon small>fas fa-check</v-icon>
+					</v-avatar>
+					<b>Delta Gap:</b>&nbsp; {{genBloodGas.serumDeltaGap().gap.toFixed(1)}}
+				</v-chip>
+			</div>
+		</center>
+		<hr>
 		<div id="answer-container" v-if="!answerSumitted">
 			<center>
 				<h2>Interpret this ABG (click to add):</h2>
@@ -146,8 +173,9 @@
 			</center>
 		</div>
 		<div v-else style="display: flex; justify-content: center; flex-wrap: wrap;">
-			<div>
-				<b style="margin-right: 20px;">Genius Answer:</b>
+			<center>
+				<b>Genius Answer:</b>
+				<br>
 				<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex">
 					<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
@@ -167,10 +195,11 @@
 						{{disturb[1]}} {{disturb[0]}}
 					</div>
 				</v-chip>
-			</div>
+			</center>
 			<br class="flex-break">
-			<div>
-				<b style="margin-right: 20px;">Your Answer:</b>
+			<center>
+				<b>Your Answer:</b>
+				<br>
 				<v-chip v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex">
 					<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
@@ -190,7 +219,7 @@
 						{{disturb[1]}} {{disturb[0]}}
 					</div>
 				</v-chip>
-			</div>
+			</center>
 			<br class="flex-break">
 			<v-btn color="primary" @click="nextABG">
 				Next ABG
@@ -211,6 +240,7 @@
 	export default Vue.extend({
 		data() {
 			return {
+				showGaps: false,
 				answerSumitted: false,
 				disturbToAdd: undefined as BG.DisturbType | undefined,
 				refRngs: BG.RefRngs,
@@ -253,6 +283,7 @@
 			nextABG() {
 				const randomGen = Object.keys(abgGenerators)[Math.floor(Math.random() * Object.keys(abgGenerators).length)];
 				this.answerSumitted = false;
+				this.showGaps = false;
 				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
 				this.learnerAnswer = [];
 			},

@@ -216,7 +216,7 @@
 				<b>Anion Gap:</b>&nbsp; {{results.serumAnionGap.gap.toFixed(1)}}
 			</v-chip>
 			<v-chip v-if="results.serumDeltaGap.disturb != undefined && results.serumAnionGap.disturb == 'Anion Gap'" @click="activateChipInfo('deltaGap')">
-				<v-avatar class="error" v-if="results.serumDeltaGap.disturb == 'Anion Gap'">        
+				<v-avatar class="error" v-if="results.serumDeltaGap.disturb == 'Delta Gap'">        
 					<v-icon>fas fa-arrows-alt-h</v-icon>
 				</v-avatar>
 				<v-avatar class="success" v-if="results.serumDeltaGap.disturb == 'Normal'">        
