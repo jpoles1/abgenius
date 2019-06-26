@@ -178,8 +178,7 @@ export class BloodGas {
 					// We have a non-gap metabolic acidosis
 					disturbList.push([DisturbType.MetAcid]);
 				}
-			}
-			if (this.abg.bicarb! > RefRngs.aBicarb!.upper) {
+			} else if (this.abg.bicarb! > RefRngs.aBicarb!.upper) {
 				// We have a metabolic alkalosis
 				disturbList.push([DisturbType.MetAlk]);
 			}
