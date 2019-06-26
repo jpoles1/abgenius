@@ -86,7 +86,7 @@
 		<hr>
 		<center>
 			<v-btn color="blue-grey darken-3" @click="showGaps=true" v-show="!showGaps">
-				<i>Peak at Gap Calculations</i>
+				<i>Peek at Gap Calculations</i>
 			</v-btn>
 			<div v-if="showGaps" style="display: flex; justify-content: center;">
 				<v-chip>
@@ -198,7 +198,7 @@
 			</center>
 			<br class="flex-break">
 			<center>
-				<b>Your Answer:</b>
+				<b>Your Answer (in {{timeElapsed}} sec):</b>
 				<br>
 				<v-chip v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex">
 					<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
@@ -236,10 +236,21 @@
 	import * as BG from "@/components/BloodGas";
 	import { abgGenerators, generateRandABG } from "@/components/BloodGasGen";
 
+	import BrowserInteractionTime from "browser-interaction-time";
+	const BIT = new BrowserInteractionTime({
+		timeIntervalEllapsedCallbacks: [],
+		absoluteTimeEllapsedCallbacks: [],
+		browserTabInactiveCallbacks: [],
+		browserTabActiveCallbacks: [],
+		idleTimeoutMs: 60 * 1000,
+		checkCallbacksIntervalMs: 250,
+	});
+
 	import Vue from "vue";
 	export default Vue.extend({
 		data() {
 			return {
+				timeElapsed: undefined as number | undefined,
 				showGaps: false,
 				answerSumitted: false,
 				disturbToAdd: undefined as BG.DisturbType | undefined,
@@ -276,9 +287,17 @@
 			},
 			submitAnswer() {
 				this.answerSumitted = true;
+				BIT.stopTimer();
+				this.timeElapsed = Math.round(BIT.getTimeInMilliseconds()/1000);
 				if (this.learnerAnswer.length === 0) {
 					this.learnerAnswer = [[BG.DisturbType.Normal]];
 				}
+				const answerData = {
+					timeElapsed: this.timeElapsed,
+					learnerAnswer: this.learnerAnswer,
+					geniusAnswer: this.geniusAnswer,
+					peekedAtGaps: this.showGaps,
+				};
 			},
 			nextABG() {
 				const randomGen = Object.keys(abgGenerators)[Math.floor(Math.random() * Object.keys(abgGenerators).length)];
@@ -286,6 +305,8 @@
 				this.showGaps = false;
 				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
 				this.learnerAnswer = [];
+				BIT.reset();
+				BIT.startTimer();
 			},
 		},
 		computed: {
