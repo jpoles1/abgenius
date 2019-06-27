@@ -288,14 +288,14 @@
 			submitAnswer() {
 				this.answerSumitted = true;
 				BIT.stopTimer();
-				this.timeElapsed = Math.round(BIT.getTimeInMilliseconds()/1000);
+				this.timeElapsed = Math.round(BIT.getTimeInMilliseconds() / 1000);
 				if (this.learnerAnswer.length === 0) {
 					this.learnerAnswer = [[BG.DisturbType.Normal]];
 				}
 				const answerData = {
+					learner: this.learnerAnswer,
+					genius: this.geniusAnswer,
 					timeElapsed: this.timeElapsed,
-					learnerAnswer: this.learnerAnswer,
-					geniusAnswer: this.geniusAnswer,
 					peekedAtGaps: this.showGaps,
 				};
 			},
