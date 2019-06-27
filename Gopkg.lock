@@ -2,131 +2,168 @@
 
 
 [[projects]]
+  digest = "1:80004fcc5cf64e591486b3e11b406f1e0d17bf85d475d64203c8494f5da4fcd1"
   name = "cloud.google.com/go"
   packages = ["compute/metadata"]
+  pruneopts = "UT"
   revision = "8c41231e01b2085512d98153bcffb847ff9b4b9f"
   version = "v0.38.0"
 
 [[projects]]
+  digest = "1:fed1f537c2f1269fe475a8556c393fe466641682d73ef8fd0491cd3aa1e47bad"
   name = "github.com/certifi/gocertifi"
   packages = ["."]
+  pruneopts = "UT"
   revision = "deb3ae2ef2610fde3330947281941c562861188b"
   version = "2018.01.18"
 
 [[projects]]
+  digest = "1:f8c5bf3abb8e3bcdb9521173cdd4e1d4b3ba7470e615457a803f90fd7a24b3fe"
   name = "github.com/danilopolani/gocialite"
   packages = [
     ".",
     "drivers",
-    "structs"
+    "structs",
   ]
+  pruneopts = "UT"
   revision = "545f28e0c6b68c425e049bd22a410050e216367c"
   version = "v1.0.1"
 
 [[projects]]
+  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
+  pruneopts = "UT"
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
   version = "v3.2.0"
 
 [[projects]]
+  digest = "1:865079840386857c809b72ce300be7580cb50d3d3129ce11bf9aa6ca2bc1934a"
   name = "github.com/fatih/color"
   packages = ["."]
+  pruneopts = "UT"
   revision = "5b77d2a35fb0ede96d138fc9a99f5c9b6aef11b4"
   version = "v1.7.0"
 
 [[projects]]
+  digest = "1:d18f6f088d7d8365df47f49dfa24b6ff6701a941118ffda30c589d1bd954074b"
   name = "github.com/getsentry/raven-go"
   packages = ["."]
+  pruneopts = "UT"
   revision = "f04e7487e9a6b9d9837d52743fb5f40576c56411"
   version = "v0.2.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:78102ee4d536347316bc42e818340cc50902e45dbd7fdd524c5a1fc0cb07b588"
   name = "github.com/globalsign/mgo"
   packages = [
     ".",
     "bson",
     "internal/json",
     "internal/sasl",
-    "internal/scram"
+    "internal/scram",
   ]
+  pruneopts = "UT"
   revision = "eeefdecb41b842af6dc652aaea4026e8403e62df"
 
 [[projects]]
+  digest = "1:58c033da727ebd5a6769209e479cac9a6e4dab53c879631af3d8161423099d57"
   name = "github.com/go-chi/chi"
   packages = [
     ".",
-    "middleware"
+    "middleware",
   ]
+  pruneopts = "UT"
   revision = "da24bba8dcd4021cafac38724bf10dccc97c3e36"
   version = "v4.0.2"
 
 [[projects]]
+  digest = "1:f0e250669d871593014396f654700bb5db49dfb17f9fac9764256c6342ccd74e"
   name = "github.com/go-chi/docgen"
   packages = ["."]
+  pruneopts = "UT"
   revision = "c94a1e40c06f53a447a809bad19c5f3c4047acc5"
   version = "v1.0.5"
 
 [[projects]]
+  digest = "1:e3382cdfb292def1e15dfe7863d6015e35eb85c979ed1ca887613d8981af75d1"
   name = "github.com/go-chi/jwtauth"
   packages = ["."]
+  pruneopts = "UT"
   revision = "53a0a4877a0ead48e149be6b4ec9dd1b3c075eba"
   version = "v3.3.0"
 
 [[projects]]
+  digest = "1:318f1c959a8a740366fce4b1e1eb2fd914036b4af58fbd0a003349b305f118ad"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
+  pruneopts = "UT"
   revision = "b5d812f8a3706043e23a9cd5babf2e5423744d30"
   version = "v1.3.1"
 
 [[projects]]
+  digest = "1:7b5c6e2eeaa9ae5907c391a91c132abfd5c9e8a784a341b5625e750c67e6825d"
   name = "github.com/gorilla/websocket"
   packages = ["."]
+  pruneopts = "UT"
   revision = "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
   version = "v1.4.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:b0b48b18b2af377442489f964137f1e6fbceb203c271392c73181b87e0eedfe7"
   name = "github.com/matoous/go-nanoid"
   packages = ["."]
+  pruneopts = "UT"
   revision = "9a3b39ac02969dd92169f440d3b69d8e4d7b1725"
 
 [[projects]]
+  digest = "1:c658e84ad3916da105a761660dcaeb01e63416c8ec7bc62256a9b411a05fcd67"
   name = "github.com/mattn/go-colorable"
   packages = ["."]
+  pruneopts = "UT"
   revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
   version = "v0.0.9"
 
 [[projects]]
+  digest = "1:e150b5fafbd7607e2d638e4e5cf43aa4100124e5593385147b0a74e2733d8b0d"
   name = "github.com/mattn/go-isatty"
   packages = ["."]
+  pruneopts = "UT"
   revision = "c2a7a6ca930a4cd0bc33a3f298eb71960732a3a7"
   version = "v0.0.7"
 
 [[projects]]
+  digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
   version = "v0.8.1"
 
 [[projects]]
+  digest = "1:bb0d999fbfbc40f7bf42a24eca5e6894fa24a9efdad13d6908bea34bc3309722"
   name = "github.com/subosito/gotenv"
   packages = ["."]
+  pruneopts = "UT"
   revision = "69b5b6104433beb2cb9c3ce00bdadf3c7c2d3f34"
   version = "v1.1.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:f8b491a7c25030a895a0e579742d07136e6958e77ef2d46e769db8eec4e58fcd"
   name = "golang.org/x/net"
   packages = [
     "context",
-    "context/ctxhttp"
+    "context/ctxhttp",
   ]
+  pruneopts = "UT"
   revision = "f4e77d36d62c17c2336347bb2670ddbd02d092b7"
 
 [[projects]]
   branch = "master"
+  digest = "1:cedc7d470876bcf6b1d3a441f9fa87986305dd24ed62390de3392c6670e067b6"
   name = "golang.org/x/oauth2"
   packages = [
     ".",
@@ -140,17 +177,21 @@
     "jws",
     "jwt",
     "linkedin",
-    "slack"
+    "slack",
   ]
+  pruneopts = "UT"
   revision = "9f3314589c9a9136388751d9adae6b0ed400978a"
 
 [[projects]]
   branch = "master"
+  digest = "1:1ddfda089b8a15d92242412aabc1107b8c7a87c609c09c5b441c81dbcca0ab79"
   name = "golang.org/x/sys"
   packages = ["unix"]
+  pruneopts = "UT"
   revision = "a43fa875dd822b81eb6d2ad538bc1f4caba169bd"
 
 [[projects]]
+  digest = "1:04f2ff15fc59e1ddaf9900ad0e19e5b19586b31f9dafd4d592b617642b239d8f"
   name = "google.golang.org/appengine"
   packages = [
     ".",
@@ -162,26 +203,44 @@
     "internal/modules",
     "internal/remote_api",
     "internal/urlfetch",
-    "urlfetch"
+    "urlfetch",
   ]
+  pruneopts = "UT"
   revision = "54a98f90d1c46b7731eb8fb305d2a321c30ef610"
   version = "v1.5.0"
 
 [[projects]]
+  digest = "1:0a7a9cf66246acda7703a89c6ccbd68aefdba2eea775e7368c92879c24f1c606"
   name = "gopkg.in/olahol/melody.v1"
   packages = ["."]
+  pruneopts = "UT"
   revision = "d521390733761fe1db13de575c253afd5c743085"
   version = "v1"
 
 [[projects]]
+  digest = "1:1919e36a53e2297eca9d3516ca358dec92257fe0de3361351e09400c91d65d5e"
   name = "gopkg.in/oleiade/reflections.v1"
   packages = ["."]
+  pruneopts = "UT"
   revision = "2b6ec3da648e3e834dc41bad8d9ed7f2dc6a9496"
   version = "v1.0.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "efcb730ebdc913107085187b62f9b6ca48754ad1166e4ae3fceb02fe0cc127a1"
+  input-imports = [
+    "github.com/danilopolani/gocialite",
+    "github.com/fatih/color",
+    "github.com/getsentry/raven-go",
+    "github.com/globalsign/mgo",
+    "github.com/globalsign/mgo/bson",
+    "github.com/go-chi/chi",
+    "github.com/go-chi/chi/middleware",
+    "github.com/go-chi/docgen",
+    "github.com/go-chi/jwtauth",
+    "github.com/matoous/go-nanoid",
+    "github.com/subosito/gotenv",
+    "gopkg.in/olahol/melody.v1",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
