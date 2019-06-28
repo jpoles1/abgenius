@@ -1,5 +1,8 @@
 <template>
 	<v-container>
+		<headful
+			title="ABGenius - Calculator"
+		/>
 		<v-form v-model="validABG">
 			<div v-if="showDemographics">
 				<center><h2>Patient Demographics</h2></center><br>

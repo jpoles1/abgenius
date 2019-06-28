@@ -1,6 +1,10 @@
 <template>
 	<v-container>
+		<headful
+			title="ABGenius - Trainer"
+		/>
 		<div>
+			{{$store.state.jwtClaims}}
 			<center><h2>Arterial Blood Gas</h2></center><br>
 			<v-layout text-xs-center wrap justify-center>
 				<v-tooltip top>
@@ -232,7 +236,7 @@
 	const flatten = <T extends {}>(arr: T[][]): T[] => {
 		return  [].concat(...arr as any);
 	};
-	
+
 	import * as BG from "@/components/BloodGas";
 	import { abgGenerators, generateRandABG } from "@/components/BloodGasGen";
 

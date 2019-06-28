@@ -5,6 +5,9 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 
+import headful from "vue-headful";
+Vue.component("headful", headful);
+
 Vue.config.productionTip = false;
 
 new Vue({

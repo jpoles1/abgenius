@@ -1,39 +1,41 @@
 <template>
 	<v-app dark>
-		<v-toolbar app>
-			<v-toolbar-title class="headline">
-				<span>ABG</span>
-				<span class="font-weight-light">enius</span>
-			</v-toolbar-title>
-			<v-spacer></v-spacer>
-			<v-btn
-				flat
-				href="https://github.com/jpoles1/abgenius"
-				target="_blank"
-			>
-				<span class="mr-2">FAQ</span>
-				<v-icon>fas fa-question-circle</v-icon>
-			</v-btn>
-			<v-btn
-				flat
-				href="/login"
-				target="_blank"
-			>
-				<span class="mr-2">Login</span>
-				<v-icon>fas fa-key</v-icon>
-			</v-btn>
-		</v-toolbar>
-
+		<Header/>
 		<v-content>
 			<router-view></router-view>
 		</v-content>
 	</v-app>
 </template>
 
-<script>
-
-export default {
-	name: "App",
-	components: {},
-};
+<script lang="ts">
+	import * as Sentry from "@sentry/browser";
+	const productionMode = window.location.host === "abg.jpoles1.com";
+	const prodDSN = "https://9a2fdf7aafe74d0ab96d31291a4e80e6@sentry.jpoles1.com/10";
+	const devDSN = "https://9a2fdf7aafe74d0ab96d31291a4e80e6@sentry.jpoles1.com/10";
+	Sentry.init({
+		dsn: productionMode ? prodDSN : devDSN,
+		environment: productionMode ? "prod" : "dev",
+	});
+	import Header from "@/components/Header.vue";
+	import Vue from "vue";
+	export default Vue.extend({
+		name: "App",
+		components: {
+			Header,
+		},
+		mounted() {
+			if (window.location.host === "127.0.0.1:8080") {
+				this.$store.commit("setLocalAPI");
+			}
+			if (this.$store.state.jwtClaims.email) {
+				Sentry.configureScope((scope) => {
+					scope.setUser({
+						id: this.$store.state.jwtClaims.email,
+						username: this.$store.state.jwtClaims.pid,
+						email: this.$store.state.jwtClaims.email,
+					});
+				});
+			}
+		},
+	});
 </script>

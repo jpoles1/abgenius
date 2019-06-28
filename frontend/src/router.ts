@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
 import Authorize from "./views/Authorize.vue";
+import Logout from "./views/Logout.vue";
 import ABGCalc from "./views/ABGCalc.vue";
 import ABGQuiz from "./views/ABGQuiz.vue";
 
@@ -30,6 +31,11 @@ export default new Router({
 			path: "/auth/:provider",
 			component: Authorize,
 			props: true,
+		},
+		{
+			path: "/logout",
+			name: "logout",
+			component: Logout,
 		},
 		{
 			path: "/about",
