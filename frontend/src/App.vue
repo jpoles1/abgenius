@@ -14,6 +14,14 @@
 				<span class="mr-2">FAQ</span>
 				<v-icon>fas fa-question-circle</v-icon>
 			</v-btn>
+			<v-btn
+				flat
+				href="/login"
+				target="_blank"
+			>
+				<span class="mr-2">Login</span>
+				<v-icon>fas fa-key</v-icon>
+			</v-btn>
 		</v-toolbar>
 
 		<v-content>

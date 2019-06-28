@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Login from "./views/Login.vue";
+import Authorize from "./views/Authorize.vue";
 import ABGCalc from "./views/ABGCalc.vue";
 import ABGQuiz from "./views/ABGQuiz.vue";
 
@@ -18,6 +20,16 @@ export default new Router({
 			path: "/quiz",
 			name: "quiz",
 			component: ABGQuiz,
+		},
+		{
+			path: "/login",
+			name: "login",
+			component: Login,
+		},
+		{
+			path: "/auth/:provider",
+			component: Authorize,
+			props: true,
 		},
 		{
 			path: "/about",

@@ -13,16 +13,22 @@
     "test:watch": "vue-cli-service test:unit --watch"
   },
   "dependencies": {
+    "@sentry/browser": "^5.4.3",
     "@types/d3": "^5.7.2",
+    "@types/jwt-decode": "^2.2.1",
     "browser-interaction-time": "^2.0.2",
     "core-js": "^2.6.5",
     "d3": "^5.9.2",
+    "jwt-decode": "^2.2.0",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
+    "vue-headful": "^2.0.1",
     "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.3",
-    "vuetify": "^1.5.5"
+    "vuetify": "^1.5.5",
+    "vuex": "^3.1.1",
+    "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
     "@types/jest": "^23.1.4",
