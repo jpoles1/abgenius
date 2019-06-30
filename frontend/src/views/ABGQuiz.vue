@@ -335,11 +335,6 @@
 </script>
 
 <style>
-	.flex-break {
-		width: 100%;
-		content: '';
-		margin: 20px 0;
-	}
 	.answer-disturb-box {
 		min-width: 240px;
 		min-height: 120px;

@@ -6,7 +6,7 @@
 		<center>
 			<v-sheet class="login-box" elevation=4 style="margin-top: 160px;">
 				<h2>Logging out...</h2>
-				<br><br>
+				<br class="flex-break">
 				<v-progress-circular
 				:size="50"
 				color="primary"
@@ -39,3 +39,18 @@
 		},
 	});
 </script>
+
+<style scoped>
+    .login-box {
+        min-width: 240px;
+		min-height: 120px;
+		max-width: 33%;
+		padding: 22px 18px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin: 12px;
+		border-radius: 5px;
+    }
+</style>

@@ -42,3 +42,11 @@
 		},
 	});
 </script>
+
+<style>
+	.flex-break {
+		width: 100%;
+		content: '';
+		margin: 20px 0;
+	}
+</style>
