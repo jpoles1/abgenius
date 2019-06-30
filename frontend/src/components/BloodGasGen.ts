@@ -83,8 +83,8 @@ export function generateRandABG(UserpH?: number): [BloodGas, DisturbType[][]] {
 
 const upperLimitPaCO2 = 75;
 const lowerLimitPaCO2 = 12;
-const upperLimitBicarb = 55;
-const lowerLimitBicarb = 16;
+const upperLimitBicarb = 54;
+const lowerLimitBicarb = 12;
 const upperLimitAG = 22;
 const upperLimitDG = 18;
 
@@ -141,6 +141,21 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 		);
 		return [newGas, [[DisturbType.MetAlk]]];
 	},
+	"Compensated Metabolic Alkalosis": () => {
+		const newGas = new BloodGas({abg: {}});
+		newGas.abg.bicarb = randFloat(RefRngs.aBicarb!.upper + 8, upperLimitBicarb, 0);
+		// from "Interpretation of Arterial Blood Gases." Pocket ICU Management
+		const formulaMid = (0.7 * newGas.abg.bicarb!) + 20;
+		newGas.abg.PaCO2 = randFloat(formulaMid + 1, formulaMid + 2, 0);
+		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
+		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, 0);
+		newGas.abg.Cl = randFloat(
+			newGas.abg.Na - (RefRngs.AnionGap!.upper - 1 + newGas.abg.bicarb!),
+			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
+			0,
+		);
+		return [newGas, [[DisturbType.MetAlk], [DisturbType.RespAcid]]];
+	},
 	"Hyperchloremic Metabolic Acidosis": () => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, 0);
@@ -153,6 +168,20 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 			0,
 		);
 		return [newGas, [[DisturbType.MetAcid]]];
+	},
+	"Compensated Hyperchloremic Metabolic Acidosis": () => {
+		const newGas = new BloodGas({abg: {}});
+		newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 6, 0);
+		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+		newGas.abg.PaCO2 = randFloat(wintersFormulaMid - 2, wintersFormulaMid, 0);
+		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
+		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, 0);
+		newGas.abg.Cl = randFloat(
+			newGas.abg.Na - (RefRngs.AnionGap!.upper - 1 + newGas.abg.bicarb!),
+			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
+			0,
+		);
+		return [newGas, [[DisturbType.MetAcid], [DisturbType.RespAlk]]];
 	},
 	"Anion Gap Metabolic Acidosis": () => {
 		const newGas = new BloodGas({abg: {}});

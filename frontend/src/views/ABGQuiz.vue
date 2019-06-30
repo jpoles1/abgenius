@@ -4,7 +4,6 @@
 			title="ABGenius - Trainer"
 		/>
 		<div>
-			{{$store.state.jwtClaims}}
 			<center><h2>Arterial Blood Gas</h2></center><br>
 			<v-layout text-xs-center wrap justify-center>
 				<v-tooltip top>

@@ -237,8 +237,8 @@
 					<div>Auto-Generate ABG</div>
 				</template>
 				<v-card style="padding: 20px; box-shadow: 0px 0px 5px #202020 inset !important;">
-					<div style="margin: auto; width: 260px;">
-						<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 250px;"/>
+					<center>
+						<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 380px; max-width: 100%;"/>
 						<br>
 						<v-btn color="primary" @click="randomizeABG">
 							Randomize
@@ -246,7 +246,7 @@
 						<v-btn color="primary" @click="generateABG">
 							Generate
 						</v-btn>
-					</div>
+					</center>
 				</v-card>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
