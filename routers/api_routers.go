@@ -20,6 +20,7 @@ func APIRouter(r chi.Router, apiHandler APIHandler) chi.Router {
 			//r.Use(apiHandler.TOSWall)
 			r.Route("/answer/", func(r chi.Router) {
 				r.Post("/submit", apiHandler.PostSubmitAnswer)
+				r.Get("/list", apiHandler.GetUserAnswers)
 			})
 		})
 	})

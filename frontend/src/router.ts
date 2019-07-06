@@ -5,6 +5,7 @@ import Authorize from "./views/Authorize.vue";
 import Logout from "./views/Logout.vue";
 import ABGCalc from "./views/ABGCalc.vue";
 import ABGQuiz from "./views/ABGQuiz.vue";
+import QuizDash from "./views/QuizDash.vue";
 import TOS from "./views/TOS.vue";
 
 Vue.use(Router);
@@ -22,6 +23,11 @@ export default new Router({
 			path: "/quiz",
 			name: "quiz",
 			component: ABGQuiz,
+		},
+		{
+			path: "/dash",
+			name: "dash",
+			component: QuizDash,
 		},
 		{
 			path: "/login",

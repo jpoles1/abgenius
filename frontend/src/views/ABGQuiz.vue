@@ -238,6 +238,7 @@
 
 	import * as BG from "@/components/BloodGas";
 	import { abgGenerators, generateRandABG } from "@/components/BloodGasGen";
+	import * as jajax from "@/jajax";
 
 	import BrowserInteractionTime from "browser-interaction-time";
 	const BIT = new BrowserInteractionTime({
@@ -301,6 +302,10 @@
 					timeElapsed: this.timeElapsed,
 					peekedAtGaps: this.showGaps,
 				};
+				const url = this.$store.state.api_url + "/api/answer/submit";
+				jajax.postJSON(url, answerData, this.$store.state.jwtToken).then((data: any) => {
+					console.log(data);
+				});
 			},
 			nextABG() {
 				const randomGen = Object.keys(abgGenerators)[Math.floor(Math.random() * Object.keys(abgGenerators).length)];

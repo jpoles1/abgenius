@@ -29,3 +29,16 @@ func (h APIHandler) PostSubmitAnswer(w http.ResponseWriter, r *http.Request) {
 		"answerID": answerData.ID,
 	})
 }
+
+//GetUserAnswers handles a GET request to fetch a list of their responses
+func (h APIHandler) GetUserAnswers(w http.ResponseWriter, r *http.Request) {
+	_, claims, _ := jwtauth.FromContext(r.Context())
+	answerList, ce := h.Controller.FindAnswersByQuery(bson.M{
+		"lid": bson.ObjectIdHex(claims["id"].(string)),
+	});
+	if ce.HasErrors() {
+		handleControllerErrors(w, 500, "Cannot fetch answer list", ce)
+		return
+	}
+	sendResponseJSON(w, answerList)
+}
