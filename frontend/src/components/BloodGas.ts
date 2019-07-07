@@ -77,6 +77,17 @@ export interface ABGResults {
 	Albumin?: number;
 	Lactate?: number;
 }
+
+// ABGAnswer stores information regarding a user's interpretation of a given ABG.
+export interface ABGAnswer {
+	abg: BloodGas;
+	learner: DisturbType[][];
+	genius: DisturbType[][];
+	timeElapsed: number;
+	peekedAtGaps: boolean;
+	grade: number;
+}
+
 // BloodGas stores the information regarding a patient and their ABG values
 export class BloodGas {
 	public abg: ABGResults = {};

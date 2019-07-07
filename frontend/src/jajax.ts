@@ -41,7 +41,7 @@ export function jsonRequestPromise(url: string, method: string, payload: object 
 					resolve(respJson);
 				} else {
 					// xhr failed
-					throw Object({ "respCode": xhr.status, "msg": xhr.responseText });
+					reject(Object({ "respCode": xhr.status, "msg": xhr.responseText }));
 				}
 			}
 		};

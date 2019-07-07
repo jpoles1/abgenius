@@ -177,6 +177,12 @@
 		</div>
 		<div v-else style="display: flex; justify-content: center; flex-wrap: wrap;">
 			<center>
+				<v-sheet :color="percToColor(gradeAnswer)" style="padding: 20px 26px; font-weight: bold; font-size: 110%;" elevation=4>
+					Score: {{gradeAnswer}}%
+				</v-sheet>
+			</center>
+			<br class="flex-break" style="margin: 10px;">
+			<center>
 				<b>Genius Answer:</b>
 				<br>
 				<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex">
@@ -299,12 +305,15 @@
 				const answerData = {
 					learner: this.learnerAnswer,
 					genius: this.geniusAnswer,
+					grade: this.gradeAnswer,
 					timeElapsed: this.timeElapsed,
 					peekedAtGaps: this.showGaps,
-				};
+				} as BG.ABGAnswer;
 				const url = this.$store.state.api_url + "/api/answer/submit";
 				jajax.postJSON(url, answerData, this.$store.state.jwtToken).then((data: any) => {
-					console.log(data);
+					this.$toast("Progress saved!");
+				}).catch((err) => {
+					this.$toast(`Failed to save response (Err Code: ${err.respCode})`, {color: "#d98303"});
 				});
 			},
 			nextABG() {
@@ -315,6 +324,20 @@
 				this.learnerAnswer = [];
 				BIT.reset();
 				BIT.startTimer();
+			},
+			percToColor(perc: number) {
+				let r = 0;
+				let g = 0;
+				const b = 100;
+				if (perc < 50) {
+					r = 255;
+					g = Math.round(5.1 * perc);
+				} else {
+					g = 255;
+					r = Math.round(510 - 5.10 * perc);
+				}
+				const h = r * 0x10000 + g * 0x100 + b * 0x1;
+				return "#" + ("000000" + h.toString(16)).slice(-6);
 			},
 		},
 		computed: {
@@ -329,6 +352,20 @@
 					}
 					return flatten(this.learnerAnswer).filter((x) => x === disturb).length === 0;
 				});
+			},
+			gradeAnswer(): number {
+				const learnerLeftovers = this.learnerAnswer.map((answer: BG.DisturbType[]) => JSON.stringify(answer));
+				const geniusLeftovers =  this.geniusAnswer.map((answer: BG.DisturbType[]) => JSON.stringify(answer))
+				.filter((disturbGroup: any) => {
+					const learnerIndex = learnerLeftovers.indexOf(disturbGroup);
+					if (learnerIndex === -1) return true;
+					learnerLeftovers.splice(learnerIndex, 1);
+					return false;
+				});
+				return Math.max(
+					100 * (this.geniusAnswer.length - (learnerLeftovers.length + geniusLeftovers.length)) / this.geniusAnswer.length,
+					0,
+				);
 			},
 		},
 		mounted() {

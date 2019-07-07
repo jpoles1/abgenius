@@ -10,4 +10,5 @@ type Answer struct {
 	Genius       [][]string    `bson:"genius" json:"genius"`
 	TimeElapsed  int           `bson:"timeElapsed" json:"timeElapsed"`
 	PeekedAtGaps bool          `bson:"peekedAtGaps" json:"peekedAtGaps"`
+	Grade        int           `bson:"grade" json:"grade"`
 }

@@ -18,7 +18,8 @@
     "@types/jwt-decode": "^2.2.1",
     "browser-interaction-time": "^2.0.2",
     "core-js": "^2.6.5",
-    "d3": "^5.9.2",
+    "d3": "^5.9.7",
+    "d3-tip": "^0.9.1",
     "jwt-decode": "^2.2.0",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",
@@ -27,6 +28,7 @@
     "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.3",
     "vuetify": "^1.5.5",
+    "vuetify-toast-snackbar": "^0.3.1",
     "vuex": "^3.1.1",
     "vuex-persistedstate": "^2.5.4"
   },
