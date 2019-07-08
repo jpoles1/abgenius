@@ -14,7 +14,7 @@
 		require("d3-shape"),
 		require("d3-array"),
 	);
-
+	d3.tip = require("d3-tip").default;
 	import Vue from "vue";
 	export default Vue.extend({
 		props: {
@@ -25,11 +25,11 @@
 				type: Number,
 				default: 10,
 			},
-			plotWidth: {
+			width: {
 				type: Number,
 				default: 380,
 			},
-			plotHeight: {
+			height: {
 				type: Number,
 				default: 220,
 			},
@@ -65,13 +65,15 @@
 				svg.selectAll("*").remove();
 				if (svg === undefined) return;
 				const margin = {
-								top: 20,
-								right: 30,
-								bottom: 60,
-								left: 45,
-							};
-				const width = this.plotWidth;
-				const height = this.plotHeight;
+					top: 40,
+					right: 30,
+					bottom: 60,
+					left: 45,
+				};
+				const width = this.width;
+				const plotWidth = width - margin.left - margin.right;
+				const height = this.height;
+				const plotHeight = height - margin.top - margin.bottom;
 				svg.attr("width", width).attr("height", height);
 				const xScale = d3.scaleLinear()
 				.domain([0.5, plotData.length + 5])
@@ -79,42 +81,44 @@
 				const yScale = d3.scaleLinear()
 				.domain([0, 100])
 				.range([height - margin.bottom, margin.top]);
-				/*const tooltip = d3.tip().attr('class', 'd3-tip').html(function(d: number) {
-					return "<center>Rolling Avg. Accuracy:<br>"+d+"</center>";
-				}).direction('s').offset([-(height-margin.top-15), -(width-margin.left)/4]);*/
+				// Tooltips
+				const tooltip = d3.tip().attr("class", "d3-tip").html((d: number) => {
+					return "<center>Rolling Avg. Accuracy:<br>" + d + "%</center>";
+				}).direction("s").offset([-(height - margin.top - margin.bottom), -(width - margin.left - 40) / 4]);
 				const plotarea = svg.append("g")
-					.attr("width", width - margin.left - margin.right)
-					.attr("height", height - margin.top - margin.bottom);
+					.attr("class", "plotarea")
+					.attr("width", plotWidth)
+					.attr("height", plotHeight)
+					.attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 				plotarea.append("rect")
-					.attr("width", width - margin.left - margin.right)
-					.attr("height", height - margin.top - margin.bottom)
-					.attr("transform", "translate(" + margin.left + ", " + margin.top * 2 + ")")
+					.attr("width", plotWidth)
+					.attr("height", plotHeight)
 					.attr("fill", "#767da9");
 				const xAxis = d3.axisBottom().scale(xScale);
 				const yAxis = d3.axisLeft().scale(yScale);
-				plotarea.append("g")
+				svg.append("g")
 					.attr("class", "x axis")
-					.attr("transform", "translate(0, " + (height - margin.top * 2) + ")")
+					.attr("transform", "translate(0, " + (height - margin.bottom) + ")")
 					.call(xAxis);
-				plotarea.append("g")
+				svg.append("g")
 					.attr("class", "y axis")
-					.attr("transform", "translate(" + margin.left + ", " + margin.top + ")")
+					.attr("transform", "translate(" + margin.left + ", 0)")
 					.call(yAxis);
 				// Plot Title
-				plotarea.append("text").text("Learning Curve")
+				svg.append("text").text("Learning Curve")
 					.attr("x", width / 2)
-					.attr("y", margin.top + 10)
+					.attr("y", margin.top - 10)
 					.style("text-anchor", "middle").attr("fill", "white")
 					.style("font-weight", "bold").style("font-size", "110%");
 				// Axis labels
 				svg.append("text").text("Case Window #")
 					.attr("x", width / 2)
-					.attr("y", height)
+					.attr("y", height - margin.bottom + 36)
 					.style("text-anchor", "middle").attr("fill", "white")
 					.style("font-weight", "bold").style("font-size", "100%");
 				svg.append("text").text("% Accuracy")
 					.attr("x", 10)
-					.attr("y", height / 2)
+					.attr("y", ((height - margin.bottom - margin.top) / 2) + margin.top)
 					.style("text-anchor", "middle").attr("fill", "white")
 					.style("font-weight", "bold").style("font-size", "100%")
 					.attr("transform", function(this: any, d: any) {
@@ -125,7 +129,7 @@
 				const learningCurve = d3.line()
 					.x((d: number, i: number) => xScale(i + 1))
 					.y((d: number) => yScale(d));
-				plotarea.append("path")
+				svg.append("path")
 					.datum(plotData)
 					.attr("class", "d3line bold").style("stroke", "#57068C")
 					.attr("fill", "none")
@@ -139,36 +143,35 @@
 							.attr("d", line);
 					}
 				}*/
-				plotarea.selectAll("circle").data(plotData).enter().append("circle")
+				svg.selectAll("circle").data(plotData).enter().append("circle")
 					.attr("cx", (d: number, i: number) => xScale(i + 1))
 					.attr("cy", (d: number) => yScale(d))
-					.attr("r", 5)
+					.attr("r", 4)
 					.style("fill", "#57068C")
 					.attr("val", (d: number) => d);
-				/*const vertLine = plotarea.append("line")
-					.attr({'x1': 0, 'y1': 0, 'x2': 0,'y2': height})
-					.attr("class", "d3line")*/
-				/*let lastVal = undefined as string | undefined;
-				var getPlotVal = function(){
-					var xpos = Math.round(xScale.invert(d3.mouse(this)[0]));
-					var val = plotData[xpos-1] ? plotData[xpos-1].toFixed(2) : undefined;
-					if(val){
-						vertLine.attr("transform", "translate("+xScale(xpos)+", 0)").style("stroke", "red")
-						tooltip.show(val)
-						//$("#infoarea").html("<h3 style='margin: auto'>Grade for Window #"+xpos+" = "+val+"<br><br><i>(Window size="+WINDOW_SIZE+")</i></h3>")
-					}
-					else{
-						tooltip.hide(lastVal)
+				const vertLine = svg.append("line")
+					.attr("x1", 0).attr("y1", margin.top)
+					.attr("x2", 0).attr("y2", height - margin.bottom);
+				let lastVal = undefined as string | undefined;
+				const getPlotVal = function(this: any) {
+					const xpos = Math.round(xScale.invert(d3.mouse(this)[0] + margin.left));
+					const val = plotData[xpos - 1] !== undefined ? plotData[xpos - 1].toFixed(2) : undefined;
+					if (val !== undefined) {
+						vertLine.attr("transform", "translate(" + xScale(xpos) + ", 0)")
+						.style("stroke", "#3d4057").style("stroke-width", "2px");
+						tooltip.show(val, this);
+					} else {
+						tooltip.hide(lastVal);
+						vertLine.style("stroke", "none");
 					}
 					lastVal = val;
-				}
-				plotarea.append("rect").attr("width", width- margin.left - margin.right)
-					.attr("height", height - margin.top - margin.bottom)
-					.style("fill-opacity", .2)
+				};
+				plotarea.append("rect")
+					.attr("width", plotWidth)
+					.attr("height", plotHeight)
+					.style("fill-opacity", 0)
 					.call(tooltip)
-					.on("mousemove", getPlotVal).on("mouseout", function() {
-						tooltip.hide(lastVal)
-					});*/
+					.on("mousemove", getPlotVal);
 			},
 		},
 	});

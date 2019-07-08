@@ -1,6 +1,6 @@
 <template>
 	<center>
-		<learning-curve :answer-data="answerData"/>
+		<learning-curve :answer-data="answerData" :width="360" :height="240"/>
 	</center>
 </template>
 
