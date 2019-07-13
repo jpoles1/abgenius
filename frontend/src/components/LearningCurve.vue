@@ -79,7 +79,7 @@
 				.domain([0.5, plotData.length + 5])
 				.range([margin.left, width - margin.right]);
 				const yScale = d3.scaleLinear()
-				.domain([0, 100])
+				.domain([0, 108])
 				.range([height - margin.bottom, margin.top]);
 				// Tooltips
 				const tooltip = d3.tip().attr("class", "d3-tip").html((d: number) => {
