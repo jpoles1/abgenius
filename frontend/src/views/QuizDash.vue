@@ -1,6 +1,12 @@
 <template>
-	<center>
-		<learning-curve :answer-data="answerData" :width="360" :height="240"/>
+	<center style="padding: 20px;">
+		<div v-if="answerData && answerData.length > 0">
+			<learning-curve :answer-data="answerData" :width="360" :height="240"/>
+		</div>
+		<div v-else>
+			<h2>There is no data to display.</h2>
+			<h3><i>Please complete some <a href="/quiz">quiz</a> questions</i></h3>
+		</div>
 	</center>
 </template>
 

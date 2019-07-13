@@ -59,7 +59,7 @@
 				return windowData;
 			},
 			drawLearningCurve() {
-				if (this.answerData.length === 0) return;
+				if (!this.answerData || this.answerData.length === 0) return;
 				const plotData = this.generateWindows();
 				const svg = d3.select(this.$el).select("svg");
 				svg.selectAll("*").remove();
