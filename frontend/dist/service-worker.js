@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.d5573092f6f33ad5ba6af81356e0c5ee.js"
+  "/precache-manifest.f01e4de80089b42f16636ae0b7c073a5.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "abgenius"});
