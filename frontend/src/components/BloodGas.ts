@@ -50,7 +50,6 @@ export enum DisturbType {
 	MetAlk = "Metabolic Alkalosis",
 	RespAlk = "Respiratory Alkalosis",
 	AnionGap = "Anion Gap",
-	Hyperchloremic = "Hyperchloremic",
 	DeltaGap = "Delta Gap",
 	Unknown = "Unknown",
 }
@@ -183,7 +182,7 @@ export class BloodGas {
 					} else if (this.serumDeltaGap().gap < RefRngs.DeltaGap!.lower) {
 						// We have a superimposed non-gap, hyperchloremic metabolic acidosis
 						// Rise in AG is less than fall in HCO3
-						disturbList.push([DisturbType.MetAcid, DisturbType.Hyperchloremic]);
+						disturbList.push([DisturbType.MetAcid]);
 					}
 				} else {
 					// We have a non-gap metabolic acidosis

@@ -240,9 +240,6 @@
 					<center>
 						<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 380px; max-width: 100%;"/>
 						<br>
-						<v-btn color="primary" @click="randomizeABG">
-							Randomize
-						</v-btn>
 						<v-btn color="primary" @click="generateABG">
 							Generate
 						</v-btn>
@@ -257,7 +254,7 @@
 
 <script lang="ts">
 	import * as BG from "@/components/BloodGas";
-	import { abgGenerators, generateRandABG } from "@/components/BloodGasGen";
+	import { abgGenerators } from "@/components/BloodGasGen";
 	import CalcInfoPanel from "@/components/CalcInfoPanel.vue";
 	import ReferenceList from "@/components/ReferenceList.vue";
 
@@ -318,10 +315,6 @@
 			},
 		},
 		methods: {
-			randomizeABG() {
-				const randABG = generateRandABG();
-				this.userBloodGas = randABG[0];
-			},
 			generateABG() {
 				const genABG = abgGenerators[this.abgGenPick]()[0];
 				this.userBloodGas = genABG;
