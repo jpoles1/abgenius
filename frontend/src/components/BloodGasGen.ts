@@ -16,7 +16,7 @@ const lowerLimitPaCO2 = 12;
 const upperLimitBicarb = 54;
 const lowerLimitBicarb = 12;
 const upperLimitAG = 22;
-const upperLimitDG = 18;
+const upperLimitDG = 10;
 
 export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]]} = {
 	"Normal": () => {
@@ -151,7 +151,8 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, 0);
 		const randDeltaGap =  randFloat(-upperLimitDG, RefRngs.DeltaGap!.lower - 1, 0);
 		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
-		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
+		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
+		// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
 		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, 0);
 		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.lower, RefRngs.PaCO2!.upper, 0);
