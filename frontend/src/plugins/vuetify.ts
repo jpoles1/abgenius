@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
 import "vuetify/src/stylus/app.styl";
+import "vuetify/dist/vuetify.min.css";
 
 Vue.use(Vuetify, {
 	iconfont: "fa",
@@ -13,4 +14,10 @@ Vue.use(Vuetify, {
 		"success": "#4CAF50",
 		"warning": "#FB8C00",
 	},
+});
+
+import VuetifyToast from "vuetify-toast-snackbar";
+Vue.use(VuetifyToast, {
+	showClose: false,
+	color: "#403e4d",
 });
