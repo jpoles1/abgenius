@@ -94,7 +94,7 @@ export class BloodGas {
 			Object.assign(this, init);
 	}
 	public validABG(): boolean {
-		return this.abg.pH !== undefined && this.abg.bicarb !== undefined && this.abg.PaCO2 !== undefined;
+		return this.abg.pH !== undefined && isFinite(this.abg.pH) && this.abg.bicarb !== undefined && this.abg.PaCO2 !== undefined;
 	}
 	public pHExpected(): number {
 		return 6.1 + Math.log10(this.abg.bicarb! / (0.03 * this.abg.PaCO2!));

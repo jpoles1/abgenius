@@ -7,6 +7,7 @@ describe("BloodGas utilities", () => {
 		test("Rule-based ABG generation: " + ruleName, () => {
 			[...Array(testsPerRule)].map(() => {
 				const testABG = GenBG.abgGenerators[ruleName]();
+				expect(testABG[0].validABG()).toBe(true);
 				expect(testABG[0].guessDisturbances().sort()).toEqual(testABG[1].sort());
 			});
 			/*expect([...Array(testsPerRule)].map(() => {
