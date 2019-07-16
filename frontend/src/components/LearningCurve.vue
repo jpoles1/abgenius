@@ -131,7 +131,7 @@
 					.y((d: number) => yScale(d));
 				svg.append("path")
 					.datum(plotData)
-					.attr("class", "d3line bold").style("stroke", "#57068C")
+					.attr("class", "d3line bold").style("stroke", "#403e4d")
 					.attr("fill", "none")
 					.attr("d", learningCurve);
 				/*if(learning_data.cohort_vals){
@@ -146,8 +146,8 @@
 				svg.selectAll("circle").data(plotData).enter().append("circle")
 					.attr("cx", (d: number, i: number) => xScale(i + 1))
 					.attr("cy", (d: number) => yScale(d))
-					.attr("r", 4)
-					.style("fill", "#57068C")
+					.attr("r", 2)
+					.style("fill", "#403e4d")
 					.attr("val", (d: number) => d);
 				const vertLine = svg.append("line")
 					.attr("x1", 0).attr("y1", margin.top)
@@ -158,7 +158,7 @@
 					const val = plotData[xpos - 1] !== undefined ? plotData[xpos - 1].toFixed(2) : undefined;
 					if (val !== undefined) {
 						vertLine.attr("transform", "translate(" + xScale(xpos) + ", 0)")
-						.style("stroke", "#3d4057").style("stroke-width", "2px");
+						.style("stroke", "#3d4057").style("stroke-width", "1px");
 						tooltip.show(val, this);
 					} else {
 						tooltip.hide(lastVal);
