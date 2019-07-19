@@ -119,7 +119,9 @@
 				<h2>Interpret this ABG (click to add):</h2>
 				<br>
 				<div v-if="addableDisturb.length > 0">
-					<v-btn round v-for="(disturb, disturbIndex) in addableDisturb" :key="disturbIndex" @click="addDisturb(disturb)">	
+					<v-btn v-for="(disturb, disturbIndex) in addableDisturb" :key="disturbIndex" 
+					@click="addDisturb(disturb); addedDisturb=true;"
+					:class="{'add-disturb-btn': !addedDisturb, 'disturb-btn': true}" round>	
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
 							fa-wind
 						</v-icon>
@@ -137,8 +139,8 @@
 				</div>
 			</center>
 			<hr>
-			<div style="display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap;">
-				<v-sheet v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex" 
+			<div style="display: flex; justify-content: center; text-align: center; flex-wrap: wrap;">
+				<!--<v-sheet v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex" 
 				class="answer-disturb-box" elevation=4>
 					<div> 
 						<b>{{disturb[1]}} {{disturb[0]}}</b>
@@ -147,6 +149,27 @@
 						<v-icon>fas fa-trash-alt</v-icon>
 					</v-btn>
 				</v-sheet>
+				<v-sheet class="answer-disturb-box" elevation=4 v-if="learnerAnswer.length === 0">
+					<div>
+						<b>Normal ABG</b>
+						<br>
+						<i>(Add an Acid-Base Disturbance)</i>
+					</div>
+				</v-sheet>-->
+				<h2>Your Answer:</h2>
+				<br class="flex-break" style="margin: 10px;">
+				<v-btn v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex" 
+				@click="deleteDisturb(disturb)" round class="disturb-btn">	
+					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
+						fa-wind
+					</v-icon>
+					<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
+						fa-vial
+					</v-icon>
+					<div style="margin: 0 12px; font-size: 90%">
+						{{disturb[1]}} {{disturb[0]}}
+					</div>
+				</v-btn>
 				<v-sheet class="answer-disturb-box" elevation=4 v-if="learnerAnswer.length === 0">
 					<div>
 						<b>Normal ABG</b>
@@ -164,7 +187,7 @@
 		</div>
 		<div v-else style="display: flex; justify-content: center; flex-wrap: wrap;">
 			<center>
-				<v-sheet :color="percToColor(gradeAnswer)" style="padding: 20px 26px; font-weight: bold; font-size: 110%;" elevation=4>
+				<v-sheet :color="percToColor(gradeAnswer)" class="score-box" elevation=4>
 					Score: {{gradeAnswer}}%
 				</v-sheet>
 			</center>
@@ -234,6 +257,7 @@
 	import { BloodGas, DisturbType, RefRngs, RefRngMidpoint, ABGAnswer } from "@/components/BloodGas";
 	import { abgGenerators } from "@/components/BloodGasGen";
 	import * as jajax from "@/jajax";
+	import { arrayEq } from "@/util";
 
 	import BrowserInteractionTime from "browser-interaction-time";
 	const BIT = new BrowserInteractionTime({
@@ -244,6 +268,7 @@
 		idleTimeoutMs: 60 * 1000,
 		checkCallbacksIntervalMs: 250,
 	});
+
 	import QuizDash from "@/views/QuizDash.vue";
 	import Vue from "vue";
 	export default Vue.extend({
@@ -252,6 +277,7 @@
 		},
 		data() {
 			return {
+				addedDisturb: false,
 				timeElapsed: undefined as number | undefined,
 				showGaps: false,
 				answerSumitted: false,
@@ -338,13 +364,15 @@
 					[DisturbType.MetAcid, DisturbType.AnionGap],
 				];
 				return primaryDisturb.filter((disturb) => {
-					if (disturb ===  [DisturbType.MetAcid, DisturbType.AnionGap] && this.learnerAnswer.filter((x) => x === [DisturbType.MetAcid, DisturbType.AnionGap]).length < 2) {
-						return true;
+					if (arrayEq(disturb, [DisturbType.MetAcid, DisturbType.AnionGap])) {
+						return this.learnerAnswer.filter((x) => arrayEq(x, [DisturbType.MetAcid, DisturbType.AnionGap])).length < 1;
 					}
-					if ([[DisturbType.RespAcid], [DisturbType.RespAlk]].includes(disturb)) {
-						return this.learnerAnswer.filter((x) => [[DisturbType.RespAcid], [DisturbType.RespAlk]].includes(x)).length === 0;
+					if ([DisturbType.RespAcid, DisturbType.RespAlk].includes(disturb[0])) {
+						return this.learnerAnswer.filter((x) => {
+							return [DisturbType.RespAcid, DisturbType.RespAlk].includes(x[0]);
+						}).length === 0;
 					}
-					return this.learnerAnswer.filter((x: DisturbType[]) => x === disturb).length === 0;
+					return this.learnerAnswer.filter((x: DisturbType[]) => arrayEq(disturb, x)).length === 0;
 				});
 			},
 			gradeAnswer(): number {
@@ -382,5 +410,28 @@
 		flex-wrap: wrap;
 		margin: 12px;
 		border-radius: 5px;
+	}
+	.disturb-btn {
+		transform: scale(0.95);
+	}
+	.add-disturb-btn:before {
+		animation: pulse 2.2s ease-in-out infinite alternate;
+	}
+	@keyframes pulse {
+		0% {
+			background: transparent;
+		}
+		50% {
+			background: #584014;
+			opacity: 1;
+		}
+		100% {
+			background: transparent;
+		}
+	}
+	.score-box {
+		padding: 14px 26px;
+		font-weight: bold;
+		font-size: 110%;
 	}
 </style>
