@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div :style="{'width': width + 'px', 'height': height + 'px', 'position': 'relative'}">
 		<svg id="learning-curve-container">
 		</svg>
 	</div>
@@ -82,9 +82,10 @@
 				.domain([0, 108])
 				.range([height - margin.bottom, margin.top]);
 				// Tooltips
-				const tooltip = d3.tip().attr("class", "d3-tip").html((d: number) => {
-					return "<center>Rolling Avg. Accuracy:<br>" + d + "%</center>";
-				}).direction("s").offset([-(height - margin.top - margin.bottom), -(width - margin.left - 40) / 4]);
+				const tooltip = d3.select(this.$el).append("div").attr("class", "d3-tip")
+					.style("position", "absolute").style("font-size", "90%")
+					.style("top", (margin.top + 4) + "px")
+					.style("left", (margin.left + 10) + "px");
 				const plotarea = svg.append("g")
 					.attr("class", "plotarea")
 					.attr("width", plotWidth)
@@ -159,9 +160,9 @@
 					if (val !== undefined) {
 						vertLine.attr("transform", "translate(" + xScale(xpos) + ", 0)")
 						.style("stroke", "#3d4057").style("stroke-width", "1px");
-						tooltip.show(val, this);
+						tooltip.html("<center>Rolling Avg. Accuracy:<br>" + val + "%</center>").style("visibility", "visible");
 					} else {
-						tooltip.hide(lastVal);
+						tooltip.style("visibility", "hidden");
 						vertLine.style("stroke", "none");
 					}
 					lastVal = val;
@@ -170,7 +171,6 @@
 					.attr("width", plotWidth)
 					.attr("height", plotHeight)
 					.style("fill-opacity", 0)
-					.call(tooltip)
 					.on("mousemove", getPlotVal);
 			},
 		},

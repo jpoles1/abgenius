@@ -27,7 +27,7 @@
 			this.$nextTick(function() {
 				const apiURL = this.$store.state.api_url + "/api/answer/list";
 				jajax.getJSON(apiURL, this.$store.state.jwtToken).then((data: any) => {
-					this.answerData = data;
+					this.answerData = data.reverse();
 				}).catch((err) => {
 					this.$toast(`Failed to fetch answer data (Err Code: ${err.respCode})`, {color: "#d98303"});
 				});

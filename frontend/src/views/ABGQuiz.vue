@@ -185,66 +185,89 @@
 				</v-btn>
 			</center>
 		</div>
-		<div v-else style="display: flex; justify-content: center; flex-wrap: wrap;">
-			<center>
-				<v-sheet :color="percToColor(gradeAnswer)" class="score-box" elevation=4>
-					Score: {{gradeAnswer}}%
-				</v-sheet>
+		<div v-else>
+			<v-tabs centered color="cyan" dark icons-and-text>
+				<v-tabs-slider color="yellow"></v-tabs-slider>
+
+				<v-tab href="#answer-tab">
+					Answer
+					<v-icon>fa-stethoscope</v-icon>
+				</v-tab>
+				<v-tab href="#performance-tab">
+					Learning Curve
+					<v-icon>fa-chart-line</v-icon>
+				</v-tab>
+
+				<v-tab-item value="answer-tab">
+					<v-card flat>
+						<v-card-text style="display: flex; justify-content: center; flex-wrap: wrap;">
+							<center>
+								<v-sheet :color="percToColor(gradeAnswer)" class="score-box" elevation=4>
+									Score: {{gradeAnswer}}%
+								</v-sheet>
+							</center>
+							<br class="flex-break" style="margin: 10px;">
+							<center>
+								<b>Genius Answer:</b>
+								<br>
+								<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex">
+									<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
+										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
+											fa-wind
+										</v-icon>
+										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
+											fa-vial
+										</v-icon>
+									</v-avatar>
+									<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
+										<v-icon small>fas fa-check</v-icon>
+									</v-avatar>
+									<div v-if="disturb[0] == 'Normal'">
+										No Acid Base Disorder
+									</div>
+									<div v-else>
+										{{disturb[1]}} {{disturb[0]}}
+									</div>
+								</v-chip>
+							</center>
+							<br class="flex-break">
+							<center>
+								<b>Your Answer (in {{timeElapsed}} sec):</b>
+								<br>
+								<v-chip v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex">
+									<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
+										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
+											fa-wind
+										</v-icon>
+										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
+											fa-vial
+										</v-icon>
+									</v-avatar>
+									<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
+										<v-icon small>fas fa-check</v-icon>
+									</v-avatar>
+									<div v-if="disturb[0] == 'Normal'">
+										No Acid Base Disorder
+									</div>
+									<div v-else>
+										{{disturb[1]}} {{disturb[0]}}
+									</div>
+								</v-chip>
+							</center>
+						</v-card-text>
+					</v-card>
+				</v-tab-item>
+				<v-tab-item value="performance-tab">
+					<v-card flat>
+						<QuizDash/>
+					</v-card>
+				</v-tab-item>
+			</v-tabs>
+			<center style="margin-top: 6px;">
+				<v-btn color="primary" @click="nextABG">
+					Next ABG
+				</v-btn>
 			</center>
-			<br class="flex-break" style="margin: 10px;">
-			<center>
-				<b>Genius Answer:</b>
-				<br>
-				<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex">
-					<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
-						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
-							fa-wind
-						</v-icon>
-						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
-							fa-vial
-						</v-icon>
-					</v-avatar>
-					<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
-						<v-icon small>fas fa-check</v-icon>
-					</v-avatar>
-					<div v-if="disturb[0] == 'Normal'">
-						No Acid Base Disorder
-					</div>
-					<div v-else>
-						{{disturb[1]}} {{disturb[0]}}
-					</div>
-				</v-chip>
-			</center>
-			<br class="flex-break">
-			<center>
-				<b>Your Answer (in {{timeElapsed}} sec):</b>
-				<br>
-				<v-chip v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex">
-					<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
-						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
-							fa-wind
-						</v-icon>
-						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
-							fa-vial
-						</v-icon>
-					</v-avatar>
-					<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
-						<v-icon small>fas fa-check</v-icon>
-					</v-avatar>
-					<div v-if="disturb[0] == 'Normal'">
-						No Acid Base Disorder
-					</div>
-					<div v-else>
-						{{disturb[1]}} {{disturb[0]}}
-					</div>
-				</v-chip>
-			</center>
-			<br class="flex-break">
-			<v-btn color="primary" @click="nextABG">
-				Next ABG
-			</v-btn>
-			<!--<br class="flex-break" style="margin: 10px;">
-			<QuizDash/>-->
 		</div>
 	</v-container>
 </template>
@@ -336,6 +359,7 @@
 				this.showGaps = false;
 				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
 				this.learnerAnswer = [];
+				this.addedDisturb = false;
 				BIT.reset();
 				BIT.startTimer();
 			},
