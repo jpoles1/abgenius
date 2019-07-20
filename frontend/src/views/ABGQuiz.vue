@@ -189,11 +189,11 @@
 			<v-tabs centered color="cyan" dark icons-and-text>
 				<v-tabs-slider color="yellow"></v-tabs-slider>
 
-				<v-tab href="#answer-tab">
+				<v-tab href="#answer-tab" class="review-tab">
 					Answer
 					<v-icon>fa-stethoscope</v-icon>
 				</v-tab>
-				<v-tab href="#performance-tab">
+				<v-tab href="#performance-tab" class="review-tab" v-if="answerData && answerData.length > 1">
 					Learning Curve
 					<v-icon>fa-chart-line</v-icon>
 				</v-tab>
@@ -259,7 +259,7 @@
 				</v-tab-item>
 				<v-tab-item value="performance-tab">
 					<v-card flat>
-						<QuizDash/>
+						<learning-curve :answer-data="answerData" :width="380" :height="260" style="margin: auto"/>
 					</v-card>
 				</v-tab-item>
 			</v-tabs>
@@ -293,10 +293,13 @@
 	});
 
 	import QuizDash from "@/views/QuizDash.vue";
+	import LearningCurve from "@/components/LearningCurve.vue";
+
 	import Vue from "vue";
 	export default Vue.extend({
 		components: {
 			QuizDash,
+			LearningCurve,
 		},
 		data() {
 			return {
@@ -304,6 +307,7 @@
 				timeElapsed: undefined as number | undefined,
 				showGaps: false,
 				answerSumitted: false,
+				answerData: [] as ABGAnswer[],
 				disturbToAdd: undefined as DisturbType[] | undefined,
 				refRngs: RefRngs,
 				genBloodGas: new BloodGas({
@@ -348,9 +352,18 @@
 				} as ABGAnswer;
 				const url = this.$store.state.api_url + "/api/answer/submit";
 				jajax.postJSON(url, answerData, this.$store.state.jwtToken).then((data: any) => {
+					this.answerData.push(answerData);
 					this.$toast("Progress saved!");
 				}).catch((err) => {
 					this.$toast(`Failed to save response (Err Code: ${err.respCode})`, {color: "#d98303"});
+				});
+			},
+			loadAnswerData() {
+				const apiURL = this.$store.state.api_url + "/api/answer/list";
+				jajax.getJSON(apiURL, this.$store.state.jwtToken).then((data: any) => {
+					this.answerData = data.reverse();
+				}).catch((err) => {
+					this.$toast(`Failed to fetch answer data (Err Code: ${err.respCode})`, {color: "#d98303"});
 				});
 			},
 			nextABG() {
@@ -417,6 +430,7 @@
 		mounted() {
 			this.$nextTick(function() {
 				this.nextABG();
+				this.loadAnswerData();
 			});
 		},
 	});
@@ -457,5 +471,8 @@
 		padding: 14px 26px;
 		font-weight: bold;
 		font-size: 110%;
+	}
+	.review-tab{
+		font-size: 80%;
 	}
 </style>
