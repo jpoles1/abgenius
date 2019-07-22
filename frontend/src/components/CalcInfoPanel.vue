@@ -62,7 +62,7 @@
 						<center>
 							<br>
 							<v-layout wrap justify-center id="info-chips">
-								<div style="border: 1px solid white; margin: 5px 15px; padding: 10px;">
+								<div class="decision-box">
 									<v-chip :color="results.pHDisturbance == 'Alkalemia' ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-up</v-icon>pH&nbsp;<b>=</b>&nbsp;Alkalemia
 									</v-chip>
@@ -74,7 +74,7 @@
 										<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
 									</v-chip>
 								</div>
-								<div style="border: 1px solid white; margin: 5px 15px; padding: 10px;">
+								<div class="decision-box">
 									<v-chip :color="results.pHDisturbance == 'Acidemia' ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-down</v-icon>pH&nbsp;<b>=</b>&nbsp;Acidemia
 									</v-chip>
@@ -117,7 +117,38 @@
 						</v-layout>
 					</v-container>
 					<v-container v-if="activeChip == 'deltaGap'" key="deltaGap">
-						<h1
+						<center style="margin-bottom: 8px;">
+							<h2>Interpreting: Delta Gap</h2>
+							<p style="font-size: 115%; margin-top: 12px;">
+								Delta Gap = ΔΔ Gap = Δ Anion Gap - Δ Bicarb
+								<br>
+								Δ Anion Gap = (Serum Anion Gap - Upper Range of Normal Anion Gap)
+								<br>
+								Δ Bicarb = (Serum Bicarb - Upper Range of Normal Bicarb)
+							</p>
+							<v-layout wrap justify-center>
+								<div class="decision-box">
+									IF Delta Gap > 6 THEN
+									<hr>
+									We have a superimposed <u>metabolic alkalosis</u>!
+									<hr>
+									Given the rise in anion gap is more than fall in bicarb.
+								</div>
+								<div class="decision-box">
+									IF <u>Delta Gap &lt; -6</u> THEN
+									<hr>
+									We have a superimposed <u>non-gap metabolic acidosis</u>!
+									<hr>
+									Given the rise in anion gap is less than fall in bicarb.
+								</div>
+								<br class="flex-break">
+								<div class="decision-box">
+									<b>OTHERWISE:</b>
+									<br>
+									There are no additional metabolic acid-base disorders present.
+								</div>
+							</v-layout>
+						</center>
 					</v-container>
 				</transition>
 			</div>
@@ -163,5 +194,12 @@ export default Vue.extend({
 	.infos-enter, .infos-leave-to {
 		opacity: 0;
 		transform: translateY(-30px);
+	}
+	.decision-box {
+		border: 1px solid #666;
+		margin: 5px 15px;
+		padding: 10px;
+		border-radius: 3px;
+		background-color: #333;
 	}
 </style>
