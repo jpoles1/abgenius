@@ -190,7 +190,7 @@
 				</v-avatar>
 				<b>Blood pH:</b>&nbsp;{{results.pHDisturbance}}
 			</v-chip>
-			<v-chip v-for="(disturb, disturbIndex) in results.disturbances" :key="disturbIndex">
+			<v-chip v-for="(disturb, disturbIndex) in results.disturbances" :key="disturbIndex" @click="activateChipInfo(disturb[0])">
 				<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
 					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
 						fa-wind
@@ -334,6 +334,9 @@
 					serumDeltaGap: this.userBloodGas.serumDeltaGap(),
 					tertiaryDisturbance: BG.DisturbType.Unknown,
 				};
+				if (!["pH", "O2", "anionGap", "deltaGap", undefined].includes(this.activeChip)) {
+					this.activeChip = undefined;
+				}
 			},
 			decodeURL() {
 				let urlData = Object.assign({}, this.$route.query);
