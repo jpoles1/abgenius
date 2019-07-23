@@ -157,7 +157,7 @@
 							<v-layout wrap justify-center style="margin: 22px;">
 								<div class="decision-box">
 									<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
-									<div style="background-color: #272727; padding: 5px 14px; display: inline-block; font-size: 80%; border-radius: 3px; margin-top: 6px;">
+									<div class="ref-rng-box">
 										<i>
 											Ref Range&nbsp; &#8776; &nbsp;{{refRngs.PaCO2.lower + "&nbsp; to &nbsp;" + refRngs.PaCO2.upper}}
 										</i>
@@ -185,6 +185,40 @@
 							height=100 style="border-radius: 3px;"/>
 						</center>
 					</v-container>
+					<v-container v-if="['Metabolic Acidosis', 'Metabolic Alkalosis'].includes(activeChip)" key="disturb">
+						<center>
+							<h2>Interpreting: Metabolic Acid-Base Disturbances</h2>
+							<hr>
+							<v-layout wrap justify-center style="margin-top: 28px;">
+								<div class="decision-box">
+									<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
+									<div class="ref-rng-box">
+										<i>
+											Ref Range&nbsp; &#8776; &nbsp;{{refRngs.aBicarb.lower + "&nbsp; to &nbsp;" + refRngs.aBicarb.upper}}
+										</i>
+									</div>
+									<hr>
+									<v-chip :color="abg.bicarb > refRngs.aBicarb.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
+									</v-chip>
+									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap > refRngs.DeltaGap.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
+									</v-chip>
+									<br>
+									<v-chip :color="results.serumAnionGap.disturb == 'Normal' && abg.bicarb < refRngs.aBicarb.lower ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+									</v-chip>
+									<v-chip :color="results.serumAnionGap.gap > refRngs.AnionGap.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+									</v-chip>
+									<br>
+									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap < refRngs.DeltaGap.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-down</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+									</v-chip>
+								</div>
+							</v-layout>
+						</center>
+					</v-container>
 				</transition>
 			</div>
 			<hr>
@@ -196,6 +230,7 @@
 import Vue from "vue";
 
 import * as BG from "./BloodGas";
+import { arrayEq } from "@/util";
 import Gamblegram from "@/components/Gamblegram.vue";
 
 export default Vue.extend({
@@ -210,6 +245,7 @@ export default Vue.extend({
 	data() {
 		return {
 			refRngs: BG.RefRngs,
+			arrayEq,
 		};
 	},
 });
@@ -244,5 +280,13 @@ export default Vue.extend({
 	}
 	.decision-box u {
 		font-size: 110%;
+	}
+	.ref-rng-box { 
+		background-color: #272727;
+		padding: 5px 14px;
+		display: inline-block;
+		font-size: 80%;
+		border-radius: 3px;
+		margin-top: 6px;
 	}
 </style>
