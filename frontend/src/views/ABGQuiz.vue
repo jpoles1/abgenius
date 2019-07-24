@@ -466,10 +466,10 @@
 					learnerLeftovers.splice(learnerIndex, 1);
 					return false;
 				});
-				return Math.max(
+				return Math.round(Math.max(
 					100 * (this.geniusAnswer.length - (learnerLeftovers.length + geniusLeftovers.length)) / this.geniusAnswer.length,
 					0,
-				);
+				));
 			},
 			results(): any {
 				return {
