@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-show="activeChip != undefined">
-			<div id="info-panel" style="overflow-x: auto;">
+			<div style="overflow-x: auto;">
 				<transition name="infos" mode="out-in">
 					<div v-if="activeChip == 'O2'" key="O2" class="info-entry">
 						<center style="margin-bottom: 8px;"><h2>Interpreting: PaO<sub>2</sub> values</h2></center>
@@ -119,6 +119,7 @@
 					<v-container v-if="activeChip == 'deltaGap'" key="deltaGap">
 						<center style="margin-bottom: 8px;">
 							<h2>Interpreting: Delta Gap</h2>
+							<hr>
 							<p style="font-size: 115%; margin-top: 12px;">
 								Delta Gap = ΔΔ Gap = Δ Anion Gap - Δ Bicarb
 								<br>
@@ -221,7 +222,6 @@
 					</v-container>
 				</transition>
 			</div>
-			<hr>
 		</div>
 	</div>
 </template>
@@ -254,15 +254,6 @@ export default Vue.extend({
 <style>
 	.v-icon{
 		margin: 0px 5px;
-	}
-	#info-panel{
-		border-radius: 8px;
-		background-color: hsla(0, 0%, 16%, 1);
-		padding: 20px;
-		width: 100%;
-		max-width: 1200px;
-		margin: auto;
-		box-shadow: 0px 0px 5px #202020 inset;
 	}
 	.infos-enter-active, .infos-leave-active {
 		transition: all 0.3s;

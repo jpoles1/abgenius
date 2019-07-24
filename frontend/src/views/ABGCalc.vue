@@ -229,7 +229,9 @@
 			</v-chip>
 		</v-layout>
 		<hr>
-		<CalcInfoPanel :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
+		<transition name="infos" mode="out-in">
+			<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
+		</transition>
 		<br>
 		<v-expansion-panel>
 			<v-expansion-panel-content>
@@ -352,6 +354,7 @@
 			activateChipInfo(chipID: string) {
 				if (this.activeChip === chipID) {
 					this.activeChip = undefined;
+					goTo("#info-chips");
 					return;
 				}
 				this.activeChip = chipID;
@@ -367,7 +370,7 @@
 	});
 </script>
 
-<style scpped>
+<style>
 	hr{
 		margin: 14px 0px;
 	}
@@ -383,5 +386,14 @@
 	}
 	#info-chips .v-chip{
 		margin: 14px 12px;
+	}
+	#info-panel {
+		border-radius: 8px;
+		background-color: hsla(0, 0%, 16%, 1);
+		padding: 20px;
+		width: 100%;
+		max-width: 1200px;
+		margin: auto;
+		box-shadow: 0px 0px 5px #202020 inset;
 	}
 </style>
