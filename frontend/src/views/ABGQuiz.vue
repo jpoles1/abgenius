@@ -527,7 +527,7 @@
 			background: transparent;
 		}
 		50% {
-			background: #5e645b;
+			background: #77623c;
 			opacity: 1;
 		}
 		100% {
