@@ -189,11 +189,13 @@
 			<v-tabs centered color="cyan" dark icons-and-text id="feedback-tabs">
 				<v-tabs-slider color="yellow"></v-tabs-slider>
 
-				<v-tab href="#answer-tab" class="review-tab">
+				<v-tab href="#answer-tab" class="review-tab" 
+				@click="goTo('#feedback-tabs', { 'offset': 20 })">
 					Answer
 					<v-icon>fa-stethoscope</v-icon>
 				</v-tab>
-				<v-tab href="#performance-tab" class="review-tab" v-if="answerData && answerData.length > 1">
+				<v-tab href="#performance-tab" class="review-tab" v-if="answerData && answerData.length > 1"
+				@click="goTo('#feedback-tabs', { 'offset': 20 })">
 					Learning Curve
 					<v-icon>fa-chart-line</v-icon>
 				</v-tab>
@@ -350,6 +352,7 @@
 				answerInput: [] as Array<Map<DisturbType, boolean>>,
 				learnerAnswer: [] as DisturbType[][],
 				geniusAnswer: [] as DisturbType[][],
+				goTo,
 			};
 		},
 		methods: {
