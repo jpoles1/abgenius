@@ -202,19 +202,25 @@
 									<v-chip :color="abg.bicarb > refRngs.aBicarb.upper ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
 									</v-chip>
-									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap > refRngs.DeltaGap.upper ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-up</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
-									</v-chip>
-									<br>
 									<v-chip :color="results.serumAnionGap.disturb == 'Normal' && abg.bicarb < refRngs.aBicarb.lower ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
 									</v-chip>
+									<br>
 									<v-chip :color="results.serumAnionGap.gap > refRngs.AnionGap.upper ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
 									</v-chip>
+									<hr>
+									<div class="ref-rng-box" style="margin-top: 4px; margin-bottom: 10px;">
+										<i>
+											IF ANION GAP PRESENT:
+										</i>
+									</div>
 									<br>
 									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap < refRngs.DeltaGap.upper ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-down</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+									</v-chip>
+									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap > refRngs.DeltaGap.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
 									</v-chip>
 								</div>
 							</v-layout>
