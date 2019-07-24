@@ -190,7 +190,7 @@
 				</v-avatar>
 				<b>Blood pH:</b>&nbsp;{{results.pHDisturbance}}
 			</v-chip>
-			<v-chip v-for="(disturb, disturbIndex) in results.disturbances" :key="disturbIndex">
+			<v-chip v-for="(disturb, disturbIndex) in results.disturbances" :key="disturbIndex" @click="activateChipInfo(disturb[0])">
 				<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
 					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
 						fa-wind
@@ -229,7 +229,9 @@
 			</v-chip>
 		</v-layout>
 		<hr>
-		<CalcInfoPanel :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
+		<transition name="infos" mode="out-in">
+			<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
+		</transition>
 		<br>
 		<v-expansion-panel>
 			<v-expansion-panel-content>
@@ -275,20 +277,7 @@
 				activeChip: undefined as string | undefined,
 				validABG: true,
 				refRngs: BG.RefRngs,
-				userBloodGas: new BG.BloodGas({
-					abg: {
-						patientAge: undefined,
-						pH: BG.RefRngMidpoint("apH"),
-						bicarb: BG.RefRngMidpoint("aBicarb"),
-						PaCO2: BG.RefRngMidpoint("PaCO2"),
-						PaO2: BG.RefRngMidpoint("PaO2"),
-						Na: BG.RefRngMidpoint("Na"),
-						K: BG.RefRngMidpoint("K"),
-						Cl: BG.RefRngMidpoint("Cl"),
-						Albumin: undefined, // BG.RefRngMidpoint("Albumin"),
-						Lactate: 0.6,
-					},
-				}),
+				userBloodGas: abgGenerators["Normal"]()[0],
 				results: {
 					serumAnionGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
 					serumDeltaGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
@@ -334,6 +323,9 @@
 					serumDeltaGap: this.userBloodGas.serumDeltaGap(),
 					tertiaryDisturbance: BG.DisturbType.Unknown,
 				};
+				if (!["pH", "O2", "anionGap", "deltaGap", undefined].includes(this.activeChip)) {
+					this.activeChip = undefined;
+				}
 			},
 			decodeURL() {
 				let urlData = Object.assign({}, this.$route.query);
@@ -347,8 +339,10 @@
 				Object.assign(this.userBloodGas.abg, urlData);
 			},
 			activateChipInfo(chipID: string) {
+				if (chipID === "Normal") return;
 				if (this.activeChip === chipID) {
 					this.activeChip = undefined;
+					goTo("#info-chips");
 					return;
 				}
 				this.activeChip = chipID;
@@ -364,7 +358,7 @@
 	});
 </script>
 
-<style scpped>
+<style>
 	hr{
 		margin: 14px 0px;
 	}
@@ -380,5 +374,14 @@
 	}
 	#info-chips .v-chip{
 		margin: 14px 12px;
+	}
+	#info-panel {
+		border-radius: 8px;
+		background-color: hsla(0, 0%, 16%, 1);
+		padding: 20px;
+		width: 100%;
+		max-width: 1200px;
+		margin: auto;
+		box-shadow: 0px 0px 5px #202020 inset;
 	}
 </style>

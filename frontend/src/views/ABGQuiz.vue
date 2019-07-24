@@ -3,7 +3,7 @@
 		<headful
 			title="ABGenius - Trainer"
 		/>
-		<div>
+		<div id="abg-data">
 			<center><h2>Arterial Blood Gas</h2></center><br>
 			<v-layout text-xs-center wrap justify-center>
 				<v-tooltip top>
@@ -86,8 +86,8 @@
 				</v-tooltip>
 			</v-layout>
 		</div>
-		<hr>
-		<center>
+		<center v-if="!answerSumitted">
+			<hr>
 			<v-btn color="blue-grey darken-3" @click="showGaps=true" v-show="!showGaps">
 				<i>Peek at Gap Calculations</i>
 			</v-btn>
@@ -186,51 +186,29 @@
 			</center>
 		</div>
 		<div v-else>
-			<v-tabs centered color="cyan" dark icons-and-text>
+			<v-tabs centered color="cyan" dark icons-and-text id="feedback-tabs">
 				<v-tabs-slider color="yellow"></v-tabs-slider>
 
-				<v-tab href="#answer-tab" class="review-tab">
+				<v-tab href="#answer-tab" class="review-tab" 
+				@click="goTo('#feedback-tabs', { 'offset': 20 })">
 					Answer
 					<v-icon>fa-stethoscope</v-icon>
 				</v-tab>
-				<v-tab href="#performance-tab" class="review-tab" v-if="answerData && answerData.length > 1">
+				<v-tab href="#performance-tab" class="review-tab" v-if="answerData && answerData.length > 1"
+				@click="goTo('#feedback-tabs', { 'offset': 20 })">
 					Learning Curve
 					<v-icon>fa-chart-line</v-icon>
 				</v-tab>
 
 				<v-tab-item value="answer-tab">
 					<v-card flat>
-						<v-card-text style="display: flex; justify-content: center; flex-wrap: wrap;">
+						<v-card-text style="padding-top: 24px; display: flex; justify-content: center; flex-wrap: wrap;">
 							<center>
 								<v-sheet :color="percToColor(gradeAnswer)" class="score-box" elevation=4>
 									Score: {{gradeAnswer}}%
 								</v-sheet>
 							</center>
 							<br class="flex-break" style="margin: 10px;">
-							<center>
-								<b>Genius Answer:</b>
-								<br>
-								<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex">
-									<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
-										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
-											fa-wind
-										</v-icon>
-										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
-											fa-vial
-										</v-icon>
-									</v-avatar>
-									<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
-										<v-icon small>fas fa-check</v-icon>
-									</v-avatar>
-									<div v-if="disturb[0] == 'Normal'">
-										No Acid Base Disorder
-									</div>
-									<div v-else>
-										{{disturb[1]}} {{disturb[0]}}
-									</div>
-								</v-chip>
-							</center>
-							<br class="flex-break">
 							<center>
 								<b>Your Answer (in {{timeElapsed}} sec):</b>
 								<br>
@@ -254,6 +232,56 @@
 									</div>
 								</v-chip>
 							</center>
+							<br class="flex-break" style="margin: 10px;">
+							<center id="info-chips">
+								<b>Genius Answer:</b>
+								<br>
+								<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex"  
+								@click="activateChipInfo(disturb[0])" :class="{'genius-disturb': disturb[0] !== 'Normal'}">
+									<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
+										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
+											fa-wind
+										</v-icon>
+										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
+											fa-vial
+										</v-icon>
+									</v-avatar>
+									<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
+										<v-icon small>fas fa-check</v-icon>
+									</v-avatar>
+									<div v-if="disturb[0] == 'Normal'">
+										No Acid Base Disorder
+									</div>
+									<div v-else>
+										{{disturb[1]}} {{disturb[0]}}
+									</div>
+								</v-chip>
+								<hr v-if="results.serumAnionGap.disturb === 'Anion Gap'">
+								<v-chip class="genius-disturb" @click="activateChipInfo('anionGap')"
+								v-if="results.serumAnionGap.disturb === 'Anion Gap'">
+									<v-avatar class="error" v-if="genBloodGas.serumAnionGap().disturb == 'Anion Gap'">        
+										<v-icon>fas fa-arrows-alt-h</v-icon>
+									</v-avatar>
+									<v-avatar class="success" v-if="genBloodGas.serumAnionGap().disturb == 'Normal'">        
+										<v-icon small>fas fa-check</v-icon>
+									</v-avatar>
+									<b>Anion Gap:</b>&nbsp; {{genBloodGas.serumAnionGap().gap.toFixed(1)}}
+								</v-chip>
+								<v-chip class="genius-disturb" @click="activateChipInfo('deltaGap')"
+								 v-if="results.serumAnionGap.disturb === 'Anion Gap' && results.serumDeltaGap.disturb === 'Delta Gap'" >
+									<v-avatar class="error" v-if="genBloodGas.serumDeltaGap().disturb == 'Delta Gap'">        
+										<v-icon>fas fa-arrows-alt-h</v-icon>
+									</v-avatar>
+									<v-avatar class="success" v-if="genBloodGas.serumDeltaGap().disturb == 'Normal'">        
+										<v-icon small>fas fa-check</v-icon>
+									</v-avatar>
+									<b>Delta Gap:</b>&nbsp; {{genBloodGas.serumDeltaGap().gap.toFixed(1)}}
+								</v-chip>
+							</center>
+							<br class="flex-break" style="margin: 10px;">
+							<transition name="infos" mode="out-in">
+								<CalcInfoPanel id="genius-info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="genBloodGas.abg" :results="results"/>
+							</transition>
 						</v-card-text>
 					</v-card>
 				</v-tab-item>
@@ -281,6 +309,7 @@
 	import { abgGenerators } from "@/components/BloodGasGen";
 	import * as jajax from "@/jajax";
 	import { arrayEq } from "@/util";
+	import goTo from "vuetify/lib/components/Vuetify/goTo";
 
 	import BrowserInteractionTime from "browser-interaction-time";
 	const BIT = new BrowserInteractionTime({
@@ -292,17 +321,18 @@
 		checkCallbacksIntervalMs: 250,
 	});
 
-	import QuizDash from "@/views/QuizDash.vue";
+	import CalcInfoPanel from "@/components/CalcInfoPanel.vue";
 	import LearningCurve from "@/components/LearningCurve.vue";
 
 	import Vue from "vue";
 	export default Vue.extend({
 		components: {
-			QuizDash,
+			CalcInfoPanel,
 			LearningCurve,
 		},
 		data() {
 			return {
+				activeChip: undefined as string | undefined,
 				addedDisturb: false,
 				timeElapsed: undefined as number | undefined,
 				showGaps: false,
@@ -324,6 +354,7 @@
 				answerInput: [] as Array<Map<DisturbType, boolean>>,
 				learnerAnswer: [] as DisturbType[][],
 				geniusAnswer: [] as DisturbType[][],
+				goTo,
 			};
 		},
 		methods: {
@@ -354,6 +385,7 @@
 				jajax.postJSON(url, answerData, this.$store.state.jwtToken).then((data: any) => {
 					this.answerData.push(answerData);
 					this.$toast("Progress saved!");
+					goTo("#feedback-tabs", { offset: 20 });
 				}).catch((err) => {
 					this.$toast(`Failed to save response (Err Code: ${err.respCode})`, {color: "#d98303"});
 				});
@@ -373,8 +405,10 @@
 				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
 				this.learnerAnswer = [];
 				this.addedDisturb = false;
+				this.activeChip = undefined;
 				BIT.reset();
 				BIT.startTimer();
+				goTo("#abg-data", { offset: 40 });
 			},
 			percToColor(perc: number) {
 				let r = 0;
@@ -390,6 +424,17 @@
 				const h = r * 0x10000 + g * 0x100 + b * 0x1;
 				return "#" + ("000000" + h.toString(16)).slice(-6);
 			},
+			activateChipInfo(chipID: string) {
+				if (chipID === "Normal") return;
+				if (this.activeChip === chipID) {
+					this.activeChip = undefined;
+					goTo("#info-chips");
+					return;
+				}
+				this.activeChip = chipID;
+				goTo("#info-chips");
+			},
+
 		},
 		computed: {
 			addableDisturb(): DisturbType[][] {
@@ -426,6 +471,19 @@
 					0,
 				);
 			},
+			results(): any {
+				return {
+					adjustedPaO2: this.genBloodGas.adjustedPaO2(),
+					o2Disturbance: this.genBloodGas.o2Disturbance(),
+					pHDisturbance: this.genBloodGas.phDisturbance(),
+					realisticABG: this.genBloodGas.realisticABG(),
+					disturbances: this.genBloodGas.guessDisturbances(),
+					pHExpected: this.genBloodGas.pHExpected(),
+					serumAnionGap: this.genBloodGas.serumAnionGap(),
+					serumDeltaGap: this.genBloodGas.serumDeltaGap(),
+					tertiaryDisturbance: DisturbType.Unknown,
+				};
+			},
 		},
 		mounted() {
 			this.$nextTick(function() {
@@ -452,10 +510,7 @@
 	.disturb-btn {
 		transform: scale(0.95);
 	}
-	.add-disturb-btn:before {
-		animation: pulse 2.2s ease-in-out infinite alternate;
-	}
-	@keyframes pulse {
+	@keyframes add-disturb-pulse {
 		0% {
 			background: transparent;
 		}
@@ -466,6 +521,34 @@
 		100% {
 			background: transparent;
 		}
+	}
+	.add-disturb-btn::before {
+		animation: add-disturb-pulse 2.2s ease-in-out infinite alternate;
+	}
+	@keyframes genius-disturb-pulse {
+		0% {
+			background: transparent;
+		}
+		50% {
+			background: #77623c;
+			opacity: 1;
+		}
+		100% {
+			background: transparent;
+		}
+	}
+	.genius-disturb.v-chip .v-chip__content  {
+		animation: genius-disturb-pulse 1.4s ease-in-out infinite alternate;
+	}
+	#genius-info-panel {
+		border-radius: 8px;
+		padding: 20px;
+		width: 94%;
+		max-width: 1200px;
+		margin: auto;
+		margin-bottom: 20px;
+		background-color: hsla(0, 0%, 16%, 1);
+		box-shadow: 0px 0px 5px #202020 inset;
 	}
 	.score-box {
 		padding: 14px 26px;

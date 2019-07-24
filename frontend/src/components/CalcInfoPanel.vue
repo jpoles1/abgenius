@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-show="activeChip != undefined">
-			<div id="info-panel" style="overflow-x: auto;">
+			<div style="overflow-x: auto;">
 				<transition name="infos" mode="out-in">
 					<div v-if="activeChip == 'O2'" key="O2" class="info-entry">
 						<center style="margin-bottom: 8px;"><h2>Interpreting: PaO<sub>2</sub> values</h2></center>
@@ -62,7 +62,7 @@
 						<center>
 							<br>
 							<v-layout wrap justify-center id="info-chips">
-								<div style="border: 1px solid white; margin: 5px 15px; padding: 10px;">
+								<div class="decision-box">
 									<v-chip :color="results.pHDisturbance == 'Alkalemia' ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-up</v-icon>pH&nbsp;<b>=</b>&nbsp;Alkalemia
 									</v-chip>
@@ -74,7 +74,7 @@
 										<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
 									</v-chip>
 								</div>
-								<div style="border: 1px solid white; margin: 5px 15px; padding: 10px;">
+								<div class="decision-box">
 									<v-chip :color="results.pHDisturbance == 'Acidemia' ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-down</v-icon>pH&nbsp;<b>=</b>&nbsp;Acidemia
 									</v-chip>
@@ -117,11 +117,111 @@
 						</v-layout>
 					</v-container>
 					<v-container v-if="activeChip == 'deltaGap'" key="deltaGap">
-						<h1
+						<center style="margin-bottom: 8px;">
+							<h2>Interpreting: Delta Gap</h2>
+							<hr>
+							<p style="font-size: 115%; margin-top: 12px;">
+								Delta Gap = ΔΔ Gap = Δ Anion Gap - Δ Bicarb
+								<br>
+								Δ Anion Gap = (Serum Anion Gap - Upper Range of Normal Anion Gap)
+								<br>
+								Δ Bicarb = (Serum Bicarb - Upper Range of Normal Bicarb)
+							</p>
+							<v-layout wrap justify-center>
+								<div class="decision-box">
+									if &nbsp;<u>Delta Gap &gt; 6</u>&nbsp; then
+									<hr>
+									We have a superimposed <u>metabolic alkalosis</u>!
+									<hr>
+									Given the rise in anion gap is more than fall in bicarb.
+								</div>
+								<div class="decision-box">
+									if &nbsp;<u>Delta Gap &lt; -6</u>&nbsp; then
+									<hr>
+									We have a superimposed <u>metabolic acidosis</u>!
+									<hr>
+									Given the rise in anion gap is less than fall in bicarb.
+								</div>
+								<br class="flex-break" style="margin: 10px 0;">
+								<div class="decision-box">
+									<b>OTHERWISE:</b>
+									<br>
+									There are no additional metabolic acid-base disorders present.
+								</div>
+							</v-layout>
+						</center>
+					</v-container>
+					<v-container v-if="['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(activeChip)" key="disturb">
+						<center>
+							<h2>Interpreting: Respiratory Acid-Base Disturbances</h2>
+							<hr>
+							<v-layout wrap justify-center style="margin: 22px;">
+								<div class="decision-box">
+									<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
+									<div class="ref-rng-box">
+										<i>
+											Ref Range&nbsp; &#8776; &nbsp;{{refRngs.PaCO2.lower + "&nbsp; to &nbsp;" + refRngs.PaCO2.upper}}
+										</i>
+									</div>
+									<hr>
+									<v-chip :color="activeChip == 'Respiratory Acidosis' ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Acidosis
+									</v-chip>
+									<v-chip :color="activeChip == 'Respiratory Alkalosis' ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
+									</v-chip>
+								</div>
+							</v-layout>
+							<p style="font-size: 90%; margin: 28px 0 36px 0; max-width: 600px; text-align: justify;">
+								Put simply, respiratory acid-base disorders result from changes in the balance of the biochemical processes which add and remove from the pools of CO<sub>2</sub> disolved in the blood.
+								Changes in the concentration of disolved CO<sub>2</sub> can be measured as a function of the partial pressure of arterial blood CO<sub>2</sub> (abbreviated PaCO<sub>2</sub>).
+								<br><br>
+								How then does a change in disolved CO<sub>2</sub> change the pH of the blood? 
+								A simplified understanding of the complex biochemistry occuring here can be acheived by examining Fig 1 below.
+								Here we see the disolution of CO<sub>2</sub> followed by its reaction with water (H<sub>2</sub>O) to form carbonic acid (H<sub>2</sub>CO<sub>3</sub>).
+								An H<sup>+</sup> ion can then dissociate from the carbonic acid cancelling out the buffering capacity of the body's stores of HCO<sub>3</sub><sup>-</sup>, and decreasing blood pH. 
+								This same reaction can be driven in reverse when levels of disolved CO<sub>2</sub> are low, increasing blood pH.
+							</p>
+							<img src="/img/co2_to_bicarb.png"
+							height=100 style="border-radius: 3px;"/>
+						</center>
+					</v-container>
+					<v-container v-if="['Metabolic Acidosis', 'Metabolic Alkalosis'].includes(activeChip)" key="disturb">
+						<center>
+							<h2>Interpreting: Metabolic Acid-Base Disturbances</h2>
+							<hr>
+							<v-layout wrap justify-center style="margin-top: 28px;">
+								<div class="decision-box">
+									<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
+									<div class="ref-rng-box">
+										<i>
+											Ref Range&nbsp; &#8776; &nbsp;{{refRngs.aBicarb.lower + "&nbsp; to &nbsp;" + refRngs.aBicarb.upper}}
+										</i>
+									</div>
+									<hr>
+									<v-chip :color="abg.bicarb > refRngs.aBicarb.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
+									</v-chip>
+									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap > refRngs.DeltaGap.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
+									</v-chip>
+									<br>
+									<v-chip :color="results.serumAnionGap.disturb == 'Normal' && abg.bicarb < refRngs.aBicarb.lower ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+									</v-chip>
+									<v-chip :color="results.serumAnionGap.gap > refRngs.AnionGap.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+									</v-chip>
+									<br>
+									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap < refRngs.DeltaGap.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-down</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+									</v-chip>
+								</div>
+							</v-layout>
+						</center>
 					</v-container>
 				</transition>
 			</div>
-			<hr>
 		</div>
 	</div>
 </template>
@@ -130,6 +230,7 @@
 import Vue from "vue";
 
 import * as BG from "./BloodGas";
+import { arrayEq } from "@/util";
 import Gamblegram from "@/components/Gamblegram.vue";
 
 export default Vue.extend({
@@ -141,6 +242,12 @@ export default Vue.extend({
 		abg: Object,
 		results: Object,
 	},
+	data() {
+		return {
+			refRngs: BG.RefRngs,
+			arrayEq,
+		};
+	},
 });
 </script>
 
@@ -148,20 +255,29 @@ export default Vue.extend({
 	.v-icon{
 		margin: 0px 5px;
 	}
-	#info-panel{
-		border-radius: 8px;
-		background-color: hsla(0, 0%, 16%, 1);
-		padding: 20px;
-		width: 100%;
-		max-width: 1200px;
-		margin: auto;
-		box-shadow: 0px 0px 5px #202020 inset;
-	}
 	.infos-enter-active, .infos-leave-active {
 		transition: all 0.3s;
 	}
 	.infos-enter, .infos-leave-to {
 		opacity: 0;
 		transform: translateY(-30px);
+	}
+	.decision-box {
+		border: 1px solid #666;
+		margin: 5px 15px;
+		padding: 10px;
+		border-radius: 3px;
+		background-color: #333;
+	}
+	.decision-box u {
+		font-size: 110%;
+	}
+	.ref-rng-box { 
+		background-color: #272727;
+		padding: 5px 14px;
+		display: inline-block;
+		font-size: 80%;
+		border-radius: 3px;
+		margin-top: 6px;
 	}
 </style>
