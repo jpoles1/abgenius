@@ -19,6 +19,7 @@
     "object-literal-key-quotes": false,
     "max-line-length": false,
     "no-bitwise": false,
-    "no-var-requires": false
+    "no-var-requires": false,
+    "no-string-literal": false
   }
 }

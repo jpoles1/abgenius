@@ -277,20 +277,7 @@
 				activeChip: undefined as string | undefined,
 				validABG: true,
 				refRngs: BG.RefRngs,
-				userBloodGas: new BG.BloodGas({
-					abg: {
-						patientAge: undefined,
-						pH: BG.RefRngMidpoint("apH"),
-						bicarb: BG.RefRngMidpoint("aBicarb"),
-						PaCO2: BG.RefRngMidpoint("PaCO2"),
-						PaO2: BG.RefRngMidpoint("PaO2"),
-						Na: BG.RefRngMidpoint("Na"),
-						K: BG.RefRngMidpoint("K"),
-						Cl: BG.RefRngMidpoint("Cl"),
-						Albumin: undefined, // BG.RefRngMidpoint("Albumin"),
-						Lactate: 0.6,
-					},
-				}),
+				userBloodGas: abgGenerators["Normal"]()[0],
 				results: {
 					serumAnionGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
 					serumDeltaGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
