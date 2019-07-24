@@ -129,6 +129,22 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap]]];
 	},
+	"Compensated Anion Gap Metabolic Acidosis": () => {
+		const newGas = new BloodGas({abg: {}});
+		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
+		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, 0);
+		const randDeltaGap =  randFloat(RefRngs.DeltaGap!.lower + 1, RefRngs.DeltaGap!.upper - 1, 0);
+		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
+		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
+		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, 0);
+		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 4, 0);
+		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
+		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, 0);
+		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
+		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.RespAlk]]];
+	},
 	"Positive Delta Gap Metabolic Acidosis": () => {
 		const newGas = new BloodGas({abg: {}});
 		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
@@ -144,6 +160,22 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk]]];
+	},
+	"Compensated Positive Delta Gap Metabolic Acidosis": () => {
+		const newGas = new BloodGas({abg: {}});
+		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
+		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, 0);
+		const randDeltaGap =  randFloat(RefRngs.DeltaGap!.upper + 1, upperLimitDG, 0);
+		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
+		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
+		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, 0);
+		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 4, 0);
+		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
+		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, 0);
+		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
+		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk], [DisturbType.RespAlk]]];
 	},
 	"Negative Delta Gap Metabolic Acidosis": () => {
 		const newGas = new BloodGas({abg: {}});
@@ -161,6 +193,23 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]]];
+	},
+	"Compensated Negative Delta Gap Metabolic Acidosis": () => {
+		const newGas = new BloodGas({abg: {}});
+		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
+		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, 0);
+		const randDeltaGap =  randFloat(-upperLimitDG, RefRngs.DeltaGap!.lower - 1, 0);
+		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
+		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
+		// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
+		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, 0);
+		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 4, 0);
+		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
+		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, 0);
+		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
+		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid], [DisturbType.RespAlk]]];
 	},
 	/*"Compensated Respiratory Acidosis": () => {
 		// Adjusted PaCO2
