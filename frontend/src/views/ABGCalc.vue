@@ -339,6 +339,7 @@
 				Object.assign(this.userBloodGas.abg, urlData);
 			},
 			activateChipInfo(chipID: string) {
+				if (chipID === "Normal") return;
 				if (this.activeChip === chipID) {
 					this.activeChip = undefined;
 					goTo("#info-chips");

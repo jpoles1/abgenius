@@ -237,7 +237,7 @@
 								<b>Genius Answer:</b>
 								<br>
 								<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex"  
-								@click="activateChipInfo(disturb[0])" class="genius-disturb">
+								@click="activateChipInfo(disturb[0])" :class="{'genius-disturb': disturb[0] !== 'Normal'}">
 									<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
 										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
 											fa-wind
@@ -257,7 +257,8 @@
 									</div>
 								</v-chip>
 								<hr v-if="results.serumAnionGap.disturb === 'Anion Gap'">
-								<v-chip v-if="results.serumAnionGap.disturb === 'Anion Gap'" @click="activateChipInfo('anionGap')">
+								<v-chip class="genius-disturb" @click="activateChipInfo('anionGap')"
+								v-if="results.serumAnionGap.disturb === 'Anion Gap'">
 									<v-avatar class="error" v-if="genBloodGas.serumAnionGap().disturb == 'Anion Gap'">        
 										<v-icon>fas fa-arrows-alt-h</v-icon>
 									</v-avatar>
@@ -266,7 +267,8 @@
 									</v-avatar>
 									<b>Anion Gap:</b>&nbsp; {{genBloodGas.serumAnionGap().gap.toFixed(1)}}
 								</v-chip>
-								<v-chip v-if="results.serumAnionGap.disturb === 'Anion Gap' && results.serumDeltaGap.disturb === 'Delta Gap'" @click="activateChipInfo('deltaGap')">
+								<v-chip class="genius-disturb" @click="activateChipInfo('deltaGap')"
+								 v-if="results.serumAnionGap.disturb === 'Anion Gap' && results.serumDeltaGap.disturb === 'Delta Gap'" >
 									<v-avatar class="error" v-if="genBloodGas.serumDeltaGap().disturb == 'Delta Gap'">        
 										<v-icon>fas fa-arrows-alt-h</v-icon>
 									</v-avatar>
@@ -423,6 +425,7 @@
 				return "#" + ("000000" + h.toString(16)).slice(-6);
 			},
 			activateChipInfo(chipID: string) {
+				if (chipID === "Normal") return;
 				if (this.activeChip === chipID) {
 					this.activeChip = undefined;
 					goTo("#info-chips");
