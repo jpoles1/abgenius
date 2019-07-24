@@ -3,7 +3,7 @@
 		<headful
 			title="ABGenius - Trainer"
 		/>
-		<div>
+		<div id="abg-data">
 			<center><h2>Arterial Blood Gas</h2></center><br>
 			<v-layout text-xs-center wrap justify-center>
 				<v-tooltip top>
@@ -86,8 +86,8 @@
 				</v-tooltip>
 			</v-layout>
 		</div>
-		<hr>
-		<center>
+		<center v-if="!answerSumitted">
+			<hr>
 			<v-btn color="blue-grey darken-3" @click="showGaps=true" v-show="!showGaps">
 				<i>Peek at Gap Calculations</i>
 			</v-btn>
@@ -186,7 +186,7 @@
 			</center>
 		</div>
 		<div v-else>
-			<v-tabs centered color="cyan" dark icons-and-text>
+			<v-tabs centered color="cyan" dark icons-and-text id="feedback-tabs">
 				<v-tabs-slider color="yellow"></v-tabs-slider>
 
 				<v-tab href="#answer-tab" class="review-tab">
@@ -200,7 +200,7 @@
 
 				<v-tab-item value="answer-tab">
 					<v-card flat>
-						<v-card-text style="display: flex; justify-content: center; flex-wrap: wrap;">
+						<v-card-text style="padding-top: 24px; display: flex; justify-content: center; flex-wrap: wrap;">
 							<center>
 								<v-sheet :color="percToColor(gradeAnswer)" class="score-box" elevation=4>
 									Score: {{gradeAnswer}}%
@@ -254,8 +254,27 @@
 										{{disturb[1]}} {{disturb[0]}}
 									</div>
 								</v-chip>
+								<hr v-if="results.serumAnionGap.disturb === 'Anion Gap'">
+								<v-chip v-if="results.serumAnionGap.disturb === 'Anion Gap'" @click="activateChipInfo('anionGap')">
+									<v-avatar class="error" v-if="genBloodGas.serumAnionGap().disturb == 'Anion Gap'">        
+										<v-icon>fas fa-arrows-alt-h</v-icon>
+									</v-avatar>
+									<v-avatar class="success" v-if="genBloodGas.serumAnionGap().disturb == 'Normal'">        
+										<v-icon small>fas fa-check</v-icon>
+									</v-avatar>
+									<b>Anion Gap:</b>&nbsp; {{genBloodGas.serumAnionGap().gap.toFixed(1)}}
+								</v-chip>
+								<v-chip v-if="results.serumAnionGap.disturb === 'Anion Gap' && results.serumDeltaGap.disturb === 'Delta Gap'" @click="activateChipInfo('deltaGap')">
+									<v-avatar class="error" v-if="genBloodGas.serumDeltaGap().disturb == 'Delta Gap'">        
+										<v-icon>fas fa-arrows-alt-h</v-icon>
+									</v-avatar>
+									<v-avatar class="success" v-if="genBloodGas.serumDeltaGap().disturb == 'Normal'">        
+										<v-icon small>fas fa-check</v-icon>
+									</v-avatar>
+									<b>Delta Gap:</b>&nbsp; {{genBloodGas.serumDeltaGap().gap.toFixed(1)}}
+								</v-chip>
 							</center>
-							<br class="flex-break">
+							<br class="flex-break" style="margin: 10px;">
 							<transition name="infos" mode="out-in">
 								<CalcInfoPanel id="genius-info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="genBloodGas.abg" :results="results"/>
 							</transition>
@@ -361,6 +380,7 @@
 				jajax.postJSON(url, answerData, this.$store.state.jwtToken).then((data: any) => {
 					this.answerData.push(answerData);
 					this.$toast("Progress saved!");
+					goTo("#feedback-tabs", { offset: 20 });
 				}).catch((err) => {
 					this.$toast(`Failed to save response (Err Code: ${err.respCode})`, {color: "#d98303"});
 				});
@@ -383,6 +403,7 @@
 				this.activeChip = undefined;
 				BIT.reset();
 				BIT.startTimer();
+				goTo("#abg-data", { offset: 40 });
 			},
 			percToColor(perc: number) {
 				let r = 0;
