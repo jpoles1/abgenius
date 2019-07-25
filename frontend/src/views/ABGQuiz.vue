@@ -4,6 +4,49 @@
 			title="ABGenius - Trainer"
 		/>
 		<div id="abg-data">
+			<v-dialog v-model="instructionDialog" width="500">
+				<template v-slot:activator="{ on }">
+					<!--@click="instructionDialog = !instructionDialog"-->
+					<v-btn color="primary" fab small dark v-on="on"
+					style="position: absolute; right: 20px; top: 6px;">
+						<v-icon>fa-question</v-icon>
+					</v-btn>
+				</template>
+				<v-card>
+					<v-card-title class="headline grey darken-2" style="text-align: center; margin: auto" primary-title>
+						ABGenius Trainer Instructions
+					</v-card-title>
+
+					<v-card-text style="text-align: justify; padding: 16px 22px;">
+						The ABGenius Trainer allows you to hone your skills in arterial blood gas interpretation.
+						Use this as a low stress environment, where you should feel free to make mistakes as long as you learn from them!
+						Here's how you can get started:
+						<ol class="instruction-list">
+							<li>
+								When you close this dialog, you will be presented with the results of a randomly selected ABG. 
+								Inspect the values and try to decide what acid-base disturbances are indicated by this lab test.
+							</li>
+							<li>
+								Scroll down to the section entitled "Interpret this ABG" and click on each of the acid-base disturbances which you believe are present.
+							</li>
+							<li>
+								When you are ready, click "submit" and you will be able to see the ABGenius' answer. Click on each acid-base disturbance in the correct answer to learn more.
+							</li>
+							<li>
+								If you made a mistake, try and learn from it; if not, keep up the strong work! As you complete more questions you will be able to track your performance on the learning curve in your feedback.   
+							</li>
+						</ol>
+					</v-card-text>
+					<v-divider style="margin-bottom: 4px;"/>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="primary" @click="instructionDialog = false" style="margin-bottom: 4px;">
+							Continue
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+
 			<center><h2>Arterial Blood Gas</h2></center><br>
 			<v-layout text-xs-center wrap justify-center>
 				<v-tooltip top>
@@ -332,6 +375,7 @@
 		},
 		data() {
 			return {
+				instructionDialog: false,
 				activeChip: undefined as string | undefined,
 				addedDisturb: false,
 				timeElapsed: undefined as number | undefined,
@@ -495,6 +539,12 @@
 </script>
 
 <style>
+	.instruction-list {
+		margin-top: 14px;
+	}
+	.instruction-list li {
+		margin-top: 4px;
+	}
 	.answer-disturb-box {
 		min-width: 240px;
 		min-height: 120px;
