@@ -121,21 +121,21 @@
 							<h2>Interpreting: Delta Gap</h2>
 							<hr>
 							<p style="font-size: 115%; margin-top: 12px;">
-								Delta Gap = ΔΔ Gap = Δ Anion Gap - Δ Bicarb
+								Delta Gap = ΔΔ Gap = Δ Anion Gap - Δ Bicarb = <b>{{results.serumDeltaGap.gap}}</b>
 								<br>
 								Δ Anion Gap = (Serum Anion Gap - Upper Range of Normal Anion Gap)
 								<br>
 								Δ Bicarb = (Serum Bicarb - Upper Range of Normal Bicarb)
 							</p>
 							<v-layout wrap justify-center>
-								<div class="decision-box">
+								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap > 6 ? '#4CAF50' : '#333'}">
 									if &nbsp;<u>Delta Gap &gt; 6</u>&nbsp; then
 									<hr>
 									We have a superimposed <u>metabolic alkalosis</u>!
 									<hr>
 									Given the rise in anion gap is more than fall in bicarb.
 								</div>
-								<div class="decision-box">
+								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap < -6 ? '#4CAF50' : '#333'}">
 									if &nbsp;<u>Delta Gap &lt; -6</u>&nbsp; then
 									<hr>
 									We have a superimposed <u>metabolic acidosis</u>!
@@ -143,7 +143,7 @@
 									Given the rise in anion gap is less than fall in bicarb.
 								</div>
 								<br class="flex-break" style="margin: 10px 0;">
-								<div class="decision-box">
+								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap >= -6 && results.serumDeltaGap.gap <= 6 ? '#4CAF50' : '#333'}">
 									<b>OTHERWISE:</b>
 									<br>
 									There are no additional metabolic acid-base disorders present.
@@ -202,19 +202,25 @@
 									<v-chip :color="abg.bicarb > refRngs.aBicarb.upper ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
 									</v-chip>
-									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap > refRngs.DeltaGap.upper ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-up</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
-									</v-chip>
-									<br>
 									<v-chip :color="results.serumAnionGap.disturb == 'Normal' && abg.bicarb < refRngs.aBicarb.lower ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
 									</v-chip>
+									<br>
 									<v-chip :color="results.serumAnionGap.gap > refRngs.AnionGap.upper ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
 									</v-chip>
+									<hr>
+									<div class="ref-rng-box" style="margin-top: 4px; margin-bottom: 10px;">
+										<i>
+											IF ANION GAP PRESENT:
+										</i>
+									</div>
 									<br>
 									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap < refRngs.DeltaGap.upper ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-down</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+									</v-chip>
+									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap > refRngs.DeltaGap.upper ? 'success' : '#383838'">
+										<v-icon small>fa-arrow-up</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
 									</v-chip>
 								</div>
 							</v-layout>
@@ -267,7 +273,6 @@ export default Vue.extend({
 		margin: 5px 15px;
 		padding: 10px;
 		border-radius: 3px;
-		background-color: #333;
 	}
 	.decision-box u {
 		font-size: 110%;
