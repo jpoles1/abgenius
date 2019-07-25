@@ -4,9 +4,8 @@
 			title="ABGenius - Trainer"
 		/>
 		<div id="abg-data">
-			<v-dialog v-model="instructionDialog" width="500">
+			<v-dialog v-model="instructionDialog" max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown">
 				<template v-slot:activator="{ on }">
-					<!--@click="instructionDialog = !instructionDialog"-->
 					<v-btn color="primary" fab small dark v-on="on"
 					style="position: absolute; right: 20px; top: 6px;">
 						<v-icon>fa-question</v-icon>
@@ -40,7 +39,7 @@
 					<v-divider style="margin-bottom: 4px;"/>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="primary" @click="instructionDialog = false" style="margin-bottom: 4px;">
+						<v-btn color="primary" @click="instructionDialog = false" style="margin-bottom: 4px; margin-right: 6px;">
 							Continue
 						</v-btn>
 					</v-card-actions>
