@@ -310,7 +310,7 @@
 									<b>Anion Gap:</b>&nbsp; {{genBloodGas.serumAnionGap().gap.toFixed(1)}}
 								</v-chip>
 								<v-chip class="genius-disturb" @click="activateChipInfo('deltaGap')"
-								 v-if="results.serumAnionGap.disturb === 'Anion Gap' && results.serumDeltaGap.disturb === 'Delta Gap'" >
+								 v-if="results.serumAnionGap.disturb === 'Anion Gap'" >
 									<v-avatar class="error" v-if="genBloodGas.serumDeltaGap().disturb == 'Delta Gap'">        
 										<v-icon>fas fa-arrows-alt-h</v-icon>
 									</v-avatar>
@@ -365,6 +365,11 @@
 
 	import CalcInfoPanel from "@/components/CalcInfoPanel.vue";
 	import LearningCurve from "@/components/LearningCurve.vue";
+
+	const generatorDisturbs = Object.entries(abgGenerators).reduce((agg, [genName, gen]) => {
+		agg[JSON.stringify(gen()[1])] = genName;
+		return agg;
+	}, {} as {[disturbs: string]: string});
 
 	import Vue from "vue";
 	export default Vue.extend({
@@ -433,16 +438,49 @@
 					this.$toast(`Failed to save response (Err Code: ${err.respCode})`, {color: "#d98303"});
 				});
 			},
-			loadAnswerData() {
+			loadAnswerData(): Promise<any> {
 				const apiURL = this.$store.state.api_url + "/api/answer/list";
-				jajax.getJSON(apiURL, this.$store.state.jwtToken).then((data: any) => {
-					this.answerData = data.reverse();
+				return jajax.getJSON(apiURL, this.$store.state.jwtToken).then((data: any) => {
+					this.answerData = (data || []).reverse();
 				}).catch((err) => {
 					this.$toast(`Failed to fetch answer data (Err Code: ${err.respCode})`, {color: "#d98303"});
 				});
 			},
+			selectNewGenerator(): string {
+				// We first construct an Object with a key for each generator name, and a zero initial count.
+				const startObj = Object.keys(abgGenerators).reduce((agg, genName) => {
+					agg[genName] = 0;
+					return agg;
+				}, {} as {[q: string]: number});
+				// Now we count up the generators used in the questions already answered by the user.
+				const genCounts = this.answerData.reduce((agg, x) => {
+					const disturbName = generatorDisturbs[JSON.stringify(x.genius)];
+					if (disturbName === undefined) return agg;
+					// We count for two exposures if the user has gotten the answer correct
+					// Thus incorrectly answered scenarios will appear more frequently
+					agg[disturbName] += 1 * (x.grade === 100 ? 2 : 1);
+					return agg;
+				}, startObj);
+				// Sum up the reciprocal of the counts for each generator to get a weight for selection
+				const countSum: number = Object.values(genCounts).reduce((agg, genCount) => {
+					return agg + (1 / Math.max(genCount, 1));
+				}, 0);
+				// Generate a random float between 0 and 1
+				const randNum = Math.random();
+				// Iterate over the disturbs, picking the generator which owns a given "weight window" between 0 and 1
+				// Generators seen less frequently will have a larger window and are thus most likely to be selected
+				// If we get to the last window and we still haven't picked a generator, then we should pick the last generator in the list
+				let iterSum = 0;
+				return (Object.entries(genCounts).find(([genNames, genCount]) => {
+					iterSum = iterSum +  (1 / Math.max(genCount, 1));
+					return (iterSum / countSum) > randNum;
+				}) || [Object.keys(genCounts)[Object.keys(genCounts).length - 1]])[0];
+			},
 			nextABG() {
-				const randomGen = Object.keys(abgGenerators)[Math.floor(Math.random() * Object.keys(abgGenerators).length)];
+				// Naive random selection
+				// const randomGen = Object.keys(abgGenerators)[Math.floor(Math.random() * Object.keys(abgGenerators).length)];
+				// Experience-weighted random selection
+				const randomGen = this.selectNewGenerator();
 				this.answerSumitted = false;
 				this.showGaps = false;
 				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
@@ -530,8 +568,7 @@
 		},
 		mounted() {
 			this.$nextTick(function() {
-				this.nextABG();
-				this.loadAnswerData();
+				this.loadAnswerData().then(() => this.nextABG());
 			});
 		},
 	});
