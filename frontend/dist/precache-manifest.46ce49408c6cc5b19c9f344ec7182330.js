@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/robots.txt"
   },
   {
-    "revision": "2bf1a8bd5cb9cdd67da1",
-    "url": "/js/chunk-vendors.9c6c47a1.js"
+    "revision": "999e819dd331b8f64a94",
+    "url": "/js/chunk-vendors.242f2c94.js"
   },
   {
-    "revision": "3ed66167f06db0b6ac09",
-    "url": "/js/app.12f4507c.js"
+    "revision": "a1e530e5db0830185d3b",
+    "url": "/js/app.62a34b1a.js"
   },
   {
     "revision": "de1f713075e31f01e6a7",
     "url": "/js/about.32b639b0.js"
   },
   {
-    "revision": "e0521dd92c91e9d29f25a26b872c241b",
+    "revision": "5c9eb2c50c887d410694f866b6bfa5b6",
     "url": "/index.html"
   },
   {
@@ -28,11 +28,11 @@ self.__precacheManifest = [
     "url": "/img/co2_to_bicarb.png"
   },
   {
-    "revision": "2bf1a8bd5cb9cdd67da1",
-    "url": "/css/chunk-vendors.9979fc78.css"
+    "revision": "999e819dd331b8f64a94",
+    "url": "/css/chunk-vendors.b710d6ca.css"
   },
   {
-    "revision": "3ed66167f06db0b6ac09",
+    "revision": "a1e530e5db0830185d3b",
     "url": "/css/app.cb5169a1.css"
   }
 ];
