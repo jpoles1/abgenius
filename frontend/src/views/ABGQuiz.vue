@@ -310,7 +310,7 @@
 									<b>Anion Gap:</b>&nbsp; {{genBloodGas.serumAnionGap().gap.toFixed(1)}}
 								</v-chip>
 								<v-chip class="genius-disturb" @click="activateChipInfo('deltaGap')"
-								 v-if="results.serumAnionGap.disturb === 'Anion Gap' && results.serumDeltaGap.disturb === 'Delta Gap'" >
+								 v-if="results.serumAnionGap.disturb === 'Anion Gap'" >
 									<v-avatar class="error" v-if="genBloodGas.serumDeltaGap().disturb == 'Delta Gap'">        
 										<v-icon>fas fa-arrows-alt-h</v-icon>
 									</v-avatar>
