@@ -216,7 +216,7 @@
 										</i>
 									</div>
 									<br>
-									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap < refRngs.DeltaGap.upper ? 'success' : '#383838'">
+									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap < refRngs.DeltaGap.lower ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-down</v-icon>Delta Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
 									</v-chip>
 									<v-chip :color="results.serumAnionGap.disturb != 'Normal' && results.serumDeltaGap.gap > refRngs.DeltaGap.upper ? 'success' : '#383838'">
