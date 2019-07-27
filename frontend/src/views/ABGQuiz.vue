@@ -252,7 +252,7 @@
 							</center>
 							<br class="flex-break" style="margin: 10px;">
 							<center>
-								<b>Your Answer (in {{timeElapsed}} sec):</b>
+								<b>Your Answer (took {{timeElapsed}} sec):</b>
 								<br>
 								<v-chip v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex">
 									<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
@@ -276,7 +276,7 @@
 							</center>
 							<br class="flex-break" style="margin: 10px;">
 							<center id="info-chips">
-								<b>Genius Answer:</b>
+								<b>Genius Answer (click for explanation):</b>
 								<br>
 								<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex"  
 								@click="activateChipInfo(disturb[0])" :class="{'genius-disturb': disturb[0] !== 'Normal'}">
