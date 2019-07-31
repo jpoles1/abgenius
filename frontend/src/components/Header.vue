@@ -1,25 +1,25 @@
 <template>
 	<v-toolbar app>
 		<v-toolbar-title class="headline">
-			<a href="/" class="header-logo">
+			<a to="/" class="header-logo">
 				<span>ABG</span>
 				<span class="font-weight-light">enius</span>
 			</a>
 		</v-toolbar-title>
 		<v-spacer></v-spacer>
-		<v-btn href="/" v-if="$route.path != '/'" class="header-nav">
+		<v-btn to="/" v-if="$route.path != '/'" class="header-nav">
 			<span class="mr-2">Genius</span>
 			<v-icon>fas fa-user-cog</v-icon>
 		</v-btn>
-		<v-btn href="/quiz" v-if="$route.path != '/quiz'" class="header-nav">
+		<v-btn to="/quiz" v-if="$route.path != '/quiz'" class="header-nav">
 			<span class="mr-2">Quiz</span>
 			<v-icon>fas fa-question-circle</v-icon>
 		</v-btn>
-		<v-btn href="/login" v-if="Object.keys($store.state.jwtClaims).length === 0" class="header-nav">
+		<v-btn to="/login" v-if="Object.keys($store.state.jwtClaims).length === 0" class="header-nav">
 			<span class="mr-2">Login</span>
 			<v-icon>fas fa-key</v-icon>
 		</v-btn>
-		<v-btn href="/logout" v-else class="header-nav">
+		<v-btn to="/logout" v-else class="header-nav">
 			<span class="mr-2">Logout</span>
 			<v-icon>fas fa-door-open</v-icon>
 		</v-btn>

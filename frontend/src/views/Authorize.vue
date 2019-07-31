@@ -77,7 +77,7 @@
 						const authSource = (urlParams.source as string).replace(/~~/g, "?").replace(/~/g, "&");
 						window.location.href = authSource;
 					} else {
-						window.location.href = "/";
+						this.$router.replace("/quiz");
 					}
 				}).catch(([xhrStatus]) => {
 					this.serverError = xhrStatus;

@@ -34,7 +34,7 @@
 				Sentry.configureScope((scope) => {
 					scope.setUser({});
 				});
-				window.location.href = "/";
+				this.$router.replace("/");
 			});
 		},
 	});
