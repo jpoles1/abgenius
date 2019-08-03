@@ -13,10 +13,10 @@
 				</template>
 				<v-card>
 					<div class="headline grey darken-2" style="text-align: center; padding: 12px;" primary-title>
-						Trainer Instructions
+						ABG Trainer Instructions
 					</div>
 					<v-card-text style="text-align: justify; padding: 16px 22px;">
-						The ABGenius Trainer allows you to hone your skills in arterial blood gas interpretation.
+						The ABGenius trainer allows you to hone your skills in arterial blood gas interpretation.
 						Use this as a low stress environment, where you should feel free to make mistakes as long as you learn from them!
 						Here's how you can get started:
 						<ol class="instruction-list">
