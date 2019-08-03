@@ -5,7 +5,7 @@
 		</div>
 		<div v-else>
 			<h2>There is no data to display.</h2>
-			<h3><i>Please complete some <a href="/quiz">quiz</a> questions</i></h3>
+			<h3><i>Please complete some more <a href="/train">questions</a></i></h3>
 		</div>
 	</center>
 </template>
