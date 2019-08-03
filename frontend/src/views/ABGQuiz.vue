@@ -29,10 +29,10 @@
 								Scroll down to the section entitled "Interpret this ABG" and click on each of the acid-base disturbances which you believe are present.
 							</li>
 							<li>
-								When you are ready, click "submit" and you will be able to see the ABGenius' answer. Click on each acid-base disturbance in the correct answer to learn more.
+								When you are ready, click "submit" and you will be able to see the ABGenius answer. Click on each acid-base disturbance in the correct answer to learn more.
 							</li>
 							<li>
-								If you made a mistake, try and learn from it; if not, keep up the strong work! As you complete more questions you will be able to track your performance on the learning curve in your feedback.   
+								If you made a mistake, try and learn from it; if not, keep up the strong work! As you complete more questions you will be able to track your performance on the learning curve in your feedback panel.   
 							</li>
 						</ol>
 					</v-card-text>
@@ -236,7 +236,7 @@
 					Answer
 					<v-icon>fa-stethoscope</v-icon>
 				</v-tab>
-				<v-tab href="#performance-tab" class="review-tab" v-if="answerData && answerData.length > 1"
+				<v-tab href="#performance-tab" class="review-tab" v-if="answerData && answerData.length > 0"
 				@click="goTo('#feedback-tabs', { 'offset': 20 })">
 					Learning Curve
 					<v-icon>fa-chart-line</v-icon>
@@ -442,6 +442,10 @@
 				const apiURL = this.$store.state.api_url + "/api/answer/list";
 				return jajax.getJSON(apiURL, this.$store.state.jwtToken).then((data: any) => {
 					this.answerData = (data || []).reverse();
+					// If the user has not yet answered any questions, show them the instructions
+					if (this.answerData.length < 1) {
+						this.instructionDialog = true;
+					}
 				}).catch((err) => {
 					this.$toast(`Failed to fetch answer data (Err Code: ${err.respCode})`, {color: "#d98303"});
 				});
