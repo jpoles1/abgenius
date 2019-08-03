@@ -4,8 +4,8 @@ import Login from "./views/Login.vue";
 import Authorize from "./views/Authorize.vue";
 import Logout from "./views/Logout.vue";
 import ABGCalc from "./views/ABGCalc.vue";
-import ABGQuiz from "./views/ABGQuiz.vue";
-import QuizDash from "./views/QuizDash.vue";
+import ABGTrain from "./views/ABGTrain.vue";
+import TrainDash from "./views/TrainDash.vue";
 import TOS from "./views/TOS.vue";
 
 Vue.use(Router);
@@ -20,14 +20,14 @@ export default new Router({
 			component: ABGCalc,
 		},
 		{
-			path: "/quiz",
-			name: "quiz",
-			component: ABGQuiz,
+			path: "/train",
+			name: "train",
+			component: ABGTrain,
 		},
 		{
 			path: "/dash",
 			name: "dash",
-			component: QuizDash,
+			component: TrainDash,
 		},
 		{
 			path: "/login",

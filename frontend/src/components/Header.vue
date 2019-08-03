@@ -11,8 +11,8 @@
 			<span class="mr-2">Genius</span>
 			<v-icon>fas fa-user-cog</v-icon>
 		</v-btn>
-		<v-btn to="/quiz" v-if="$route.path != '/quiz'" class="header-nav">
-			<span class="mr-2">Quiz</span>
+		<v-btn to="/train" v-if="$route.path != '/train'" class="header-nav">
+			<span class="mr-2">Train</span>
 			<v-icon>fas fa-question-circle</v-icon>
 		</v-btn>
 		<v-btn to="/login" v-if="Object.keys($store.state.jwtClaims).length === 0" class="header-nav">
