@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
+import UserProfile from "./views/UserProfile.vue";
 import Authorize from "./views/Authorize.vue";
 import Logout from "./views/Logout.vue";
 import ABGCalc from "./views/ABGCalc.vue";
@@ -28,6 +29,11 @@ export default new Router({
 			path: "/dash",
 			name: "dash",
 			component: TrainDash,
+		},
+		{
+			path: "/profile",
+			name: "profile",
+			component: UserProfile,
 		},
 		{
 			path: "/login",

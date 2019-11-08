@@ -1,3 +1,5 @@
+export const TrainingLevels = ["Undergraduate", "Medical School", "Residency", "Fellowship", "Attending", "Nursing School", "NP", "RN", "Other"];
+
 export interface LearnerProfile {
 	id?: string;
 	pubid?: string;

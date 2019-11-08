@@ -35,7 +35,7 @@ func (h APIHandler) GetUserAnswers(w http.ResponseWriter, r *http.Request) {
 	_, claims, _ := jwtauth.FromContext(r.Context())
 	answerList, ce := h.Controller.FindAnswersByQuery(bson.M{
 		"lid": bson.ObjectIdHex(claims["id"].(string)),
-	});
+	})
 	if ce.HasErrors() {
 		handleControllerErrors(w, 500, "Cannot fetch answer list", ce)
 		return
