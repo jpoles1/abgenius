@@ -19,7 +19,8 @@ func APIRouter(r chi.Router, apiHandler APIHandler) chi.Router {
 		r.Group(func(r chi.Router) {
 			//r.Use(apiHandler.TOSWall)
 			r.Route("/user/", func(r chi.Router) {
-				r.Get("/", apiHandler.GetUserProfile)
+				r.Get("/profile", apiHandler.GetUserProfile)
+				r.Post("/profile", apiHandler.PostUserProfile)
 			})
 			r.Route("/answer/", func(r chi.Router) {
 				r.Post("/submit", apiHandler.PostSubmitAnswer)
