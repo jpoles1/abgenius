@@ -1,18 +1,18 @@
 <template>
 	<div>
-		<v-navigation-drawer v-model="drawer" app clipped mobile-break-point="600" width="180" touchless>
+		<v-navigation-drawer v-model="drawer" app clipped mobile-break-point="600" width="180" v-if="$vuetify.breakpoint.xsOnly">
 			<v-list shaped>
-				<v-list-item link v-for="(navEntry, navIndex) in navList" :key="navIndex"
+				<v-list-tile v-for="(navEntry, navIndex) in navList" :key="navIndex"
 				:to="navEntry.url" @click="drawer=false;" :draggable="false">
-					<v-list-item-icon v-if="navEntry.icon" style="margin-right: 0px;">
+					<v-list-tile-action v-if="navEntry.icon" style="margin-right: 0px;">
 						<v-icon>{{navEntry.icon || "grip-lines"}}</v-icon>
-					</v-list-item-icon>
-					<v-list-item-content>
-						<v-list-item-title style="font-size: 120%;">
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title style="font-size: 120%;">
 							{{navEntry.name}}
-						</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
+						</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
 			</v-list>
 		</v-navigation-drawer>
 		<v-toolbar app>
@@ -23,7 +23,7 @@
 			</span>
 			<v-toolbar-title class="headline">
 				<a to="/" class="header-logo">
-					<span>ABG</span>{{drawer}}
+					<span>ABG</span>
 					<span class="font-weight-light">enius</span>
 				</a>
 			</v-toolbar-title>
