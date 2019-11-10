@@ -142,7 +142,7 @@
 									<hr>
 									Given the rise in anion gap is less than fall in bicarb.
 								</div>
-								<br class="flex-break" style="margin: 10px 0;">
+								<div class="flex-break" style="margin: 10px 0;" />
 								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap >= -6 && results.serumDeltaGap.gap <= 6 ? '#4CAF50' : '#333'}">
 									<b>OTHERWISE:</b>
 									<br>

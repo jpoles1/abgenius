@@ -198,7 +198,7 @@
 					</div>
 				</v-sheet>-->
 				<h2>Your Answer<span v-if="learnerAnswer.length > 0"> (click to remove)</span>:</h2>
-				<br class="flex-break" style="margin: 10px;">
+				<div class="flex-break" style="margin: 10px;"/>
 				<v-btn v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex" 
 				@click="deleteDisturb(disturb)" round class="disturb-btn">	
 					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
@@ -249,7 +249,7 @@
 									Score: {{gradeAnswer}}%
 								</v-sheet>
 							</center>
-							<br class="flex-break" style="margin: 10px;">
+							<div class="flex-break" style="margin: 10px;"/>
 							<center>
 								<b>Your Answer (took {{timeElapsed}} sec):</b>
 								<br>
@@ -273,7 +273,7 @@
 									</div>
 								</v-chip>
 							</center>
-							<br class="flex-break" style="margin: 10px;">
+							<div class="flex-break" style="margin: 10px;"/>
 							<center id="info-chips">
 								<b>Genius Answer (click for explanation):</b>
 								<br>
@@ -319,7 +319,7 @@
 									<b>Delta Gap:</b>&nbsp; {{genBloodGas.serumDeltaGap().gap.toFixed(1)}}
 								</v-chip>
 							</center>
-							<br class="flex-break" style="margin: 10px;">
+							<div class="flex-break" style="margin: 10px;"/>
 							<transition name="infos" mode="out-in">
 								<CalcInfoPanel id="genius-info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="genBloodGas.abg" :results="results"/>
 							</transition>
