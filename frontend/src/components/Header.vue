@@ -19,10 +19,16 @@
 			<span class="mr-2">Login</span>
 			<v-icon>fas fa-key</v-icon>
 		</v-btn>
-		<v-btn to="/logout" v-else class="header-nav">
-			<span class="mr-2">Logout</span>
-			<v-icon>fas fa-door-open</v-icon>
-		</v-btn>
+		<span v-else>
+			<v-btn to="/profile" class="header-nav">
+				<span class="mr-2">Profile</span>
+				<v-icon>fas fa-id-card</v-icon>
+			</v-btn>
+			<v-btn to="/logout" class="header-nav">
+				<span class="mr-2">Logout</span>
+				<v-icon>fas fa-door-open</v-icon>
+			</v-btn>
+		</span>
 	</v-toolbar>
 </template>
 
