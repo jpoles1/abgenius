@@ -1,40 +1,69 @@
 <template>
-	<v-toolbar app>
-		<v-toolbar-title class="headline">
-			<a to="/" class="header-logo">
-				<span>ABG</span>
-				<span class="font-weight-light">enius</span>
-			</a>
-		</v-toolbar-title>
-		<v-spacer></v-spacer>
-		<v-btn to="/" v-if="$route.path != '/'" class="header-nav">
-			<span class="mr-2">Genius</span>
-			<v-icon>fas fa-user-cog</v-icon>
-		</v-btn>
-		<v-btn to="/train" v-if="$route.path != '/train'" class="header-nav">
-			<span class="mr-2">Train</span>
-			<v-icon>fas fa-question-circle</v-icon>
-		</v-btn>
-		<v-btn to="/login" v-if="Object.keys($store.state.jwtClaims).length === 0" class="header-nav">
-			<span class="mr-2">Login</span>
-			<v-icon>fas fa-key</v-icon>
-		</v-btn>
-		<span v-else>
-			<v-btn to="/profile" class="header-nav">
-				<span class="mr-2">Profile</span>
-				<v-icon>fas fa-id-card</v-icon>
-			</v-btn>
-			<v-btn to="/logout" class="header-nav">
-				<span class="mr-2">Logout</span>
-				<v-icon>fas fa-door-open</v-icon>
-			</v-btn>
-		</span>
-	</v-toolbar>
+	<div>
+		<v-navigation-drawer v-model="drawer" app clipped mobile-break-point="600" width="180" touchless>
+			<v-list shaped>
+				<v-list-item link v-for="(navEntry, navIndex) in navList" :key="navIndex"
+				:to="navEntry.url" @click="drawer=false;" :draggable="false">
+					<v-list-item-icon v-if="navEntry.icon" style="margin-right: 0px;">
+						<v-icon>{{navEntry.icon || "grip-lines"}}</v-icon>
+					</v-list-item-icon>
+					<v-list-item-content>
+						<v-list-item-title style="font-size: 120%;">
+							{{navEntry.name}}
+						</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+			</v-list>
+		</v-navigation-drawer>
+		<v-toolbar app>
+			<span v-if="$vuetify.breakpoint.xsOnly">
+				<div @click="drawer = !drawer">
+					<v-icon>fa-bars</v-icon>
+				</div>
+			</span>
+			<v-toolbar-title class="headline">
+				<a to="/" class="header-logo">
+					<span>ABG</span>{{drawer}}
+					<span class="font-weight-light">enius</span>
+				</a>
+			</v-toolbar-title>
+			<v-spacer v-if="$vuetify.breakpoint.smAndUp" />
+			<span v-if="$vuetify.breakpoint.smAndUp">
+				<v-btn :to="navEntry.url" class="header-nav"  v-for="(navEntry, navIndex) in navList" :key="navIndex">
+					<span class="mr-2">{{navEntry.name}}</span>
+					<v-icon>fas {{navEntry.icon}}</v-icon>
+				</v-btn>
+			</span>
+		</v-toolbar>
+	</div>
 </template>
 
 <script lang="ts">
 	import Vue from "vue";
 	export default Vue.extend({
+		data() {
+			return {
+				drawer: false,
+			};
+		},
+		computed: {
+			navList(): any {
+				const navList = [];
+				if (this.$route.path !== "/train") {
+					navList.push({ name: "Train", icon: "fa-question-circle", url: "/train" });
+				}
+				if (this.$route.path !== "/") {
+					navList.push({ name: "Genius", icon: "fa-user-cog", url: "/" });
+				}
+				if (Object.keys(this.$store.state.jwtClaims).length === 0) {
+					navList.push({ name: "Login", icon: "fa-key", url: "/login" });
+				} else {
+					navList.push({ name: "Profile", icon: "fa-id-card", url: "/profile" });
+					navList.push({ name: "Logout", icon: "fa-door-open", url: "/logout" });
+				}
+				return navList;
+			},
+		},
 	});
 </script>
 
@@ -56,4 +85,5 @@
 		color: #dc97ff;
 		transition: 0.8s;
 		transition-delay: 0s;
-	}</style>
+	}
+</style>
