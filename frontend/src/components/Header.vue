@@ -15,7 +15,7 @@
 				</v-list-item>
 			</v-list>
 		</v-navigation-drawer>
-		<v-toolbar app>
+		<v-toolbar>
 			<span v-if="$vuetify.breakpoint.xsOnly">
 				<div @click="drawer = !drawer">
 					<v-icon>fa-bars</v-icon>
@@ -23,7 +23,7 @@
 			</span>
 			<v-toolbar-title class="headline">
 				<a to="/" class="header-logo">
-					<span>ABG</span>{{drawer}}
+					<span>ABG</span>
 					<span class="font-weight-light">enius</span>
 				</a>
 			</v-toolbar-title>

@@ -1,5 +1,5 @@
 <template>
-	<v-container>
+	<v-container dark>
 		<headful
 			title="ABGenius - Trainer"
 		/>
@@ -133,7 +133,7 @@
 				<i>Peek at Gap Calculations</i>
 			</v-btn>
 			<div v-if="showGaps" style="display: flex; justify-content: center;">
-				<v-chip>
+				<v-chip pill>
 					<v-avatar class="error" v-if="genBloodGas.serumAnionGap().disturb == 'Anion Gap'">        
 						<v-icon>fas fa-arrows-alt-h</v-icon>
 					</v-avatar>
@@ -143,7 +143,7 @@
 					<b>Anion Gap:</b>&nbsp; {{genBloodGas.serumAnionGap().gap.toFixed(1)}}
 				</v-chip>
 				<div style="width: 20px"></div>
-				<v-chip>
+				<v-chip pill>
 					<v-avatar class="error" v-if="genBloodGas.serumDeltaGap().disturb == 'Delta Gap'">        
 						<v-icon>fas fa-arrows-alt-h</v-icon>
 					</v-avatar>
@@ -162,7 +162,7 @@
 				<div v-if="addableDisturb.length > 0">
 					<v-btn v-for="(disturb, disturbIndex) in addableDisturb" :key="disturbIndex" 
 					@click="addDisturb(disturb); addedDisturb=true;"
-					:class="{'add-disturb-btn': !addedDisturb, 'disturb-btn': true}" round>	
+					:class="{'add-disturb-btn': !addedDisturb, 'disturb-btn': true}" rounded>	
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
 							fa-wind
 						</v-icon>
@@ -200,7 +200,7 @@
 				<h2>Your Answer<span v-if="learnerAnswer.length > 0"> (click to remove)</span>:</h2>
 				<br class="flex-break" style="margin: 10px;">
 				<v-btn v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex" 
-				@click="deleteDisturb(disturb)" round class="disturb-btn">	
+				@click="deleteDisturb(disturb)" rounded class="disturb-btn">	
 					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
 						fa-wind
 					</v-icon>
@@ -350,7 +350,7 @@
 	import { abgGenerators } from "@/components/BloodGasGen";
 	import * as jajax from "@/jajax";
 	import { arrayEq } from "@/util";
-	import goTo from "vuetify/lib/components/Vuetify/goTo";
+	import goTo from "vuetify/es5/services/goto";
 
 	import BrowserInteractionTime from "browser-interaction-time";
 	const BIT = new BrowserInteractionTime({
@@ -626,7 +626,8 @@
 			background: transparent;
 		}
 	}
-	.genius-disturb.v-chip .v-chip__content  {
+	.genius-disturb.v-chip  {
+		background-color: #212121;
 		animation: genius-disturb-pulse 1.4s ease-in-out infinite alternate;
 	}
 	#genius-info-panel {

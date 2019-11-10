@@ -233,22 +233,24 @@
 			<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
 		</transition>
 		<br>
-		<v-expansion-panel>
-			<v-expansion-panel-content>
-				<template v-slot:header>
-					<div>Auto-Generate ABG</div>
-				</template>
-				<v-card style="padding: 20px; box-shadow: 0px 0px 5px #202020 inset !important;">
-					<center>
-						<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 380px; max-width: 100%;"/>
-						<br>
-						<v-btn color="primary" @click="generateABG">
-							Generate
-						</v-btn>
-					</center>
-				</v-card>
-			</v-expansion-panel-content>
-		</v-expansion-panel>
+		<v-expansion-panels>
+			<v-expansion-panel>
+				<v-expansion-panel-content>
+					<template v-slot:header>
+						<div>Auto-Generate ABG</div>
+					</template>
+					<v-card style="padding: 20px; box-shadow: 0px 0px 5px #202020 inset !important;">
+						<center>
+							<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 380px; max-width: 100%;"/>
+							<br>
+							<v-btn color="primary" @click="generateABG">
+								Generate
+							</v-btn>
+						</center>
+					</v-card>
+				</v-expansion-panel-content>
+			</v-expansion-panel>
+		</v-expansion-panels>
 		<br><br>
 		<ReferenceList/>
 	</v-container>
@@ -261,7 +263,7 @@
 	import ReferenceList from "@/components/ReferenceList.vue";
 
 	import Vue from "vue";
-	import goTo from "vuetify/lib/components/Vuetify/goTo";
+	import goTo from "vuetify/es5/services/goto";
 	export default Vue.extend({
 		components: {
 			CalcInfoPanel,
