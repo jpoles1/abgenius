@@ -184,11 +184,12 @@ export class BloodGas {
 						// Rise in AG is less than fall in HCO3
 						disturbList.push([DisturbType.MetAcid]);
 					}
-				} else {
+				} else if (this.abg.bicarb! - 1 <= (24 - ((RefRngMidpoint("PaCO2") - this.abg.PaCO2!) / 2))) {
 					// We have a non-gap metabolic acidosis
 					disturbList.push([DisturbType.MetAcid]);
 				}
-			} else if (this.abg.bicarb! > RefRngs.aBicarb!.upper) {
+			} else if (this.abg.bicarb! + 2 >= Math.max(RefRngs.aBicarb!.upper, ((this.abg.PaCO2! - RefRngMidpoint("PaCO2")) / 3) + 24)) {
+				//TODO: why did I have to add two to bicarb in the above conditional??
 				// We have a metabolic alkalosis
 				disturbList.push([DisturbType.MetAlk]);
 			}

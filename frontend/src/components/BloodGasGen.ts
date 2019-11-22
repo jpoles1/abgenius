@@ -23,7 +23,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	"Normal": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.pH = randFloat(RefRngMidpoint("apH") - 0.02, RefRngMidpoint("apH") + 0.02, truncateValues ? 2 : floatLenMax);
-		newGas.abg.PaCO2 = randFloat(RefRngMidpoint("PaCO2") - 2, RefRngMidpoint("PaCO2") + 2, truncateValues ? 0 : floatLenMax);
+		newGas.abg.PaCO2 = randFloat(RefRngMidpoint("PaCO2") - 1.4, RefRngMidpoint("PaCO2") + 1.4, truncateValues ? 0 : floatLenMax);
 		newGas.abg.bicarb = floatFix(newGas.bicarbExpected(), truncateValues ? 0 : floatLenMax);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, truncateValues ? 0 : floatLenMax);
 		newGas.abg.Cl = randFloat(
@@ -85,7 +85,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		);
 		return [newGas, [[DisturbType.RespAlk], [DisturbType.MetAcid]]];
 	},
-	"Metabolic Alkalosis": (truncateValues: boolean = true) => {
+	"Uncompensated Metabolic Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.bicarb = randFloat(RefRngs.aBicarb!.upper + 1, upperLimitBicarb, truncateValues ? 0 : floatLenMax);
 		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.lower, RefRngs.PaCO2!.upper, truncateValues ? 0 : floatLenMax);
@@ -113,7 +113,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		);
 		return [newGas, [[DisturbType.MetAlk], [DisturbType.RespAcid]]];
 	},
-	"Metabolic Acidosis": (truncateValues: boolean = true) => {
+	"Uncompensated Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
 		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.lower, RefRngs.PaCO2!.upper, truncateValues ? 0 : floatLenMax);

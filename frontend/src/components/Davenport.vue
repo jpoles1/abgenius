@@ -1,6 +1,8 @@
 <template>
 	<div class="davenport-diagram">
-		<svg :width="width" :height="height"/>
+		<div style="transform: scale(0.9);">
+			<svg :width="width" :height="height"/>
+		</div>
 		<v-btn @click="genDiagramData(); plotDavenport();">Regen</v-btn>
 	</div>
 </template>
@@ -81,7 +83,7 @@
 				colorScale.push("orange");
 				colorScale.push("black");
 				// Tooltips
-				const tooltip =  d3.tip().attr("class", "davenport-tooltip").html((d: DavenportDatum) => d[0]);
+				const tooltip =  d3.tip().attr("class", "davenport-tooltip").html((d: DavenportDatum) => "Actual: " + d[0] + "<br>Guess: " + d[1][0].guessDisturbances());
 				plotArea.call(tooltip);
 				// Add dots
 				plotArea.append("g")
@@ -94,7 +96,7 @@
 					})
 					.attr("cx", (d: DavenportDatum) => xAxis(d[1][0].abg.pH!))
 					.attr("cy", (d: DavenportDatum) => yAxis(d[1][0].abg.bicarb!))
-					.attr("opacity", 0.5)
+					.attr("opacity", 0.25)
 					.attr("r", 4.5)
 					.on("mouseover", tooltip.show)
 					.on("mouseout", tooltip.hide)
