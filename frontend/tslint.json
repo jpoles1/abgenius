@@ -21,6 +21,7 @@
     "no-bitwise": false,
     "no-var-requires": false,
     "no-string-literal": false,
-    "comment-format": false
+    "comment-format": false,
+    "array-type": false
   }
 }

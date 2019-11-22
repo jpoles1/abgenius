@@ -32,10 +32,10 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 		);
 		return [newGas, [[DisturbType.Normal]]];
 	},
-	"Respiratory Acidosis": () => {
+	"Acute Respiratory Acidosis": () => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.upper + 1, upperLimitPaCO2, 0);
-		newGas.abg.bicarb = randFloat(RefRngs.aBicarb!.lower, RefRngs.aBicarb!.upper, 0);
+		newGas.abg.bicarb = floatFix((((newGas.abg.PaCO2 - RefRngMidpoint("PaCO2")) / 10) + 24), 0);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, 0);
 		newGas.abg.Cl = randFloat(
@@ -45,10 +45,36 @@ export const abgGenerators: {[disturb: string]: () => [BloodGas, DisturbType[][]
 		);
 		return [newGas, [[DisturbType.RespAcid]]];
 	},
-	"Respiratory Alkalosis": () => {
+	"Chronic Respiratory Acidosis": () => {
+		const newGas = new BloodGas({abg: {}});
+		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.upper + 1, upperLimitPaCO2, 0);
+		newGas.abg.bicarb = floatFix((((newGas.abg.PaCO2 - RefRngMidpoint("PaCO2")) / 3) + 24), 0);
+		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
+		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, 0);
+		newGas.abg.Cl = randFloat(
+			newGas.abg.Na - (RefRngs.AnionGap!.upper - 1 + newGas.abg.bicarb!),
+			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
+			0,
+		);
+		return [newGas, [[DisturbType.RespAcid]]];
+	},
+	"Acute Respiratory Alkalosis": () => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 1, 0);
-		newGas.abg.bicarb = randFloat(RefRngs.aBicarb!.lower, RefRngs.aBicarb!.upper, 0);
+		newGas.abg.bicarb = floatFix(24 - ((RefRngMidpoint("PaCO2") - newGas.abg.PaCO2) / 5), 0);
+		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
+		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, 0);
+		newGas.abg.Cl = randFloat(
+			newGas.abg.Na - (RefRngs.AnionGap!.upper - 1 + newGas.abg.bicarb!),
+			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
+			0,
+		);
+		return [newGas, [[DisturbType.RespAlk]]];
+	},
+	"Chronic Respiratory Alkalosis": () => {
+		const newGas = new BloodGas({abg: {}});
+		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 1, 0);
+		newGas.abg.bicarb = floatFix(24 - ((RefRngMidpoint("PaCO2") - newGas.abg.PaCO2) / 2), 0);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), 2);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, 0);
 		newGas.abg.Cl = randFloat(

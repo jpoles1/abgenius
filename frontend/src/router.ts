@@ -7,6 +7,7 @@ import Logout from "./views/Logout.vue";
 import ABGCalc from "./views/ABGCalc.vue";
 import ABGTrain from "./views/ABGTrain.vue";
 import TrainDash from "./views/TrainDash.vue";
+import Davenport from "./components/Davenport.vue";
 import TOS from "./views/TOS.vue";
 
 Vue.use(Router);
@@ -29,6 +30,11 @@ export default new Router({
 			path: "/dash",
 			name: "dash",
 			component: TrainDash,
+		},
+		{
+			path: "/davenport",
+			name: "davenport",
+			component: Davenport,
 		},
 		{
 			path: "/profile",
