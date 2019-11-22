@@ -366,7 +366,7 @@
 	import LearningCurve from "@/components/LearningCurve.vue";
 
 	const generatorDisturbs = Object.entries(abgGenerators).reduce((agg, [genName, gen]) => {
-		agg[JSON.stringify(gen()[1])] = genName;
+		agg[JSON.stringify(gen(true)[1])] = genName;
 		return agg;
 	}, {} as {[disturbs: string]: string});
 
@@ -486,7 +486,7 @@
 				const randomGen = this.selectNewGenerator();
 				this.answerSumitted = false;
 				this.showGaps = false;
-				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen]();
+				[this.genBloodGas, this.geniusAnswer] = abgGenerators[randomGen](true);
 				this.learnerAnswer = [];
 				this.addedDisturb = false;
 				this.activeChip = undefined;

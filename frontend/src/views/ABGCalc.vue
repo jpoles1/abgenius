@@ -277,7 +277,7 @@
 				activeChip: undefined as string | undefined,
 				validABG: true,
 				refRngs: BG.RefRngs,
-				userBloodGas: abgGenerators["Normal"]()[0],
+				userBloodGas: abgGenerators["Normal"](true)[0],
 				results: {
 					serumAnionGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
 					serumDeltaGap: {gap: NaN, disturb: BG.DisturbType.Unknown} as BG.Gap,
@@ -305,7 +305,7 @@
 		},
 		methods: {
 			generateABG() {
-				const genABG = abgGenerators[this.abgGenPick]()[0];
+				const genABG = abgGenerators[this.abgGenPick](true)[0];
 				this.userBloodGas = genABG;
 			},
 			updateBloodGas() {

@@ -6,7 +6,7 @@ describe("BloodGas utilities", () => {
 	Object.keys(GenBG.abgGenerators).map((ruleName) => {
 		test("Rule-based ABG generation: " + ruleName, () => {
 			[...Array(testsPerRule)].map(() => {
-				const testABG = GenBG.abgGenerators[ruleName]();
+				const testABG = GenBG.abgGenerators[ruleName](false);
 				expect(testABG[0].validABG()).toBe(true);
 				expect(testABG[0].guessDisturbances().sort()).toEqual(testABG[1].sort());
 			});

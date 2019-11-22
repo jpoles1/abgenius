@@ -84,7 +84,6 @@
 				const tooltip =  d3.tip().attr("class", "d3-tip").html((d: DavenportDatum) => d[0]);
 				plotArea.call(tooltip);
 				// Add dots
-				console.log(Object.keys(abgGenerators).length);
 				plotArea.append("g")
 					.selectAll("dot")
 					.data(this.genData)
@@ -103,7 +102,8 @@
 			},
 			genDiagramData() {
 				const nPoints = 500;
-				const selectedGenerators = ["Normal", 
+				const selectedGenerators = [
+					"Normal",
 					"Acute Respiratory Acidosis", "Chronic Respiratory Acidosis",
 					"Acute Respiratory Alkalosis", "Chronic Respiratory Alkalosis",
 					"Compensated Metabolic Acidosis", "Compensated Metabolic Alkalosis",
@@ -111,7 +111,7 @@
 				this.genData = selectedGenerators.reduce((agg, genName) => {
 					const gen = abgGenerators[genName];
 					Array(nPoints).fill(0).forEach((_) => {
-						agg.push([genName, gen()]);
+						agg.push([genName, gen(false)]);
 					});
 					return agg;
 				}, [] as [string, [BG.BloodGas, BG.DisturbType[][]]][]);
@@ -129,6 +129,6 @@
 <style>
 	.davenport-diagram .d3-tip {
 		width: 140px;
-		background-color: white;
+		background-color: white !important;
 	}
 </style>
