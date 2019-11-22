@@ -39,7 +39,7 @@
 		methods: {
 			plotDavenport() {
 				const svg = d3.select(this.$el).select("svg");
-				d3.selectAll(".d3-tip").remove();
+				d3.selectAll(".davenport-tooltip").remove();
 				svg.selectAll("*").remove();
 				if (svg === undefined) return;
 				const plotArea = svg.append("g");
@@ -81,7 +81,7 @@
 				colorScale.push("orange");
 				colorScale.push("black");
 				// Tooltips
-				const tooltip =  d3.tip().attr("class", "d3-tip").html((d: DavenportDatum) => d[0]);
+				const tooltip =  d3.tip().attr("class", "davenport-tooltip").html((d: DavenportDatum) => d[0]);
 				plotArea.call(tooltip);
 				// Add dots
 				plotArea.append("g")
@@ -127,8 +127,14 @@
 </script>
 
 <style>
-	.davenport-diagram .d3-tip {
-		width: 140px;
-		background-color: white !important;
+	.davenport-tooltip {
+		min-width: 40px;
+		max-width: 160px;
+		padding: 5px;
+		border-radius: 4px;
+		min-height: 20px;
+		text-align: center;
+		background-color: #ccc;
+		font-family: sans-serif;
 	}
 </style>
