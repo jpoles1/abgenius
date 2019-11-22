@@ -22,10 +22,10 @@
 				</div>
 			</span>
 			<v-toolbar-title class="headline">
-				<a to="/" class="header-logo">
+				<router-link to="/" class="header-logo" style="text-decoration: none;">
 					<span>ABG</span>
 					<span class="font-weight-light">enius</span>
-				</a>
+				</router-link>
 			</v-toolbar-title>
 			<v-spacer v-if="$vuetify.breakpoint.smAndUp" />
 			<span v-if="$vuetify.breakpoint.smAndUp">
