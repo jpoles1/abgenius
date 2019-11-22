@@ -57,7 +57,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.RespAcid]]];
+		return [newGas, [[DisturbType.RespAcid], [DisturbType.MetAlk]]];
 	},
 	"Acute Respiratory Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
@@ -83,7 +83,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.RespAlk]]];
+		return [newGas, [[DisturbType.RespAlk], [DisturbType.MetAcid]]];
 	},
 	"Metabolic Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
