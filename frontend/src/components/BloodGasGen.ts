@@ -11,12 +11,11 @@ function randPick<T>(arr: T[]): T {
 	return arr[Math.floor(arr.length * Math.random())];
 }
 
-const upperLimitPaCO2 = 75;
-const lowerLimitPaCO2 = 12;
+const lowerLimitPaCO2 = 15;
 const upperLimitBicarb = 54;
 const lowerLimitBicarb = 12;
-const upperLimitAG = 22;
-const upperLimitDG = 10;
+const upperLimitAG = 28;
+const upperLimitDG = 30;
 const floatLenMax = 5;
 
 export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [BloodGas, DisturbType[][]]} = {
@@ -146,16 +145,17 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		);
 		return [newGas, [[DisturbType.MetAcid], [DisturbType.RespAlk]]];
 	},
-	"Anion Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
+	"Uncompensated Anion Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
-		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, truncateValues ? 0 : floatLenMax);
+		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 6, upperLimitAG, truncateValues ? 0 : floatLenMax);
 		const randDeltaGap =  randFloat(RefRngs.DeltaGap!.lower + 1, RefRngs.DeltaGap!.upper - 1, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
 		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
 		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
-		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.lower, RefRngs.PaCO2!.upper, truncateValues ? 0 : floatLenMax);
+		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+		newGas.abg.PaCO2 = randFloat(wintersFormulaMid + 3, wintersFormulaMid + 6, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
@@ -165,20 +165,21 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	"Compensated Anion Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
-		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, truncateValues ? 0 : floatLenMax);
+		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 6, upperLimitAG, truncateValues ? 0 : floatLenMax);
 		const randDeltaGap =  randFloat(RefRngs.DeltaGap!.lower + 1, RefRngs.DeltaGap!.upper - 1, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
 		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
 		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
-		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 4, truncateValues ? 0 : floatLenMax);
+		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+		newGas.abg.PaCO2 = randFloat(wintersFormulaMid - 2, wintersFormulaMid + 2, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.RespAlk]]];
 	},
-	"Positive Delta Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
+	"Uncompensated Positive Delta Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
 		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, truncateValues ? 0 : floatLenMax);
@@ -187,7 +188,8 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
 		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
-		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.lower, RefRngs.PaCO2!.upper, truncateValues ? 0 : floatLenMax);
+		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+		newGas.abg.PaCO2 = randFloat(wintersFormulaMid + 3, wintersFormulaMid + 6, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
@@ -202,24 +204,27 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
 		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
 		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
-		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 4, truncateValues ? 0 : floatLenMax);
+		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+		newGas.abg.PaCO2 = randFloat(wintersFormulaMid - 2, wintersFormulaMid + 2, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk], [DisturbType.RespAlk]]];
 	},
-	"Negative Delta Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
+	// Wrenn, K. (1990). The delta (Δ) gap: An approach to mixed acid-base disorders. Annals of emergency medicine, 19(11), 1310-1313.
+	"Uncompensated Negative Delta Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
-		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, truncateValues ? 0 : floatLenMax);
+		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 6, upperLimitAG, truncateValues ? 0 : floatLenMax);
 		const randDeltaGap =  randFloat(-upperLimitDG, RefRngs.DeltaGap!.lower - 1, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
 		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
 		// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
 		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
-		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.lower, RefRngs.PaCO2!.upper, truncateValues ? 0 : floatLenMax);
+		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+		newGas.abg.PaCO2 = randFloat(wintersFormulaMid + 3, wintersFormulaMid + 6, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
@@ -229,14 +234,15 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	"Compensated Negative Delta Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
-		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, truncateValues ? 0 : floatLenMax);
 		const randDeltaGap =  randFloat(-upperLimitDG, RefRngs.DeltaGap!.lower - 1, truncateValues ? 0 : floatLenMax);
+		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, randDeltaGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower - 2, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
 		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
 		// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
 		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
-		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 4, truncateValues ? 0 : floatLenMax);
+		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+		newGas.abg.PaCO2 = randFloat(wintersFormulaMid - 2, wintersFormulaMid + 2, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower

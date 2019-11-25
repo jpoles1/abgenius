@@ -165,6 +165,8 @@ export class BloodGas {
 	public guessDisturbances(): DisturbType[][] {
 		const disturbList: DisturbType[][] = [];
 		const pHmidpoint = RefRngMidpoint("apH");
+		let addedMetAcid = false;
+		let addedMetAlk = false;
 		// Do we have a valid ABG: pH, PaCO2, HCO3
 		// Do we have the required electrolytes: Na, Cl, HCO3
 		if (this.validABG() && this.validLytes()) {
@@ -174,34 +176,45 @@ export class BloodGas {
 				if (this.serumAnionGap().disturb === DisturbType.AnionGap) {
 					// We have an anion gap metabolic acidosis
 					disturbList.push([DisturbType.MetAcid, DisturbType.AnionGap]);
+					addedMetAcid = true;
 					// Do we have a delta gap?
 					if (this.serumDeltaGap().gap > RefRngs.DeltaGap!.upper) {
 						// We have a superimposed metabolic alkalosis
 						// Rise in AG is more than fall in HCO3
 						disturbList.push([DisturbType.MetAlk]);
+						addedMetAlk = true;
 					} else if (this.serumDeltaGap().gap < RefRngs.DeltaGap!.lower) {
 						// We have a superimposed non-gap, hyperchloremic metabolic acidosis
 						// Rise in AG is less than fall in HCO3
 						disturbList.push([DisturbType.MetAcid]);
+						addedMetAcid = true;
 					}
 				} else if (this.abg.bicarb! - 1 <= (24 - ((RefRngMidpoint("PaCO2") - this.abg.PaCO2!) / 2))) {
 					// We have a non-gap metabolic acidosis
 					disturbList.push([DisturbType.MetAcid]);
+					addedMetAcid = true;
 				}
 			} else if (this.abg.bicarb! + 2 >= Math.max(RefRngs.aBicarb!.upper, ((this.abg.PaCO2! - RefRngMidpoint("PaCO2")) / 3) + 24)) {
 				//TODO: why did I have to add two to bicarb in the above conditional??
 				// We have a metabolic alkalosis
 				disturbList.push([DisturbType.MetAlk]);
+				addedMetAlk = true;
 			}
 			// Do we have a low PaCO2
-			if (this.abg.PaCO2! < RefRngs.PaCO2!.lower) {
+			if ((JSON.stringify(disturbList.sort()) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]])) && (this.abg.PaCO2! <= (addedMetAcid ? ((1.5 * this.abg.bicarb!) + 8 + 2) :  RefRngs.PaCO2!.lower - 2))) {
 				// We have a respiratory alkalosis
-				disturbList.push([DisturbType.RespAlk]);
+				// As long as we're not in negative delta gap land
+				if (JSON.stringify(disturbList.sort().slice(0, 2)) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]].sort())) {
+					disturbList.push([DisturbType.RespAlk]);
+				}
 			}
 			// Do we have a high PaCO2
-			if (this.abg.PaCO2! > RefRngs.PaCO2!.upper) {
+			if ((this.abg.PaCO2! >= (addedMetAlk ?  ((0.7 * this.abg.bicarb!) + 20 - 2) : RefRngs.PaCO2!.upper + 2))) {
 				// We have a respiratory acidosis
-				disturbList.push([DisturbType.RespAcid]);
+				// As long as we're not in positive delta gap land
+				if (JSON.stringify(disturbList.sort().slice(0, 2)) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk]].sort())) {
+					disturbList.push([DisturbType.RespAcid]);
+				}
 			}
 		} else {
 			disturbList.push([DisturbType.Unknown]);

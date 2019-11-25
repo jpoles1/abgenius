@@ -123,9 +123,9 @@
 					"Acute Respiratory Alkalosis", "Chronic Respiratory Alkalosis",
 					"Compensated Metabolic Acidosis", "Compensated Metabolic Alkalosis",
 					"Uncompensated Metabolic Acidosis", "Uncompensated Metabolic Alkalosis",
-					"Compensated Negative Delta Gap Metabolic Acidosis", "Uncompensated Negative Delta Gap Metabolic Acidosis",
-					//"Compensated Anion Gap Metabolic Acidosis", "Uncompensated Anion Gap Metabolic Acidosis",
-					//"Compensated Positive Delta Gap Metabolic Acidosis", "Compensated Negative Delta Gap Metabolic Acidosis",
+					"Compensated Anion Gap Metabolic Acidosis", "Uncompensated Anion Gap Metabolic Acidosis",
+					//"Compensated Positive Delta Gap Metabolic Acidosis", "Uncompensated Positive Delta Gap Metabolic Acidosis",
+					//"Compensated Negative Delta Gap Metabolic Acidosis", "Uncompensated Negative Delta Gap Metabolic Acidosis",
 				];
 				this.genData = selectedGenerators.reduce((agg, genName) => {
 				//this.genData = Object.keys(abgGenerators).reduce((agg, genName) => {
