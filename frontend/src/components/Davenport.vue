@@ -1,9 +1,13 @@
 <template>
 	<div class="davenport-diagram">
-		<div style="transform: scale(0.9);">
+		<div style="display: flex; justify-content: center; flex-wrap: wrap; margin-top: 12px;">
+			<v-select v-model="colorBy" :items="['Generator', 'Genius']" @change="plotDavenport();" style="max-width: 200px; display: inline-block; margin: 5px 15px;"/>
+			<v-btn @click="genDiagramData(); plotDavenport();">Regen</v-btn>
+			<div style="flex-basis: 100%; height: 0;"></div>
+			<div style="transform: scale(0.8); transform-origin: top center;">
 			<svg :width="width" :height="height"/>
 		</div>
-		<v-btn @click="genDiagramData(); plotDavenport();">Regen</v-btn>
+		</div>
 	</div>
 </template>
 
@@ -24,13 +28,9 @@
 	import { color } from "d3";
 	type DavenportDatum = [string, [BG.BloodGas, BG.DisturbType[][]]];
 	export default Vue.extend({
-		props: {
-			activeChip: String,
-			abg: Object,
-			results: Object,
-		},
 		data() {
 			return {
+				colorBy: "Generator",
 				refRngs: BG.RefRngs,
 				width: 690,
 				height: 606,
@@ -73,19 +73,20 @@
 					.call(d3.axisBottom(xAxis));
 
 				// Add Y axis
-				const yAxis = d3.scaleLinear()
-					.domain([0, 60])
+				const yAxis = (d3.scaleLinear() as any)
+					.domain([-0.1, 60])
 					.range([this.height - this.padding.top - this.padding.bottom, 0]);
 				plotArea.append("g")
-					.call(d3.axisLeft(yAxis));
+					.call(d3.axisLeft().tickValues(Array(16).fill(0).map((_, x) => x * 4)).scale(yAxis));
 				// Color scheme
 				const colorScale = JSON.parse(JSON.stringify(d3.schemePaired));
 				colorScale.push("orange");
 				colorScale.push("black");
 				// Tooltips
-				const tooltip =  d3.tip().attr("class", "davenport-tooltip").html((d: DavenportDatum) => "Actual: " + d[0] + "<br>Guess: " + d[1][0].guessDisturbances());
+				const tooltip =  d3.tip().attr("class", "davenport-tooltip").html((d: DavenportDatum) => "Actual: " + d[0] + "<br>Genius: " + d[1][0].guessDisturbances());
 				plotArea.call(tooltip);
 				// Add dots
+				const genDisturbList: any = [];
 				plotArea.append("g")
 					.selectAll("dot")
 					.data(this.genData)
@@ -100,7 +101,19 @@
 					.attr("r", 4.5)
 					.on("mouseover", tooltip.show)
 					.on("mouseout", tooltip.hide)
-					.style("fill", (d: DavenportDatum) => colorScale[Object.keys(abgGenerators).indexOf(d[0])]);
+					.style("fill", (d: DavenportDatum) => {
+						if (this.colorBy === "Generator") {
+							return colorScale[Object.keys(abgGenerators).indexOf(d[0])];
+						}
+						if (this.colorBy === "Genius") {
+							const name = JSON.stringify(d[1][0].guessDisturbances());
+							if (genDisturbList.indexOf(name) === -1) {
+								genDisturbList.push(name);
+							}
+							return colorScale[genDisturbList.indexOf(name)];
+						}
+						return "black";
+					});
 			},
 			genDiagramData() {
 				const nPoints = 500;
@@ -109,8 +122,13 @@
 					"Acute Respiratory Acidosis", "Chronic Respiratory Acidosis",
 					"Acute Respiratory Alkalosis", "Chronic Respiratory Alkalosis",
 					"Compensated Metabolic Acidosis", "Compensated Metabolic Alkalosis",
+					"Uncompensated Metabolic Acidosis", "Uncompensated Metabolic Alkalosis",
+					"Compensated Negative Delta Gap Metabolic Acidosis", "Uncompensated Negative Delta Gap Metabolic Acidosis",
+					//"Compensated Anion Gap Metabolic Acidosis", "Uncompensated Anion Gap Metabolic Acidosis",
+					//"Compensated Positive Delta Gap Metabolic Acidosis", "Compensated Negative Delta Gap Metabolic Acidosis",
 				];
 				this.genData = selectedGenerators.reduce((agg, genName) => {
+				//this.genData = Object.keys(abgGenerators).reduce((agg, genName) => {
 					const gen = abgGenerators[genName];
 					Array(nPoints).fill(0).forEach((_) => {
 						agg.push([genName, gen(false)]);
