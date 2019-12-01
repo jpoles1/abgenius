@@ -323,6 +323,11 @@
 							<transition name="infos" mode="out-in">
 								<CalcInfoPanel id="genius-info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="genBloodGas.abg" :results="results"/>
 							</transition>
+							<div style="text-align: center; width: 400px; transform: scale(0.7); box-shadow: inset 0 0 4px #222; border-radius: 4px; padding: 18px 28px 0 28px;">
+								Click to copy ABG URL:
+								<br>
+								<v-text-field solo light readonly v-model="abgUrl" @click="abgUrlCopy" id="abg-url-field"/>
+							</div>
 						</v-card-text>
 					</v-card>
 				</v-tab-item>
@@ -518,7 +523,15 @@
 				this.activeChip = chipID;
 				goTo("#info-chips");
 			},
-
+			abgUrlCopy() {
+				this.$toast("Copied ABG url to clipboard, share away!");
+				const urlField: any = document.getElementById("abg-url-field");
+				/* Select the text field */
+				urlField.select();
+				urlField.setSelectionRange(0, 99999); /*For mobile devices*/
+				/* Copy the text inside the text field */
+				document.execCommand("copy");
+			},
 		},
 		computed: {
 			addableDisturb(): DisturbType[][] {
@@ -567,6 +580,9 @@
 					serumDeltaGap: this.genBloodGas.serumDeltaGap(),
 					tertiaryDisturbance: DisturbType.Unknown,
 				};
+			},
+			abgUrl(): string {
+				return window.location.origin + `/?pH=${this.genBloodGas.abg.pH}&PaCO2=${this.genBloodGas.abg.PaCO2}&bicarb=${this.genBloodGas.abg.bicarb}&Na=${this.genBloodGas.abg.Na}&Cl=${this.genBloodGas.abg.Cl}`;
 			},
 		},
 		mounted() {
