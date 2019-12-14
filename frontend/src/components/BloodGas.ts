@@ -94,7 +94,11 @@ export class BloodGas {
 			Object.assign(this, init);
 	}
 	public validABG(): boolean {
-		return this.abg.pH !== undefined && isFinite(this.abg.pH) && this.abg.bicarb !== undefined && this.abg.PaCO2 !== undefined;
+		function isValid(x: number | undefined) {
+			return x !== undefined && isFinite(x) && x > 0;
+
+		}
+		return isValid(this.abg.bicarb) && isValid(this.abg.pH) && isValid(this.abg.PaCO2);
 	}
 	public pHExpected(): number {
 		return 6.1 + Math.log10(this.abg.bicarb! / (0.03 * this.abg.PaCO2!));
@@ -112,7 +116,11 @@ export class BloodGas {
 		return this.pHExpected().between(this.abg.pH! - tolerance, this.abg.pH! + tolerance);
 	}
 	public validLytes(): boolean {
-		return this.abg.Na !== undefined && this.abg.bicarb !== undefined && this.abg.Cl !== undefined;
+		function isValid(x: number | undefined) {
+			return x !== undefined && isFinite(x) && x > 0;
+
+		}
+		return isValid(this.abg.Na) && isValid(this.abg.bicarb) && isValid(this.abg.Cl);
 	}
 	public phDisturbance(): DisturbType {
 		if (this.abg.pH === undefined) return DisturbType.Unknown;
