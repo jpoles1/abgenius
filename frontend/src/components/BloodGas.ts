@@ -209,10 +209,10 @@ export class BloodGas {
 				addedMetAlk = true;
 			}
 			// Do we have a low PaCO2
-			if ((JSON.stringify(disturbList.sort()) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]])) && (this.abg.PaCO2! <= (addedMetAcid ? ((1.5 * this.abg.bicarb!) + 8 + 2) :  RefRngs.PaCO2!.lower - 2))) {
+			if ((this.abg.PaCO2! <= (addedMetAcid ? ((1.5 * this.abg.bicarb!) + 8 + 2) :  RefRngs.PaCO2!.lower - 2))) {
 				// We have a respiratory alkalosis
 				// As long as we're not in negative delta gap land
-				if (JSON.stringify(disturbList.sort().slice(0, 2)) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]].sort())) {
+				if (JSON.stringify(disturbList.sort().slice(0, 2)) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk]].sort())) {
 					disturbList.push([DisturbType.RespAlk]);
 				}
 			}
@@ -220,7 +220,7 @@ export class BloodGas {
 			if ((this.abg.PaCO2! >= (addedMetAlk ?  ((0.7 * this.abg.bicarb!) + 20 - 2) : RefRngs.PaCO2!.upper + 2))) {
 				// We have a respiratory acidosis
 				// As long as we're not in positive delta gap land
-				if (JSON.stringify(disturbList.sort().slice(0, 2)) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk]].sort())) {
+				if (JSON.stringify(disturbList.sort().slice(0, 2)) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]].sort())) {
 					disturbList.push([DisturbType.RespAcid]);
 				}
 			}
