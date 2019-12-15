@@ -33,7 +33,7 @@
 							Normal human body pH is typically estimated to range between 7.35 and 7.45. 
 							When values fall below this range, it is called an <u>acidemia</u>, as the blood is abnormally acidic.
 							Above this range, and you will have an <u>alkalemia</u>, as the blood is abnormally basic.
-							The terms acidosis and alkalosis are used to describe the processes which result in these pH perturbations.
+							The terms <i>acidosis</i> and <i>alkalosis</i> are used to describe the processes which result in these pH perturbations.
 						</p>
 						<p class="subheading font-weight-medium" style="text-align: center;"> 
 							This ABG sample had a pH of <u class="font-weight-black">{{abg.pH}}</u> and is thus classified as <u class="font-weight-black">{{results.pHDisturbance.toUpperCase()}}</u>.
@@ -93,6 +93,13 @@
 					<v-container v-if="activeChip == 'anionGap'" key="anionGap">
 						<center style="margin-bottom: 8px;"><h2>Interpreting: Anion Gap</h2></center>
 						<hr>
+						<p style="text-align: center;">
+							There are many different organic and inorganic acids which can accumulate in the blood of a patient causing acidosis.
+							Unlike the bicarbonate value, we cannot hope to measure the levels of all of these acidic species to figure out if any are present.   
+							Instead, we use the anion gap to decide if there is a significant contribution of H<sup>+</sup> ions from unmeasured acidic species in a patient's blood. 
+							We rely on the principle of electroneutrality (described below)	to indirectly detect increases in the negatively charged particles produced be deprotonation.
+						</p>
+						<hr>
 						<v-layout row justify-center wrap>
 							<v-flex md7 sm12 style="margin-bottom: 30px;">
 								<Gamblegram :abg="abg" :results="results"/>
@@ -115,6 +122,30 @@
 								</p>
 							</v-flex>
 						</v-layout>
+						<hr>
+						<center style="margin-bottom: 8px;"><h2>Causes of Anion Gap Acidosis</h2></center>
+						<hr>
+						<p style="text-align: center;">
+							There are numerous physiologic processes and biologically active substances which can cause to anion gap acidosis, and it's impossible to remember them all.
+							We recommend the GOLDMARK CAT mnemonic shown below in order to organize your differential around the most important causes of anion gap acidois:
+						</p>
+						<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; max-width: 800px; margin: auto;" class="anion-gap-chart">
+							<div style="font-size: 140%;">
+								<b>G</b>lycols (ethylene/propylene)<br>
+								<b>O</b>xoproline<br>
+								<b>L</b>-lactate<br>
+								<b>D</b>-lactate (short bowel syndrome)<br>
+								<b>M</b>ethanol<br>
+								<b>A</b>spirin<br>
+								<b>R</b>enal failure<br>
+								<b>K</b>etoacidosis<br>
+							</div>
+							<div style="font-size: 145%;">
+								<b>C</b>yanide (or Carbon Monoxide)<br>
+								<b>A</b>minoglycosides<br>
+								<b>T</b>olune (or Theophylline)<br>
+							</div>
+						</div>
 					</v-container>
 					<v-container v-if="activeChip == 'deltaGap'" key="deltaGap">
 						<center style="margin-bottom: 8px;">
@@ -284,5 +315,12 @@ export default Vue.extend({
 		font-size: 80%;
 		border-radius: 3px;
 		margin-top: 6px;
+	}
+	.anion-gap-chart div {
+		margin: 8px 18px;
+	}
+	.anion-gap-chart b {
+		font-size: 110%;
+		color: #d2a6dd;
 	}
 </style>
