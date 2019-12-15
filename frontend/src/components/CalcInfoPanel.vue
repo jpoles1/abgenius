@@ -182,9 +182,9 @@
 							</v-layout>
 						</center>
 					</v-container>
-					<v-container v-if="['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(activeChip)" key="disturb">
+					<v-container v-if="['Primary Respiratory Acidosis', 'Primary Respiratory Alkalosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Respiratory Acid-Base Disturbances</h2>
+							<h2>Interpreting: Primary Respiratory Acid-Base Disturbances</h2>
 							<hr>
 							<v-layout wrap justify-center style="margin: 22px;">
 								<div class="decision-box">
@@ -217,9 +217,69 @@
 							height=100 style="border-radius: 3px;"/>
 						</center>
 					</v-container>
-					<v-container v-if="['Metabolic Acidosis', 'Metabolic Alkalosis'].includes(activeChip)" key="disturb">
+					<v-container v-if="['Compensatory Respiratory Alkalosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Metabolic Acid-Base Disturbances</h2>
+							<h2>Interpreting: Compensatory Respiratory Alkalosis</h2>
+							<hr>
+							<p style="font-size: 100%; margin-top: 12px;">
+								In 1967, Dr. Robert Winters <i>et al.</i> published a paper entitled <u>Quantitative Displacement of Acid-Base Equilibrium in Metabolic Acidosis</u>,
+								which included a population of 60 patients with a known metabolic acidosis who had not yet received treatment.
+								The manuscript describes a linear trend between plasma bicarbonate and the expected compensatory change in P<sub>A</sub>CO<sub>2</sub> (see below).
+								We can use an equation derived from this linear regression to determine if our patient is adequately compensating for the metabolic acidosis by increasing their ventilation and causing a respiratory alkalosis. 
+							</p>
+							<hr>
+							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
+								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
+									<div>
+										<h3>Expected P<sub>A</sub>CO<sub>2</sub> = {{ (1.5 * abg.bicarb) + 8}} &plusmn; 2 = {{ (1.5 * abg.bicarb) + 6}} to {{ (1.5 * abg.bicarb) + 10}} </h3>
+										<div class="ref-rng-box">
+											<i>
+												Expected P<sub>A</sub>CO<sub>2</sub> = (1.5 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 8 &plusmn; 2
+											</i>
+										</div>
+										<hr>
+										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
+											<v-icon small>fa-check</v-icon>&nbsp;Respiratory Compensation
+										</v-chip>
+										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
+											<v-icon small>fa-times</v-icon>Poorly Compensated
+										</v-chip>
+									</div>
+								</div>
+								<img src="/img/winters_formula_plot.png" width=300 style="border-radius: 3px;"/>
+							</div>
+						</center>
+					</v-container>
+					<v-container v-if="['Compensatory Respiratory Acidosis'].includes(activeChip)" key="disturb">
+						<center>
+							<h2>Interpreting: Compensatory Respiratory Acidosis</h2>
+							<hr>
+							<p style="font-size: 100%; margin-top: 12px;">
+							</p>
+							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
+								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
+									<div>
+										<h3>Expected P<sub>A</sub>CO<sub>2</sub> = {{ ((0.7 * abg.bicarb) + 20).toFixed(1) }} &plusmn; 2 = {{ ((0.7 * abg.bicarb) + 18).toFixed(1) }} to {{ ((0.7 * abg.bicarb) + 22).toFixed(1) }} </h3>
+										<div class="ref-rng-box">
+											<i>
+												Expected P<sub>A</sub>CO<sub>2</sub> = (0.7 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 20 &plusmn; 2
+											</i>
+										</div>
+										<hr>
+										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
+											<v-icon small>fa-check</v-icon>&nbsp;Respiratory Compensation
+										</v-chip>
+										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
+											<v-icon small>fa-times</v-icon>Poorly Compensated
+										</v-chip>
+									</div>
+								</div>
+							</div>
+						</center>
+					</v-container>
+					<v-container v-if="['Primary Metabolic Acidosis', 'Primary Metabolic Alkalosis'].includes(activeChip)" key="disturb">
+						<center>
+							<h2>Interpreting: Primary Metabolic Acid-Base Disturbances</h2>
 							<hr>
 							<v-layout wrap justify-center style="margin-top: 28px;">
 								<div class="decision-box">
@@ -257,6 +317,60 @@
 							</v-layout>
 						</center>
 					</v-container>
+					<v-container v-if="['Compensatory Metabolic Acidosis'].includes(activeChip)" key="disturb">
+						<center>
+							<h2>Interpreting: Compensatory Metabolic Acidosis</h2>
+							<hr>
+							<p style="font-size: 100%; margin-top: 12px;">
+							</p>
+							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
+								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
+									<div>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{24 - ((PaCO2Mid - abg.PaCO2) / 2)}} &plusmn; 2 = {{22 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{26 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
+										<div class="ref-rng-box">
+											<i>
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = 24 - (({{PaCO2Mid}} - P<sub>A</sub>CO<sub>2</sub>) / 2) &plusmn; 2
+											</i>
+										</div>
+										<hr>
+										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
+											<v-icon small>fa-check</v-icon>&nbsp;Metabolic Compensation
+										</v-chip>
+										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
+											<v-icon small>fa-times</v-icon>Poorly Compensated
+										</v-chip>
+									</div>
+								</div>
+							</div>
+						</center>
+					</v-container>
+					<v-container v-if="['Compensatory Metabolic Alkalosis'].includes(activeChip)" key="disturb">
+						<center>
+							<h2>Interpreting: Compensatory Metabolic Alkalosis</h2>
+							<hr>
+							<p style="font-size: 100%; margin-top: 12px;">
+							</p>
+							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
+								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
+									<div>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 24).toFixed(1)}} &plusmn; 2 = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 22).toFixed(1)}} to {{(((abg.PaCO2 - PaCO2Mid) / 3) + 26).toFixed(1)}}</h3>
+										<div class="ref-rng-box">
+											<i>
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>A</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + 24 &plusmn; 2
+											</i>
+										</div>
+										<hr>
+										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
+											<v-icon small>fa-check</v-icon>&nbsp;Metabolic Compensation
+										</v-chip>
+										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
+											<v-icon small>fa-times</v-icon>Poorly Compensated
+										</v-chip>
+									</div>
+								</div>
+							</div>
+						</center>
+					</v-container>
 				</transition>
 			</div>
 		</div>
@@ -282,6 +396,7 @@ export default Vue.extend({
 	data() {
 		return {
 			refRngs: BG.RefRngs,
+			PaCO2Mid: BG.RefRngMidpoint("PaCO2"),
 			arrayEq,
 		};
 	},

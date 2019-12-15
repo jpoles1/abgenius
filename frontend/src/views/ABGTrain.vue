@@ -578,7 +578,8 @@
 					pHExpected: this.genBloodGas.pHExpected(),
 					serumAnionGap: this.genBloodGas.serumAnionGap(),
 					serumDeltaGap: this.genBloodGas.serumDeltaGap(),
-					tertiaryDisturbance: DisturbType.Unknown,
+					primaryDisturb: this.genBloodGas.guessPrimaryDisturbance(),
+					compensatoryDisturb: this.genBloodGas.guessCompensation(),
 				};
 			},
 			abgUrl(): string {

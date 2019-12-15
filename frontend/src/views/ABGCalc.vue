@@ -267,7 +267,7 @@
 			<div class="instruction-box" v-if="results.serumAnionGap.disturb !== 'Anion Gap'">
 				<b>Step 3: Check Primary Disturbance</b>
 				<br>
-				<v-chip @click="activateChipInfo(results.primaryDisturb[0])">
+				<v-chip @click="activateChipInfo('Primary ' + results.primaryDisturb[0])">
 					<v-avatar class="warning" v-if="results.primaryDisturb">
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.primaryDisturb[0])'>
 							fa-wind
@@ -290,7 +290,7 @@
 			<div class="instruction-box" v-if="(results.serumDeltaGap.disturb !== 'Delta Gap' || results.serumDeltaGap.disturb !== 'Anion Gap') && results.primaryDisturb">
 				<b>Step 4: Check For Compensation</b>
 				<br>
-				<v-chip @click="activateChipInfo(results.compensatoryDisturb[0])">
+				<v-chip @click="activateChipInfo('Compensatory ' + (results.compensatoryDisturb ? results.compensatoryDisturb[0] : results.expectedCompensation[0]))">
 					<v-avatar class="warning" v-if="results.compensatoryDisturb">
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.compensatoryDisturb[0])'>
 							fa-wind
@@ -372,6 +372,7 @@
 					disturbances: [[BG.DisturbType.Unknown]] as BG.DisturbType[][],
 					primaryDisturb: undefined as BG.DisturbType[] | undefined,
 					compensatoryDisturb: undefined as BG.DisturbType[] | undefined,
+					expectedCompensation: undefined as BG.DisturbType[] | undefined,
 				},
 				inputDebounce: undefined as number | undefined,
 			};
@@ -407,6 +408,7 @@
 					serumDeltaGap: this.userBloodGas.serumDeltaGap(),
 					primaryDisturb: this.userBloodGas.guessPrimaryDisturbance(),
 					compensatoryDisturb: this.userBloodGas.guessCompensation(),
+					expectedCompensation: this.userBloodGas.expectedCompensation(),
 				};
 				if (!["pH", "O2", "anionGap", "deltaGap", undefined].includes(this.activeChip)) {
 					this.activeChip = undefined;

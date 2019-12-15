@@ -85,6 +85,14 @@ const learningReferenceList = [
 		name: "Narins, R. G., & Emmett, M (1980). Simple and mixed acid-base disorders: a practical approach. Medicine, 59(3), 161-187.",
 		url: "https://journals.lww.com/md-journal/Citation/1980/05000/Simple_and_Mixed_Acid_Base_Disorders__A_Practical.1.aspx#pdf-link",
 	},
+	{
+		name: "Mehta, A. N., Emmett, J. B., & Emmett, M. (2008). GOLD MARK: an anion gap mnemonic for the 21st century. The lancet, 372(9642), 892.",
+		url: "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(08)61398-7/fulltext",
+	},
+	{
+		name: "Albert, M. S., Dell, R. B., & Winters, R. W. (1967). Quantitative displacement of acid-base equilibrium in metabolic acidosis. Annals of internal medicine, 66(2), 312-322.",
+		url: "https://annals.org/aim/fullarticle/681186/quantitative-displacement-acid-base-equilibrium-metabolic-acidosis",
+	},
 ];
 
 

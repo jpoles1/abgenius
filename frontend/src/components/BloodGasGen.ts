@@ -107,7 +107,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		newGas.abg.bicarb = randFloat(RefRngs.aBicarb!.upper + 4, upperLimitBicarb, truncateValues ? 0 : floatLenMax);
 		// from "Interpretation of Arterial Blood Gases." Pocket ICU Management
 		const formulaMid = (0.7 * newGas.abg.bicarb!) + 20;
-		newGas.abg.PaCO2 = randFloat(formulaMid - 2, formulaMid + 5, truncateValues ? 0 : floatLenMax);
+		newGas.abg.PaCO2 = randFloat(formulaMid - 2, formulaMid + 2, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, truncateValues ? 0 : floatLenMax);
 		newGas.abg.Cl = randFloat(
@@ -264,7 +264,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower
 		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		const formulaMid = (0.7 * newGas.abg.bicarb!) + 20;
-		newGas.abg.PaCO2 = randFloat(formulaMid - 2, formulaMid + 5, truncateValues ? 0 : floatLenMax);
+		newGas.abg.PaCO2 = randFloat(formulaMid - 2, formulaMid + 2, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower

@@ -250,6 +250,14 @@ export class BloodGas {
 			return disturbs.find((x) => [DisturbType.MetAlk, DisturbType.RespAlk].includes(x[0]));
 		}
 	}
+	public expectedCompensation(): DisturbType[] | undefined {
+		const primaryDisturb = this.guessPrimaryDisturbance();
+		if (primaryDisturb === undefined) return undefined;
+		if (primaryDisturb[0] === DisturbType.MetAcid) return [DisturbType.RespAlk];
+		if (primaryDisturb[0] === DisturbType.MetAlk) return [DisturbType.RespAcid];
+		if (primaryDisturb[0] === DisturbType.RespAcid) return [DisturbType.MetAlk];
+		if (primaryDisturb[0] === DisturbType.RespAlk) return [DisturbType.MetAcid];
+	}
 }
 
 declare global {
