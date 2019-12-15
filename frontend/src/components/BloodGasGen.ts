@@ -189,40 +189,50 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	 * Generates a mixed high AG and normal AG acidosis
 	 */
 	"Negative Delta Gap": (truncateValues: boolean = true) => {
+		let pH = Infinity;
 		const newGas = new BloodGas({abg: {}});
-		const randDeltaGap =  randFloat(-upperLimitDG + 4, -RefRngs.AnionGap!.upper - 1, truncateValues ? 0 : floatLenMax);
-		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 1, randDeltaGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower, truncateValues ? 0 : floatLenMax);
-		// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
-		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
-		// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
-		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
-		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
-		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
-		newGas.abg.PaCO2 = randFloat(wintersFormulaMid + 3, wintersFormulaMid + 6, truncateValues ? 0 : floatLenMax);
-		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
-		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
-		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
-		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		// TODO: Fix me! Unclear why (math error somewhere), but occasionally returns bicarb of 0, causing pH = Infinity
+		while (!isFinite(pH)) {
+			const randDeltaGap =  randFloat(-upperLimitDG + 4, -RefRngs.AnionGap!.upper - 1, truncateValues ? 0 : floatLenMax);
+			const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 1, randDeltaGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower, truncateValues ? 0 : floatLenMax);
+			// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
+			// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
+			// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
+			newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+			// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
+			const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+			newGas.abg.PaCO2 = randFloat(wintersFormulaMid + 3, wintersFormulaMid + 6, truncateValues ? 0 : floatLenMax);
+			newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
+			pH = newGas.abg.pH;
+			newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
+			// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
+			newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		}
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]]];
 	},
 	/**
 	 * Generates a mixed high AG acidosis (like AKA) coexisting with a chronic respiratory alkalosis (hyperventilation) with a compensatory hyperchloremic acidosis (renal excretion of base)
 	 */
 	"Negative Delta Gap + Chronic Respiratory Alkalosis": (truncateValues: boolean = true) => {
+		let pH = Infinity;
 		const newGas = new BloodGas({abg: {}});
-		const randDeltaGap =  randFloat(-upperLimitDG + 4, -RefRngs.AnionGap!.upper - 1, truncateValues ? 0 : floatLenMax);
-		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 1, randDeltaGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower, truncateValues ? 0 : floatLenMax);
-		// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
-		// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
-		newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
-		// randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower > 0
-		// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
-		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
-		newGas.abg.PaCO2 = randFloat(wintersFormulaMid - 2, wintersFormulaMid + 2, truncateValues ? 0 : floatLenMax);
-		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
-		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower + 4, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
-		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
-		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		// TODO: Fix me! Unclear why (math error somewhere), but occasionally returns bicarb of 0, causing pH = Infinity
+		while (!isFinite(pH)) {
+			const randDeltaGap =  randFloat(-upperLimitDG + 4, -RefRngs.AnionGap!.upper - 1, truncateValues ? 0 : floatLenMax);
+			const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, randDeltaGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower, truncateValues ? 0 : floatLenMax);
+			// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
+			// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
+			newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+			// randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower > 0
+			// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
+			const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+			newGas.abg.PaCO2 = randFloat(wintersFormulaMid - 2, wintersFormulaMid + 2, truncateValues ? 0 : floatLenMax);
+			newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
+			pH = newGas.abg.pH;
+			newGas.abg.Cl = randFloat(RefRngs.Cl!.lower + 4, RefRngs.Cl!.upper + 10, truncateValues ? 0 : floatLenMax);
+			// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
+			newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		}
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid], [DisturbType.RespAlk]]];
 	},
 	/**
