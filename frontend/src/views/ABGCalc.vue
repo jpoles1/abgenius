@@ -219,7 +219,7 @@
 			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap'">
 				<b>Step 3: Add Anion Gap Acidosis</b>
 				<br>
-				<v-chip>
+				<v-chip  @click="activateChipInfo('anionGap')">
 					<v-avatar class="warning">
 						<v-icon small>
 							fa-vial
@@ -233,7 +233,7 @@
 			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap'">
 				<b>Step 4: Account for Delta Gap</b>
 				<br>
-				<v-chip @click="activateChipInfo(results.disturbances[1][0])">
+				<v-chip  @click="activateChipInfo('deltaGap')">
 					<v-avatar class="warning">
 						<v-icon small>
 							fa-vial
@@ -310,25 +310,6 @@
 					</div>
 				</v-chip>
 			</div>
-			<!--<v-chip v-if="results.serumAnionGap.disturb !== 'Anion Gap'" v-for="(disturb, disturbIndex) in results.disturbances" :key="disturbIndex" @click="activateChipInfo(disturb[0])">
-				<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
-					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
-						fa-wind
-					</v-icon>
-					<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(disturb[0])'>
-						fa-vial
-					</v-icon>
-				</v-avatar>
-				<v-avatar class="success" v-if="disturb[0] == 'Normal'">        
-					<v-icon small>fas fa-check</v-icon>
-				</v-avatar>
-				<div v-if="disturb[0] == 'Normal'">
-					No Acid Base Disorder
-				</div>
-				<div v-else>
-					{{disturb[1]}} {{disturb[0]}}
-				</div>
-			</v-chip>-->
 		</v-layout>
 		<hr>
 		<transition name="infos" mode="out-in">
