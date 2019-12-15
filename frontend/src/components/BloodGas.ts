@@ -232,6 +232,24 @@ export class BloodGas {
 		}
 		return disturbList.sort();
 	}
+	public guessPrimaryDisturbance(): DisturbType[] | undefined {
+		const disturbs = this.guessDisturbances();
+		if (!this.validABG() || !this.validLytes() || (this.serumAnionGap().disturb === "Anion Gap" && this.serumDeltaGap().disturb === "Delta Gap")) return undefined;
+		if (this.abg.pH! > RefRngMidpoint("apH") ) {
+			return disturbs.find((x) => [DisturbType.MetAlk, DisturbType.RespAlk].includes(x[0]));
+		} else {
+			return disturbs.find((x) => [DisturbType.MetAcid, DisturbType.RespAcid].includes(x[0]));
+		}
+	}
+	public guessCompensation(): DisturbType[] | undefined {
+		const disturbs = this.guessDisturbances();
+		if (!this.validABG() || !this.validLytes() || (this.serumAnionGap().disturb === "Anion Gap" && this.serumDeltaGap().disturb === "Delta Gap")) return undefined;
+		if (this.abg.pH! > RefRngMidpoint("apH") ) {
+			return disturbs.find((x) => [DisturbType.MetAcid, DisturbType.RespAcid].includes(x[0]));
+		} else {
+			return disturbs.find((x) => [DisturbType.MetAlk, DisturbType.RespAlk].includes(x[0]));
+		}
+	}
 }
 
 declare global {

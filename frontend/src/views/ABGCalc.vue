@@ -163,7 +163,7 @@
 			</v-layout>
 		</v-form>
 		<hr>
-		<v-layout wrap justify-space-around id="info-chips">
+		<v-layout wrap justify-center id="info-chips">
 			<v-chip @click="activateChipInfo('O2')" v-if="showPaO2">
 				<v-avatar class="error" v-if="results.o2Disturbance != 'Normal'">        
 					<v-icon v-if="results.o2Disturbance == 'Hyperoxemia'">fas fa-arrow-up</v-icon>
@@ -174,23 +174,143 @@
 				</v-avatar>
 				<b>Blood Oxygen:</b>&nbsp;{{results.o2Disturbance}}
 			</v-chip>
-			<v-chip @click="activateChipInfo('pH')" v-if="!results.realisticABG">
-				<v-avatar class="error">        
-					<v-icon>fas fa-question</v-icon>
-				</v-avatar>
-				<b>Check ABG</b>
-			</v-chip>
-			<v-chip @click="activateChipInfo('pH')">
-				<v-avatar class="error" v-if="results.pHDisturbance != 'Normal'">        
-					<v-icon v-if="results.pHDisturbance == 'Alkalemia'">fas fa-arrow-up</v-icon>
-					<v-icon v-if="results.pHDisturbance == 'Acidemia'">fas fa-arrow-down</v-icon>
-				</v-avatar>
-				<v-avatar class="success" v-else>        
-					<v-icon small>fas fa-check</v-icon>
-				</v-avatar>
-				<b>Blood pH:</b>&nbsp;{{results.pHDisturbance}}
-			</v-chip>
-			<v-chip v-for="(disturb, disturbIndex) in results.disturbances" :key="disturbIndex" @click="activateChipInfo(disturb[0])">
+			<div class="instruction-box">
+				<b>Step 1: Assess Overall Blood pH</b>
+				<br>
+				<v-chip @click="activateChipInfo('pH')" v-if="!results.realisticABG">
+					<v-avatar class="error">        
+						<v-icon>fas fa-question</v-icon>
+					</v-avatar>
+					<b>Check ABG</b>
+				</v-chip>
+				<v-chip @click="activateChipInfo('pH')">
+					<v-avatar class="error" v-if="results.pHDisturbance != 'Normal'">        
+						<v-icon v-if="results.pHDisturbance == 'Alkalemia'">fas fa-arrow-up</v-icon>
+						<v-icon v-if="results.pHDisturbance == 'Acidemia'">fas fa-arrow-down</v-icon>
+					</v-avatar>
+					<v-avatar class="success" v-else>        
+						<v-icon small>fas fa-check</v-icon>
+					</v-avatar>
+					<b>Blood pH:</b>&nbsp;{{results.pHDisturbance}}
+				</v-chip>
+			</div>
+			<div class="instruction-box">
+				<b>Step 2: Mind the Gap(s)</b>
+				<br>
+				<v-chip v-if="results.serumAnionGap.disturb != undefined" @click="activateChipInfo('anionGap')">
+					<v-avatar class="error" v-if="results.serumAnionGap.disturb == 'Anion Gap'">        
+						<v-icon>fas fa-arrows-alt-h</v-icon>
+					</v-avatar>
+					<v-avatar class="success" v-if="results.serumAnionGap.disturb == 'Normal'">        
+						<v-icon small>fas fa-check</v-icon>
+					</v-avatar>
+					<b>Anion Gap:</b>&nbsp; {{results.serumAnionGap.gap.toFixed(1)}}
+				</v-chip>
+				<v-chip v-if="results.serumDeltaGap.disturb != undefined && results.serumAnionGap.disturb == 'Anion Gap'" @click="activateChipInfo('deltaGap')">
+					<v-avatar class="error" v-if="results.serumDeltaGap.disturb == 'Delta Gap'">        
+						<v-icon>fas fa-arrows-alt-h</v-icon>
+					</v-avatar>
+					<v-avatar class="success" v-if="results.serumDeltaGap.disturb == 'Normal'">        
+						<v-icon small>fas fa-check</v-icon>
+					</v-avatar>
+					<b>Delta Gap:</b>&nbsp; {{results.serumDeltaGap.gap.toFixed(1)}}
+				</v-chip>
+			</div>
+			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap'">
+				<b>Step 3: Add Anion Gap Acidosis</b>
+				<br>
+				<v-chip>
+					<v-avatar class="warning">
+						<v-icon small>
+							fa-vial
+						</v-icon>
+					</v-avatar>
+					<div>
+						Anion Gap Metabolic Acidosis
+					</div>
+				</v-chip>
+			</div>
+			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap'">
+				<b>Step 4: Account for Delta Gap</b>
+				<br>
+				<v-chip @click="activateChipInfo(results.disturbances[1][0])">
+					<v-avatar class="warning">
+						<v-icon small>
+							fa-vial
+						</v-icon>
+					</v-avatar>
+					<div>						
+						{{results.disturbances[1][0]}}
+					</div>
+				</v-chip>
+			</div>
+			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap'">
+				<b>Step 5: Add Respiratory Disturbances</b>
+				<br>
+				<v-chip @click="activateChipInfo(results.disturbances[2][0])">
+						<v-avatar class="warning" v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2][0])">
+							<v-icon small>
+								fa-wind
+							</v-icon>
+						</v-avatar>
+						<v-avatar class="warning" v-else>
+							<v-icon small>fas fa-not-equal</v-icon>
+						</v-avatar>
+						<div v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2][0])">
+							{{results.disturbances[2][0]}}
+						</div>
+						<div v-else>
+							None
+						</div>
+				</v-chip>
+			</div>
+			<div class="instruction-box" v-if="results.serumAnionGap.disturb !== 'Anion Gap'">
+				<b>Step 3: Check Primary Disturbance</b>
+				<br>
+				<v-chip @click="activateChipInfo(results.primaryDisturb[0])">
+					<v-avatar class="warning" v-if="results.primaryDisturb">
+						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.primaryDisturb[0])'>
+							fa-wind
+						</v-icon>
+						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.primaryDisturb[0])'>
+							fa-vial
+						</v-icon>
+					</v-avatar>
+					<v-avatar class="success" v-else>        
+						<v-icon small>fas fa-check</v-icon>
+					</v-avatar>
+					<div v-if="results.primaryDisturb">
+						{{results.primaryDisturb[0]}}
+					</div>
+					<div v-else>
+						None
+					</div>
+				</v-chip>
+			</div>
+			<div class="instruction-box" v-if="(results.serumDeltaGap.disturb !== 'Delta Gap' || results.serumDeltaGap.disturb !== 'Anion Gap') && results.primaryDisturb">
+				<b>Step 4: Check For Compensation</b>
+				<br>
+				<v-chip @click="activateChipInfo(results.compensatoryDisturb[0])">
+					<v-avatar class="warning" v-if="results.compensatoryDisturb">
+						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.compensatoryDisturb[0])'>
+							fa-wind
+						</v-icon>
+						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.compensatoryDisturb[0])'>
+							fa-vial
+						</v-icon>
+					</v-avatar>
+					<v-avatar class="warning" v-else>        
+						<v-icon small>fas fa-not-equal</v-icon>
+					</v-avatar>
+					<div v-if="results.compensatoryDisturb">
+						{{results.compensatoryDisturb[0]}}
+					</div>
+					<div v-else>
+						None
+					</div>
+				</v-chip>
+			</div>
+			<!--<v-chip v-if="results.serumAnionGap.disturb !== 'Anion Gap'" v-for="(disturb, disturbIndex) in results.disturbances" :key="disturbIndex" @click="activateChipInfo(disturb[0])">
 				<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb[0])'>
 					<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb[0])'>
 						fa-wind
@@ -208,25 +328,7 @@
 				<div v-else>
 					{{disturb[1]}} {{disturb[0]}}
 				</div>
-			</v-chip>
-			<v-chip v-if="results.serumAnionGap.disturb != undefined" @click="activateChipInfo('anionGap')">
-				<v-avatar class="error" v-if="results.serumAnionGap.disturb == 'Anion Gap'">        
-					<v-icon>fas fa-arrows-alt-h</v-icon>
-				</v-avatar>
-				<v-avatar class="success" v-if="results.serumAnionGap.disturb == 'Normal'">        
-					<v-icon small>fas fa-check</v-icon>
-				</v-avatar>
-				<b>Anion Gap:</b>&nbsp; {{results.serumAnionGap.gap.toFixed(1)}}
-			</v-chip>
-			<v-chip v-if="results.serumDeltaGap.disturb != undefined && results.serumAnionGap.disturb == 'Anion Gap'" @click="activateChipInfo('deltaGap')">
-				<v-avatar class="error" v-if="results.serumDeltaGap.disturb == 'Delta Gap'">        
-					<v-icon>fas fa-arrows-alt-h</v-icon>
-				</v-avatar>
-				<v-avatar class="success" v-if="results.serumDeltaGap.disturb == 'Normal'">        
-					<v-icon small>fas fa-check</v-icon>
-				</v-avatar>
-				<b>Delta Gap:</b>&nbsp; {{results.serumDeltaGap.gap.toFixed(1)}}
-			</v-chip>
+			</v-chip>-->
 		</v-layout>
 		<hr>
 		<transition name="infos" mode="out-in">
@@ -287,7 +389,8 @@
 					o2Disturbance: BG.DisturbType.Normal,
 					pHDisturbance: BG.DisturbType.Normal,
 					disturbances: [[BG.DisturbType.Unknown]] as BG.DisturbType[][],
-					tertiaryDisturbance: BG.DisturbType.Unknown,
+					primaryDisturb: undefined as BG.DisturbType[] | undefined,
+					compensatoryDisturb: undefined as BG.DisturbType[] | undefined,
 				},
 				inputDebounce: undefined as number | undefined,
 			};
@@ -321,7 +424,8 @@
 					pHExpected: this.userBloodGas.pHExpected(),
 					serumAnionGap: this.userBloodGas.serumAnionGap(),
 					serumDeltaGap: this.userBloodGas.serumDeltaGap(),
-					tertiaryDisturbance: BG.DisturbType.Unknown,
+					primaryDisturb: this.userBloodGas.guessPrimaryDisturbance(),
+					compensatoryDisturb: this.userBloodGas.guessCompensation(),
 				};
 				if (!["pH", "O2", "anionGap", "deltaGap", undefined].includes(this.activeChip)) {
 					this.activeChip = undefined;
@@ -383,5 +487,12 @@
 		max-width: 1200px;
 		margin: auto;
 		box-shadow: 0px 0px 5px #202020 inset;
+	}
+	.instruction-box {
+		padding: 10px;
+		margin: 10px;
+		text-align: center;
+		border: 1px dotted white;
+		border-radius: 5px;
 	}
 </style>
