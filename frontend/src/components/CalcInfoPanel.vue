@@ -195,10 +195,10 @@
 										</i>
 									</div>
 									<hr>
-									<v-chip :color="activeChip == 'Respiratory Acidosis' ? 'success' : '#383838'">
+									<v-chip :color="activeChip == 'Primary Respiratory Acidosis' ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-up</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Acidosis
 									</v-chip>
-									<v-chip :color="activeChip == 'Respiratory Alkalosis' ? 'success' : '#383838'">
+									<v-chip :color="activeChip == 'Primary Respiratory Alkalosis' ? 'success' : '#383838'">
 										<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
 									</v-chip>
 								</div>
@@ -327,6 +327,7 @@
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
 										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{24 - ((PaCO2Mid - abg.PaCO2) / 2)}} &plusmn; 2 = {{22 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{26 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
+										<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
 										<div class="ref-rng-box">
 											<i>
 												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = 24 - (({{PaCO2Mid}} - P<sub>A</sub>CO<sub>2</sub>) / 2) &plusmn; 2
@@ -354,6 +355,7 @@
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
 										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 24).toFixed(1)}} &plusmn; 2 = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 22).toFixed(1)}} to {{(((abg.PaCO2 - PaCO2Mid) / 3) + 26).toFixed(1)}}</h3>
+										<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
 										<div class="ref-rng-box">
 											<i>
 												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>A</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + 24 &plusmn; 2
