@@ -5,7 +5,7 @@
 		/>
 		<div id="abg-data">
 			<div :style="{'position': 'absolute', 'left': $vuetify.breakpoint.mdAndUp ? '20px' : '10px', 'top': $vuetify.breakpoint.mdAndUp ? '10px' : '14px'}">
-				<div v-if="$vuetify.breakpoint.mdAndUp">
+				<div v-if="$vuetify.breakpoint.mdAndUp" style="border: 1px dotted white; border-radius: 6px; padding: 6px;">
 					You have scored:<br>
 					<v-chip color="green">
 						{{learnerPoints}} points
