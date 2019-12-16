@@ -544,7 +544,7 @@
 				const url = this.$store.state.api_url + "/api/answer/submit";
 				jajax.postJSON(url, answerData, this.$store.state.jwtToken).then((data: any) => {
 					this.answerData.push(answerData);
-					this.$toast(`Earned ${answerData.grade} points, progress saved!`, {timeout: 42000});
+					this.$toast(`Earned ${answerData.grade} points, progress saved!`, {timeout: 4000});
 					goTo("#feedback-tabs", { offset: 20 });
 				}).catch((err) => {
 					this.$toast(`Failed to save response (Err Code: ${err.respCode})`, {color: "#d98303"});
