@@ -105,6 +105,10 @@ const learningReferenceList = [
 		name: "Albert, M. S., Dell, R. B., & Winters, R. W. (1967). Quantitative displacement of acid-base equilibrium in metabolic acidosis. Annals of internal medicine, 66(2), 312-322.",
 		url: "https://annals.org/aim/fullarticle/681186/quantitative-displacement-acid-base-equilibrium-metabolic-acidosis",
 	},
+	{
+		name: "Nickson, C. (2019, April 23). Normal Anion Gap Metabolic Acidosis. litfl.com",
+		url: "https://litfl.com/normal-anion-gap-metabolic-acidosis/",
+	},
 ];
 
 

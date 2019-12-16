@@ -300,6 +300,29 @@
 									</div>
 									<i>Quick Tip: <u>Bartter</u> syndrome mimics <u>loop diuretics</u>, while <u>Gitelman</u> syndrome mimics <u>thiazide diuretics</u>.</i>
 								</div>
+								<div v-if="activeChip === 'Primary Metabolic Acidosis'">
+									<h2>Causes of Primary Non-gap Metabolic Acidosis</h2>
+									<hr>
+									<p>
+									</p>
+									<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; max-width: 800px; margin: auto;" class="anion-gap-chart">
+										<div style="font-size: 140%;">
+											<b>U</b>reteroenterostomies<br>
+											<b>S</b>mall bowel fistulae<br>
+											<b>E</b>xcess chloride<br>
+											<b>D</b>iarrhea<br>
+										</div>
+										<div style="font-size: 145%;">
+											<b>C</b>arbonic anhydrase inhibitors<br>
+											<b>R</b>enal tubular acidosis<br>
+											<b>A</b>ddison's disease<br>
+											<b>P</b>ancreatoenterostomies<br>
+										</div>
+									</div>
+									<!-- 
+										Acetazolamide blocks uptake of [HCO<sub>3</sub>] in proximal tubule
+									-->
+								</div>
 								<div v-if="activeChip === 'Primary Respiratory Alkalosis'">
 									<h2>Causes of Primary Respiratory Alkalosis</h2>
 									<hr>
@@ -382,6 +405,11 @@
 									</div>
 									<i>Quick Tip: In those rare cases of severe alkalosis (pH > 7.55 or signs of cardiac/CNS damage) with volume overload or renal failure, infusion of hydrochloric acid (HCl) into a central line or dialysis may be indicated.</i>
 								</div>
+								<div v-if="activeChip === 'Primary Metabolic Acidosis'">
+									<h2>Treatment of Primary Metabolic Acidosis</h2>
+									<hr>
+									<b><u>The mainstay of treatment for metabolic acidosis is the diagnosis and correction of the underlying pathology.</u></b>
+								</div>
 								<div v-if="activeChip === 'Primary Respiratory Alkalosis'">
 									<h2>Treatment of Primary Respiratory Alkalosis</h2>
 									<hr>
@@ -419,12 +447,12 @@
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
+										<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
 										<h3>Expected P<sub>A</sub>CO<sub>2</sub> = {{ (1.5 * abg.bicarb) + 8}} &plusmn; 2 = {{ (1.5 * abg.bicarb) + 6}} to {{ (1.5 * abg.bicarb) + 10}} </h3>
-										<div class="ref-rng-box">
-											<i>
-												Expected P<sub>A</sub>CO<sub>2</sub> = (1.5 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 8 &plusmn; 2
-											</i>
-										</div>
+										<hr>
+										<b>Winter's Formula:</b>
+										<br>
+										Expected P<sub>A</sub>CO<sub>2</sub> = (1.5 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 8 &plusmn; 2
 										<hr>
 										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
 											<v-icon small>fa-check</v-icon>&nbsp;Respiratory Compensation
@@ -447,6 +475,7 @@
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
+										<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
 										<h3>Expected P<sub>A</sub>CO<sub>2</sub> = {{ ((0.7 * abg.bicarb) + 20).toFixed(1) }} &plusmn; 2 = {{ ((0.7 * abg.bicarb) + 18).toFixed(1) }} to {{ ((0.7 * abg.bicarb) + 22).toFixed(1) }} </h3>
 										<div class="ref-rng-box">
 											<i>
@@ -474,8 +503,8 @@
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
-										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{24 - ((PaCO2Mid - abg.PaCO2) / 2)}} &plusmn; 2 = {{22 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{26 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
 										<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{24 - ((PaCO2Mid - abg.PaCO2) / 2)}} &plusmn; 2 = {{22 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{26 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
 										<div class="ref-rng-box">
 											<i>
 												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = 24 - (({{PaCO2Mid}} - P<sub>A</sub>CO<sub>2</sub>) / 2) &plusmn; 2
@@ -502,8 +531,8 @@
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
-										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 24).toFixed(1)}} &plusmn; 2 = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 22).toFixed(1)}} to {{(((abg.PaCO2 - PaCO2Mid) / 3) + 26).toFixed(1)}}</h3>
 										<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 24).toFixed(1)}} &plusmn; 2 = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 22).toFixed(1)}} to {{(((abg.PaCO2 - PaCO2Mid) / 3) + 26).toFixed(1)}}</h3>
 										<div class="ref-rng-box">
 											<i>
 												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>A</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + 24 &plusmn; 2
