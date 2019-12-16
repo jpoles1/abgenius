@@ -165,71 +165,246 @@
 						</center>
 					</v-container>
 					<div v-if="activeChip.includes('Primary')" key="primary">
-						<center><h2>Interpreting: Primary Disturbance</h2></center>
-						<center>
-							<br>
-							<v-layout wrap justify-center id="info-chips">
-								<div class="decision-box">
-									<v-chip :color="results.pHDisturbance == 'Alkalemia' ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-up</v-icon>pH&nbsp;<b>=</b>&nbsp;Alkalemia
-									</v-chip>
-									<hr>
-									<v-chip :color="results.primaryDisturb == 'Metabolic Alkalosis' ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-up</v-icon>[HCO<sub>3</sub>]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
-									</v-chip>
-									<v-chip :color="results.primaryDisturb == 'Respiratory Alkalosis' ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
-									</v-chip>
-								</div>
-								<div class="decision-box">
-									<v-chip :color="results.pHDisturbance == 'Acidemia' ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-down</v-icon>pH&nbsp;<b>=</b>&nbsp;Acidemia
-									</v-chip>
-									<hr>
-									<v-chip :color="results.primaryDisturb == 'Metabolic Acidosis' ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-down</v-icon>[HCO<sub>3</sub>]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
-									</v-chip>
-									<v-chip :color="results.primaryDisturb == 'Respiratory Acidosis' ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-up</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Acidosis
-									</v-chip>
-								</div>
-							</v-layout>
-						</center>
-					</div>
-					<v-container v-if="['Primary Respiratory Acidosis', 'Primary Respiratory Alkalosis'].includes(activeChip)" key="disturb">
-						<center>
-							<h2>Interpreting: Primary Respiratory Acid-Base Disturbances</h2>
-							<v-layout wrap justify-center style="margin: 22px;">
-								<div class="decision-box">
-									<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
-									<div class="ref-rng-box">
-										<i>
-											Ref Range&nbsp; &#8776; &nbsp;{{refRngs.PaCO2.lower + "&nbsp; to &nbsp;" + refRngs.PaCO2.upper}}
-										</i>
+						<v-tabs>
+							<v-tab href="#primary-dx">Diagnosis</v-tab>
+							<v-tab href="#primary-causes">Causes</v-tab>
+							<v-tab href="#primary-treatment">Treatment</v-tab>
+							<v-tab-item value="primary-dx" class="primary-disturb-tab">
+								<center><h2>Interpreting: Primary Disturbance</h2></center>
+								<center>
+									<br>
+									<v-layout wrap justify-center>
+										<div class="decision-box">
+											<v-chip :color="results.pHDisturbance == 'Alkalemia' ? 'success' : '#383838'">
+												<v-icon small>fa-arrow-up</v-icon>pH&nbsp;<b>=</b>&nbsp;Alkalemia
+											</v-chip>
+											<hr>
+											<v-chip :color="results.primaryDisturb == 'Metabolic Alkalosis' ? 'success' : '#383838'">
+												<v-icon small>fa-arrow-up</v-icon>[HCO<sub>3</sub>]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
+											</v-chip>
+											<v-chip :color="results.primaryDisturb == 'Respiratory Alkalosis' ? 'success' : '#383838'">
+												<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
+											</v-chip>
+										</div>
+										<div class="decision-box">
+											<v-chip :color="results.pHDisturbance == 'Acidemia' ? 'success' : '#383838'">
+												<v-icon small>fa-arrow-down</v-icon>pH&nbsp;<b>=</b>&nbsp;Acidemia
+											</v-chip>
+											<hr>
+											<v-chip :color="results.primaryDisturb == 'Metabolic Acidosis' ? 'success' : '#383838'">
+												<v-icon small>fa-arrow-down</v-icon>[HCO<sub>3</sub>]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+											</v-chip>
+											<v-chip :color="results.primaryDisturb == 'Respiratory Acidosis' ? 'success' : '#383838'">
+												<v-icon small>fa-arrow-up</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Acidosis
+											</v-chip>
+										</div>
+									</v-layout>
+								</center>
+								<hr><br>
+								<center v-if="['Primary Respiratory Acidosis', 'Primary Respiratory Alkalosis'].includes(activeChip)">
+									<h2>Primary Respiratory Acid-Base Disturbances</h2>
+									<v-layout wrap justify-center style="margin: 22px;">
+										<div class="decision-box">
+											<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
+											<div class="ref-rng-box">
+												<i>
+													Ref Range&nbsp; &#8776; &nbsp;{{refRngs.PaCO2.lower + "&nbsp; to &nbsp;" + refRngs.PaCO2.upper}}
+												</i>
+											</div>
+											<hr>
+											<v-chip :color="activeChip == 'Primary Respiratory Acidosis' ? 'success' : '#383838'">
+												<v-icon small>fa-arrow-up</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Acidosis
+											</v-chip>
+											<v-chip :color="activeChip == 'Primary Respiratory Alkalosis' ? 'success' : '#383838'">
+												<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
+											</v-chip>
+										</div>
+									</v-layout>
+									<p style="font-size: 90%; margin: 28px 0 36px 0; max-width: 600px; text-align: justify;">
+										Put simply, respiratory acid-base disorders result from changes in the balance of the biochemical processes which add and remove from the pools of CO<sub>2</sub> disolved in the blood.
+										Changes in the concentration of disolved CO<sub>2</sub> can be measured as a function of the partial pressure of arterial blood CO<sub>2</sub> (abbreviated PaCO<sub>2</sub>).
+										<br><br>
+										How then does a change in disolved CO<sub>2</sub> change the pH of the blood? 
+										A simplified understanding of the complex biochemistry occuring here can be acheived by examining Fig 1 below.
+										Here we see the disolution of CO<sub>2</sub> followed by its reaction with water (H<sub>2</sub>O) to form carbonic acid (H<sub>2</sub>CO<sub>3</sub>).
+										An H<sup>+</sup> ion can then dissociate from the carbonic acid cancelling out the buffering capacity of the body's stores of HCO<sub>3</sub><sup>-</sup>, and decreasing blood pH. 
+										This same reaction can be driven in reverse when levels of disolved CO<sub>2</sub> are low, increasing blood pH.
+									</p>
+									<img src="/img/co2_to_bicarb.png"
+									height=100 style="border-radius: 3px;"/>
+								</center>
+								<center v-if="['Primary Metabolic Acidosis', 'Primary Metabolic Alkalosis'].includes(activeChip)" key="disturb">
+									<div>
+										<h2>Primary Metabolic Acid-Base Disturbances</h2>
+										<v-layout wrap justify-center style="margin-top: 28px;">
+											<div class="decision-box">
+												<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
+												<div class="ref-rng-box">
+													<i>
+														Ref Range&nbsp; &#8776; &nbsp;{{refRngs.aBicarb.lower + "&nbsp; to &nbsp;" + refRngs.aBicarb.upper}}
+													</i>
+												</div>
+												<hr>
+												<v-chip :color="abg.bicarb > refRngs.aBicarb.upper ? 'success' : '#383838'">
+													<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
+												</v-chip>
+												<v-chip :color="results.serumAnionGap.disturb == 'Normal' && abg.bicarb < refRngs.aBicarb.lower ? 'success' : '#383838'">
+													<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+												</v-chip>
+												<br>
+												<v-chip :color="results.serumAnionGap.gap > refRngs.AnionGap.upper ? 'success' : '#383838'">
+													<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+												</v-chip>
+											</div>
+										</v-layout>
+										<p style="font-size: 100%; margin-top: 12px;">
+											Primary metabolic acid-base disorders are characterized by shifts in the plasma concentrations of bicarbonate.
+											An increase in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> represents a <u>metabolic alkalosis</u>. 
+											On the other hand a decrease in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> represents a (non-anion gap) <u>metabolic acidosis</u>.
+										</p>
 									</div>
+								</center>
+							</v-tab-item>
+							<v-tab-item value="primary-causes" class="primary-disturb-tab">
+								<div v-if="activeChip === 'Primary Metabolic Alkalosis'">
+									<h2>Causes of Primary Metabolic Alkalosis</h2>
 									<hr>
-									<v-chip :color="activeChip == 'Primary Respiratory Acidosis' ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-up</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Acidosis
-									</v-chip>
-									<v-chip :color="activeChip == 'Primary Respiratory Alkalosis' ? 'success' : '#383838'">
-										<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
-									</v-chip>
+									<p>
+										There are many ways to classify the processes leading to metabolic alkalosis.
+										Generally these pathologies fall into the categories of chloride depletion syndromes, mineralocorticoid excess syndromes, acid loss, and alkali administration.
+										Another intuitive way to group these processes is based upon chloride concentration, which is linked to (but not determined by) overall volume status.
+										Some pathologies are termed hyperchloremic or "chloride depletion/responsive" metabolic alkaloses, meaning they correct with administration of chloride (sometimes mistermed "volume depletion/responsive").
+										Others are chloride unresponsive, and tend to result from pathologic perturbations of the Renin-Angiotensin-Aldosterone axis.
+									</p>
+									<div style="display: flex; justify-content: space-around; flex-wrap: wrap; flex: 1;">
+										<div style="max-width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
+											<h4 style="margin-bottom: 8px;">Hypochloremic (Cl<sup>-</sup> Responsive) Metabolic Alkalosis</h4>
+											<hr>
+											<ul style="text-align: left;">
+												<li>Vomiting or gastric suctioning (amplified by loss of H<sup>+</sup>)</li>
+												<li>Chloride rich diarrhea (genetic defect, villous adenoma/McKittrick-Wheelock syndrome, and high-output illeostomy drainage)</li>
+												<li>Renal chloride losses (loop/thiazide diuretics, Bartter/Gitelman syndromes)</li>
+												<li>Hypokalemia and Hypomagnesemia</li>
+											</ul>
+										</div>
+										<div style="max-width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
+											<h4 style="margin-bottom: 8px;">Normochloremic (Cl<sup>-</sup> Unresponsive) Metabolic Alkalosis</h4>
+											<hr>
+											<ul style="text-align: left;">
+												<li>Primary hyperaldosteronism</li>
+												<li>Secondary hyperaldosternism (renal artery stenosis, Cushing syndrome/disease, renin-secreting tumor, volume depletion, heart failure, cirrhosis with ascites, and nephrotic syndrome)</li>
+												<li>Glycyrrhizin Intoxication (compound found in some licorice and chewing tobacco, inhibits cortisol breakdown)</li>
+												<li>Liddle syndrome and 11β-hydroxysteroid dehydrogenase deficiency</li>
+											</ul>
+										</div>
+									</div>
+									<i>Quick Tip: <u>Bartter</u> syndrome mimics <u>loop diuretics</u>, while <u>Gitelman</u> syndrome mimics <u>thiazide diuretics</u>.</i>
 								</div>
-							</v-layout>
-							<p style="font-size: 90%; margin: 28px 0 36px 0; max-width: 600px; text-align: justify;">
-								Put simply, respiratory acid-base disorders result from changes in the balance of the biochemical processes which add and remove from the pools of CO<sub>2</sub> disolved in the blood.
-								Changes in the concentration of disolved CO<sub>2</sub> can be measured as a function of the partial pressure of arterial blood CO<sub>2</sub> (abbreviated PaCO<sub>2</sub>).
-								<br><br>
-								How then does a change in disolved CO<sub>2</sub> change the pH of the blood? 
-								A simplified understanding of the complex biochemistry occuring here can be acheived by examining Fig 1 below.
-								Here we see the disolution of CO<sub>2</sub> followed by its reaction with water (H<sub>2</sub>O) to form carbonic acid (H<sub>2</sub>CO<sub>3</sub>).
-								An H<sup>+</sup> ion can then dissociate from the carbonic acid cancelling out the buffering capacity of the body's stores of HCO<sub>3</sub><sup>-</sup>, and decreasing blood pH. 
-								This same reaction can be driven in reverse when levels of disolved CO<sub>2</sub> are low, increasing blood pH.
-							</p>
-							<img src="/img/co2_to_bicarb.png"
-							height=100 style="border-radius: 3px;"/>
-						</center>
-					</v-container>
+								<div v-if="activeChip === 'Primary Respiratory Alkalosis'">
+									<h2>Causes of Primary Respiratory Alkalosis</h2>
+									<hr>
+									<p>
+										Any process causing hyperventilation (an increased respiratory rate or tidal volume) will result in an increased rate of CO<sub>2</sub> elimination, shifting the equilibrium towards dehydration of H<sub>2</sub>CO<sub>3</sub> to CO<sub>2</sub> and removal  of bicarbonate from the blood.
+									</p>
+									<div style="display: flex; justify-content: space-around; flex-wrap: wrap; flex: 1;">
+										<div style="width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
+											<h4 style="margin-bottom: 8px;">Central Causes of Hyperventilation</h4>
+											<hr>
+											<ul style="text-align: left;">
+												<li>Head injury/Stroke</li>
+												<li>Anxiety, pain, fear, stress</li>
+												<li>Pharmaceuticals/toxins (salicylates)</li>
+												<li>Hypoxic respiratory drive</li>
+												<li>Hyperthyroidism</li>
+											</ul>
+										</div>
+										<div style="width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
+											<h4 style="margin-bottom: 8px;">Pulmonary Causes</h4>
+											<hr>
+											<ul style="text-align: left;">
+												<li>Pulmonary embolisms, pneumothorax, pneumonia, and acute asthma or COPD</li>
+												<li>Hyperventilation during mechanical ventilation</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div v-if="activeChip === 'Primary Respiratory Acidosis'">
+									<h2>Causes of Primary Respiratory Acidosis</h2>
+									<hr>
+									<p>
+										Any process causing hypoventilation (a decreased respiratory rate or tidal volume) or deficient gas-exchange will result in an accumulation of CO<sub>2</sub> in the blood, shifting the equilibrium towards hydration of CO<sub>2</sub> to  H<sub>2</sub>CO<sub>3</sub> and increasing levels of bicarbonate in the blood.
+									</p>
+									<div style="display: flex; justify-content: space-around; flex-wrap: wrap; flex: 1;">
+										<div style="width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
+											<h4 style="margin-bottom: 8px;">Central Causes of Hypoventilation</h4>
+											<hr>
+											<ul style="text-align: left;">
+												<li>Head injury/Stroke</li>
+												<li>CNS depressants (opioids, sedative/hypnotics)</li>
+												<li>Neuromuscular blockade (paralytics, botulism, Guillain-Barre syndrome)</li>
+											</ul>
+										</div>
+										<div style="width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
+											<h4 style="margin-bottom: 8px;">Pulmonary Causes</h4>
+											<hr>
+											<ul style="text-align: left;">
+												<li>Respiratory Failure</li>
+												<li>Airflow obstruction (COPD, asthma)</li>
+												<li>Sleep Apnea/Obesity hypoventilation syndrome</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</v-tab-item>
+							<v-tab-item value="primary-treatment" class="primary-disturb-tab">
+								<div v-if="activeChip === 'Primary Metabolic Alkalosis'">
+									<h2>Treatment of Primary Metabolic Alkalosis</h2>
+									<hr>
+									<b><u>The mainstay of treatment for metabolic alkalosis is the diagnosis and correction of the underlying pathology.</u></b>
+									<div style="display: flex; justify-content: space-around; flex-wrap: wrap; flex: 1;">
+										<div style="max-width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
+											<h4 style="margin-bottom: 8px;">Hypochloremic (Cl<sup>-</sup> Responsive) Metabolic Alkalosis</h4>
+											<hr>
+											<ul style="text-align: left;">
+												<li>Replacement of chloride (often in the form of 0.9% saline) can also help to correct the alkalosis</li>
+												<li>Those patients actively losing H<sup>+</sup> and Cl<sup>-</sup> from nasogastric suction or vomiting, might also benefit from an H<sub>2</sub> receptor antagonist or proton pump inhibitor.</li>
+												<li>In the patients with volume overload a combination of potassium chloride and carbonic anhydrase inhibitors like acetazolamide (which promote renal bicarbonate elimination) may be employed.  </li>
+											</ul>
+										</div>
+										<div style="max-width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
+											<h4 style="margin-bottom: 8px;">Normochloremic (Cl<sup>-</sup> Unresponsive) Metabolic Alkalosis</h4>
+											<hr>
+											<ul style="text-align: left;">
+												<li>Mineralocorticoid excess is treated by restricting a patient’s sodium intake and adding potassium supplementation</li>
+												<li>Patients with Liddle syndrome and 11β-hydroxysteroid dehydrogenase deficiency may benefit from the addition of amiloride.</li>
+											</ul>
+										</div>
+									</div>
+									<i>Quick Tip: In those rare cases of severe alkalosis (pH > 7.55 or signs of cardiac/CNS damage) with volume overload or renal failure, infusion of hydrochloric acid (HCl) into a central line or dialysis may be indicated.</i>
+								</div>
+								<div v-if="activeChip === 'Primary Respiratory Alkalosis'">
+									<h2>Treatment of Primary Respiratory Alkalosis</h2>
+									<hr>
+									<b><u>The mainstay of treatment for primary respiratory alkaloses is the diagnosis and correction of the underlying pathology.</u></b>
+									<ul style="text-align: left;">
+										<li>Anxiolytics may help to reduce psychogenic hyperventilation.</li>
+										<li>Prolonged hyperventilation may culminate in respiratory failure and the need for intubation and mechanical ventilation.</li>
+										<li>Patients with iatrogenic respiratory alkalsosis require close monitoring of their ventilator settings, and may benefit from a reduced respiratory rate.</li>
+									</ul>						
+								</div>
+								<div v-if="activeChip === 'Primary Respiratory Acidosis'">
+									<h2>Treatment of Primary Respiratory Acidosis</h2>
+									<hr>
+									<b><u>The mainstay of treatment for primary respiratory acidosis is the diagnosis and correction of the underlying pathology.</u></b>
+									<ul style="text-align: left;">
+										<li>Bronchodilators (albuterol/ipratroprium) can be used to treat obstructive airway diseases.</li>
+										<li>Opiate-induced respiratory depression can be reversed with naloxone.</li>
+										<li>Intubation and mechanical ventilation may be necessary in cases of impending respiratory failure to prevent further decompensation.</li>
+									</ul>						
+								</div>
+							</v-tab-item>
+						</v-tabs>
+					</div>
 					<v-container v-if="['Compensatory Respiratory Alkalosis'].includes(activeChip)" key="disturb">
 						<center>
 							<h2>Interpreting: Compensatory Respiratory Alkalosis</h2>
@@ -288,97 +463,6 @@
 									</div>
 								</div>
 							</div>
-						</center>
-					</v-container>
-					<v-container v-if="['Primary Metabolic Acidosis', 'Primary Metabolic Alkalosis'].includes(activeChip)" key="disturb">
-						<center>
-							<div style="border-radius: 8px; background-color: #262626; padding: 18px; margin: 20px 0; box-shadow: 0px 0px 5px #202020 inset;">
-								<h2>Interpreting: Primary Metabolic Acid-Base Disturbances</h2>
-								<v-layout wrap justify-center style="margin-top: 28px;">
-									<div class="decision-box">
-										<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
-										<div class="ref-rng-box">
-											<i>
-												Ref Range&nbsp; &#8776; &nbsp;{{refRngs.aBicarb.lower + "&nbsp; to &nbsp;" + refRngs.aBicarb.upper}}
-											</i>
-										</div>
-										<hr>
-										<v-chip :color="abg.bicarb > refRngs.aBicarb.upper ? 'success' : '#383838'">
-											<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
-										</v-chip>
-										<v-chip :color="results.serumAnionGap.disturb == 'Normal' && abg.bicarb < refRngs.aBicarb.lower ? 'success' : '#383838'">
-											<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
-										</v-chip>
-										<br>
-										<v-chip :color="results.serumAnionGap.gap > refRngs.AnionGap.upper ? 'success' : '#383838'">
-											<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
-										</v-chip>
-									</div>
-								</v-layout>
-								<p style="font-size: 100%; margin-top: 12px;">
-									Primary metabolic acid-base disorders are characterized by shifts in the plasma concentrations of bicarbonate.
-									An increase in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> represents a <u>metabolic alkalosis</u>. 
-									On the other hand a decrease in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> represents a (non-anion gap) <u>metabolic acidosis</u>.
-								</p>
-							</div>
-							<div v-if="activeChip === 'Primary Metabolic Alkalosis'">
-								<h2>Causes of Primary Metabolic Alkalosis</h2>
-								<hr>
-								<p>
-									There are many ways to classify the processes leading to metabolic alkalosis.
-									Generally these pathologies fall into the categories of chloride depletion syndromes, mineralocorticoid excess syndromes, acid loss, and alkali administration.
-									Another intuitive way to group these processes is based upon chloride concentration, which is linked to (but not determined by) overall volume status.
-									Some pathologies are termed hyperchloremic or "chloride depletion/responsive" metabolic alkaloses, meaning they correct with administration of chloride (sometimes mistermed "volume depletion/responsive").
-									Others are chloride unresponsive, and tend to result from pathologic perturbations of the Renin-Angiotensin-Aldosterone axis.
-								</p>
-								<div style="display: flex; justify-content: space-around; flex-wrap: wrap; flex: 1;">
-									<div style="max-width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
-										<h4 style="margin-bottom: 8px;">Hypochloremic (Cl<sup>-</sup> Responsive) Metabolic Alkalosis</h4>
-										<hr>
-										<ul style="text-align: left;">
-											<li>Vomiting or gastric suctioning (amplified by loss of H<sup>+</sup>)</li>
-											<li>Chloride rich diarrhea (genetic defect, villous adenoma/McKittrick-Wheelock syndrome, and high-output illeostomy drainage)</li>
-											<li>Renal chloride losses (loop/thiazide diuretics, Bartter/Gitelman syndromes)</li>
-											<li>Hypokalemia and Hypomagnesemia</li>
-										</ul>
-									</div>
-									<div style="max-width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
-										<h4 style="margin-bottom: 8px;">Normochloremic (Cl<sup>-</sup> Unresponsive) Metabolic Alkalosis</h4>
-										<hr>
-										<ul style="text-align: left;">
-											<li>Primary hyperaldosteronism</li>
-											<li>Secondary hyperaldosternism (renal artery stenosis, Cushing syndrome/disease, renin-secreting tumor, volume depletion, heart failure, cirrhosis with ascites, and nephrotic syndrome)</li>
-											<li>Glycyrrhizin Intoxication (compound found in some licorice and chewing tobacco, inhibits cortisol breakdown)</li>
-											<li>Liddle syndrome and 11β-hydroxysteroid dehydrogenase deficiency</li>
-										</ul>
-									</div>
-								</div>
-								<i>Quick Tip: <u>Bartter</u> syndrome mimics <u>loop diuretics</u>, while <u>Gitelman</u> syndrome mimics <u>thiazide diuretics</u>.</i>
-								<br><br><br>
-								<h2>Treatment of Primary Metabolic Alkalosis</h2>
-								<hr>
-								<b><u>The mainstay of treatment for metabolic alkalosis is the diagnosis and correction of the underlying pathology.</u></b>
-								<div style="display: flex; justify-content: space-around; flex-wrap: wrap; flex: 1;">
-									<div style="max-width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
-										<h4 style="margin-bottom: 8px;">Hypochloremic (Cl<sup>-</sup> Responsive) Metabolic Alkalosis</h4>
-										<hr>
-										<ul style="text-align: left;">
-											<li>Replacement of chloride (often in the form of 0.9% saline) can also help to correct the alkalosis</li>
-											<li>Those patients actively losing H<sup>+</sup> and Cl<sup>-</sup> from nasogastric suction or vomiting, might also benefit from an H<sub>2</sub> receptor antagonist or proton pump inhibitor.</li>
-											<li>In the patients with volume overload a combination of potassium chloride and carbonic anhydrase inhibitors like acetazolamide (which promote renal bicarbonate elimination) may be employed.  </li>
-										</ul>
-									</div>
-									<div style="max-width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
-										<h4 style="margin-bottom: 8px;">Normochloremic (Cl<sup>-</sup> Unresponsive) Metabolic Alkalosis</h4>
-										<hr>
-										<ul style="text-align: left;">
-											<li>Mineralocorticoid excess is treated by restricting a patient’s sodium intake and adding potassium supplementation</li>
-											<li>Patients with Liddle syndrome and 11β-hydroxysteroid dehydrogenase deficiency may benefit from the addition of amiloride.</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<i>Quick Tip: In those rare cases of severe alkalosis (pH > 7.55 or signs of cardiac/CNS damage) with volume overload or renal failure, infusion of hydrochloric acid (HCl) into a central line or dialysis may be indicated.</i>
 						</center>
 					</v-container>
 					<v-container v-if="['Compensatory Metabolic Acidosis'].includes(activeChip)" key="disturb">
@@ -503,5 +587,9 @@ export default Vue.extend({
 	.anion-gap-chart b {
 		font-size: 110%;
 		color: #d2a6dd;
+	}
+	.primary-disturb-tab {
+		background-color: #222;
+		padding: 20px;
 	}
 </style>

@@ -34,6 +34,10 @@ const referenceList: ResourceData[] = [
 		notes: "Good resource to learn to quickly interpret ABGs with a stepwise algorithm",
 	},
 	{
+		name: "Brinkman, J. E., & Sharma, S. (2019). Physiology, Respiratory Alkalosis. In StatPearls [Internet]. StatPearls Publishing.",
+		url: "https://www.ncbi.nlm.nih.gov/books/NBK482117/",
+	},
+	{
 		name: "Emmett, M. (2016). Approach to the patient with a negative anion gap. American Journal of Kidney Diseases, 67(1), 143-150.",
 		url: "https://www.sciencedirect.com/science/article/pii/S0272638615010550",
 	},
@@ -53,6 +57,10 @@ const referenceList: ResourceData[] = [
 	{
 		name: "Kellum, J. A. (2005). Clinical review: reunification of acid–base physiology. Critical Care, 9(5), 500.",
 		url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1297616/",
+	},
+	{
+		name: "Patel, S., & Sharma, S. (2019). Physiology, Respiratory Acidosis. In StatPearls [Internet]. StatPearls Publishing.",
+		url: "https://www.ncbi.nlm.nih.gov/books/NBK482430/",
 	},
 	{
 		name: "Soifer, J. T., & Kim, H. T. (2014). Approach to metabolic alkalosis. Emergency Medicine Clinics, 32(2), 453-463.",
