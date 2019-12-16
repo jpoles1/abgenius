@@ -247,7 +247,7 @@
 			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap'">
 				<b>Step 5: Add Respiratory Disturbances</b>
 				<br>
-				<v-chip @click="activateChipInfo(results.disturbances[2][0])">
+				<v-chip @click="activateChipInfo('Compensatory ' + results.disturbances[2][0])">
 						<v-avatar class="warning" v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2][0])">
 							<v-icon small>
 								fa-wind
