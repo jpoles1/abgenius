@@ -288,6 +288,7 @@
 							</center>
 							<div class="flex-break" style="margin: 10px;"/>
 							<b>Genius Answer (click for explanation):</b>
+							<div class="flex-break" style="margin: 0px;"/>
 							<v-layout wrap justify-center id="info-chips">
 								<div class="instruction-box">
 									<b>Step 1: Assess Overall Blood pH</b>
