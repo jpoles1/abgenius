@@ -267,7 +267,7 @@
 			<div class="instruction-box" v-if="results.serumAnionGap.disturb !== 'Anion Gap'">
 				<b>Step 3: Check Primary Disturbance</b>
 				<br>
-				<v-chip @click="activateChipInfo('Primary ' + results.primaryDisturb[0])">
+				<v-chip @click="activateChipInfo('Primary ' + (results.primaryDisturb ? results.primaryDisturb[0] : ''))">
 					<v-avatar class="warning" v-if="results.primaryDisturb">
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.primaryDisturb[0])'>
 							fa-wind
@@ -312,6 +312,7 @@
 			</div>
 		</v-layout>
 		<hr>
+		<br>
 		<transition name="infos" mode="out-in">
 			<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
 		</transition>
