@@ -4,10 +4,23 @@
 			title="ABGenius - Trainer"
 		/>
 		<div id="abg-data">
+			<div :style="{'position': 'absolute', 'left': $vuetify.breakpoint.mdAndUp ? '20px' : '10px', 'top': $vuetify.breakpoint.mdAndUp ? '10px' : '14px'}">
+				<div v-if="$vuetify.breakpoint.mdAndUp">
+					You have scored:<br>
+					<v-chip color="green">
+						{{learnerPoints}} points
+					</v-chip>
+				</div>
+				<div v-else>
+					<v-chip color="green">
+						{{learnerPoints}} x <v-icon style="font-size: 100%; margin-top: -4px;">fas fa-star</v-icon>
+					</v-chip>
+				</div>
+			</div>
 			<v-dialog v-model="instructionDialog" max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown">
 				<template v-slot:activator="{ on }">
 					<v-btn color="primary" fab small dark v-on="on"
-					style="position: absolute; right: 20px; top: 6px;">
+					style="position: absolute; right: 20px; top: 8px;">
 						<v-icon>fa-question</v-icon>
 					</v-btn>
 				</template>
@@ -44,7 +57,7 @@
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
-
+			<div v-if="!$vuetify.breakpoint.mdAndUp" style="width:100%; height: 1px; margin-top: 30px;"></div>
 			<center><h2>Arterial Blood Gas</h2></center><br>
 			<v-layout text-xs-center wrap justify-center>
 				<v-tooltip top>
@@ -531,7 +544,7 @@
 				const url = this.$store.state.api_url + "/api/answer/submit";
 				jajax.postJSON(url, answerData, this.$store.state.jwtToken).then((data: any) => {
 					this.answerData.push(answerData);
-					this.$toast("Progress saved!");
+					this.$toast(`Earned ${answerData.grade} points, progress saved!`, {timeout: 42000});
 					goTo("#feedback-tabs", { offset: 20 });
 				}).catch((err) => {
 					this.$toast(`Failed to save response (Err Code: ${err.respCode})`, {color: "#d98303"});
@@ -679,6 +692,11 @@
 			},
 			abgUrl(): string {
 				return window.location.origin + `/?pH=${this.genBloodGas.abg.pH}&PaCO2=${this.genBloodGas.abg.PaCO2}&bicarb=${this.genBloodGas.abg.bicarb}&Na=${this.genBloodGas.abg.Na}&Cl=${this.genBloodGas.abg.Cl}`;
+			},
+			learnerPoints(): number {
+				return this.answerData.reduce((agg, answer) => {
+					return agg + answer.grade;
+				}, 0);
 			},
 		},
 		mounted() {
