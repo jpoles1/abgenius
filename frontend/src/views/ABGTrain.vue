@@ -688,6 +688,7 @@
 					serumDeltaGap: this.genBloodGas.serumDeltaGap(),
 					primaryDisturb: this.genBloodGas.guessPrimaryDisturbance(),
 					compensatoryDisturb: this.genBloodGas.guessCompensation(),
+					expectedCompensation: this.genBloodGas.expectedCompensation(),
 				};
 			},
 			abgUrl(): string {
