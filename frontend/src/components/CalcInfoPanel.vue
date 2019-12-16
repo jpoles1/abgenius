@@ -60,6 +60,23 @@
 					<v-container v-if="activeChip == 'anionGap'" key="anionGap">
 						<center style="margin-bottom: 8px;"><h2>Interpreting: Anion Gap</h2></center>
 						<hr>
+						<v-layout wrap justify-center style="margin: 22px; text-align: center;">
+							<div class="decision-box">
+								<h3>Anion Gap = {{results.serumAnionGap.gap}}</h3>
+								<div class="ref-rng-box">
+									<i>
+										Ref Range&nbsp; &#8776; &nbsp;{{refRngs.AnionGap.lower + "&nbsp; to &nbsp;" + refRngs.AnionGap.upper}}
+									</i>
+								</div>
+								<hr>
+								<v-chip :color="results.serumAnionGap.disturb === 'Anion Gap' ? 'success' : '#383838'">
+									<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+								</v-chip>
+								<v-chip :color="results.serumAnionGap.disturb !== 'Anion Gap' ? 'success' : '#383838'">
+									<v-icon small>fa-arrows-alt-h</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Normal
+								</v-chip>
+							</div>
+						</v-layout>
 						<p style="text-align: center;">
 							There are many different organic and inorganic acids which can accumulate in the blood of a patient causing acidosis.
 							Unlike the bicarbonate value, we cannot hope to measure the levels of all of these acidic species to figure out if any are present.   
