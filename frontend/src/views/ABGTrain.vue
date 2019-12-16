@@ -276,16 +276,6 @@
 							<div class="flex-break" style="margin: 10px;"/>
 							<b>Genius Answer (click for explanation):</b>
 							<v-layout wrap justify-center id="info-chips">
-								<v-chip class="genius-disturb" @click="activateChipInfo('O2')" v-if="showPaO2">
-									<v-avatar class="error" v-if="results.o2Disturbance != 'Normal'">        
-										<v-icon v-if="results.o2Disturbance == 'Hyperoxemia'">fas fa-arrow-up</v-icon>
-										<v-icon v-if="results.o2Disturbance == 'Hypoxemia'">fas fa-arrow-down</v-icon>
-									</v-avatar>
-									<v-avatar class="success" v-else>        
-										<v-icon small>fas fa-check</v-icon>
-									</v-avatar>
-									<b>Blood Oxygen:</b>&nbsp;{{results.o2Disturbance}}
-								</v-chip>
 								<div class="instruction-box">
 									<b>Step 1: Assess Overall Blood pH</b>
 									<br>
