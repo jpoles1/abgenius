@@ -18,6 +18,6 @@ Vue.use(Vuetify, {
 
 import VuetifyToast from "vuetify-toast-snackbar";
 Vue.use(VuetifyToast, {
-	showClose: false,
+	dissmissable: true,
 	color: "#403e4d",
 });
