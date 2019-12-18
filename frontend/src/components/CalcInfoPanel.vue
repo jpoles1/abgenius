@@ -62,7 +62,7 @@
 						<hr>
 						<v-layout wrap justify-center style="margin: 22px; text-align: center;">
 							<div class="decision-box">
-								<h3>Anion Gap = {{results.serumAnionGap.gap}}</h3>
+								<h3>Anion Gap = [Na<sup>+</sup>] - [Cl<sup>-</sup>] - [HCO<sub>3</sub><sup>-</sup>] = {{results.serumAnionGap.gap}}</h3>
 								<div class="ref-rng-box">
 									<i>
 										Ref Range&nbsp; &#8776; &nbsp;{{refRngs.AnionGap.lower + "&nbsp; to &nbsp;" + refRngs.AnionGap.upper}}
