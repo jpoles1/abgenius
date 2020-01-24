@@ -303,10 +303,10 @@
 						<v-icon small>fas fa-not-equal</v-icon>
 					</v-avatar>
 					<div v-if="results.compensatoryDisturb">
-						{{results.compensatoryDisturb[0]}}
+						{{results.compensatoryDisturb[0].split(" ")[0]}} Compensation
 					</div>
 					<div v-else>
-						None
+						Poorly Compensated
 					</div>
 				</v-chip>
 			</div>
