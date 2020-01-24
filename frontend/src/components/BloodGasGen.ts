@@ -1,4 +1,4 @@
-import {BloodGas, DisturbType, RefRngs, RefRngMidpoint} from "./BloodGas";
+import {BloodGas, DisturbType, CompType, RefRngs, RefRngMidpoint} from "./BloodGas";
 
 function floatFix(f: number, precision: number): number {
 	return parseFloat(f.toFixed(precision));
@@ -11,14 +11,14 @@ function randPick<T>(arr: T[]): T {
 	return arr[Math.floor(arr.length * Math.random())];
 }
 
-const lowerLimitPaCO2 = 15;
+const lowerLimitPaCO2 = 10;
 const upperLimitBicarb = 54;
 const lowerLimitBicarb = 4;
 const upperLimitAG = 28;
 const upperLimitDG = 24;
 const floatLenMax = 5;
 
-export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [BloodGas, DisturbType[][]]} = {
+export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [BloodGas, DisturbType[], CompType]} = {
 	"Normal": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.pH = randFloat(RefRngMidpoint("apH") - 0.02, RefRngMidpoint("apH") + 0.02, truncateValues ? 2 : floatLenMax);
@@ -30,13 +30,12 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.Normal]]];
+		return [newGas, [DisturbType.Normal], CompType.None];
 	},
 	"Acute Respiratory Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.upper + 6, 90, truncateValues ? 0 : floatLenMax);
-		const bicarbMidpoint = (((newGas.abg.PaCO2 - RefRngMidpoint("PaCO2")) / 10) + 24);
-		newGas.abg.bicarb = randFloat(bicarbMidpoint - 1, bicarbMidpoint + 0.8, truncateValues ? 0 : floatLenMax);
+		newGas.abg.bicarb = Math.ceil(newGas.compensatedBicarb(1 / 10));
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : 10);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, truncateValues ? 0 : floatLenMax);
 		newGas.abg.Cl = randFloat(
@@ -44,13 +43,12 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.RespAcid]]];
+		return [newGas, [DisturbType.RespAcid, DisturbType.MetAlk], CompType.Partial];
 	},
 	"Chronic Respiratory Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.upper + 10, 100, truncateValues ? 0 : floatLenMax);
-		const bicarbMidpoint = ((newGas.abg.PaCO2 - RefRngMidpoint("PaCO2")) / 3) + 24;
-		newGas.abg.bicarb = randFloat(bicarbMidpoint, bicarbMidpoint + 3, truncateValues ? 0 : floatLenMax);
+		newGas.abg.bicarb = Math.ceil(newGas.compensatedBicarb(4 / 10));
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, truncateValues ? 0 : floatLenMax);
 		newGas.abg.Cl = randFloat(
@@ -58,13 +56,12 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.RespAcid], [DisturbType.MetAlk]]];
+		return [newGas, [DisturbType.RespAcid, DisturbType.MetAlk], CompType.Full];
 	},
 	"Acute Respiratory Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(15, RefRngs.PaCO2!.lower - 6, truncateValues ? 0 : floatLenMax);
-		const bicarbMidpoint = 24 - ((RefRngMidpoint("PaCO2") - newGas.abg.PaCO2) / 5);
-		newGas.abg.bicarb = randFloat(bicarbMidpoint - 1, bicarbMidpoint + 1, truncateValues ? 0 : floatLenMax);
+		newGas.abg.bicarb = Math.floor(newGas.compensatedBicarb(2 / 10));
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, truncateValues ? 0 : floatLenMax);
 		newGas.abg.Cl = randFloat(
@@ -72,13 +69,12 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.RespAlk]]];
+		return [newGas, [DisturbType.RespAlk, DisturbType.MetAcid], CompType.Partial];
 	},
 	"Chronic Respiratory Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.PaCO2 = randFloat(10, RefRngs.PaCO2!.lower - 10, truncateValues ? 0 : floatLenMax);
-		const bicarbMidpoint = 24 - ((RefRngMidpoint("PaCO2") - newGas.abg.PaCO2) / 2);
-		newGas.abg.bicarb = randFloat(bicarbMidpoint - 1, bicarbMidpoint + 1, truncateValues ? 0 : floatLenMax);
+		newGas.abg.bicarb = Math.floor(newGas.compensatedBicarb(5 / 10));
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, truncateValues ? 0 : floatLenMax);
 		newGas.abg.Cl = randFloat(
@@ -86,13 +82,13 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.RespAlk], [DisturbType.MetAcid]]];
+		return [newGas, [DisturbType.RespAlk, DisturbType.MetAcid], CompType.Full];
 	},
-	"Uncompensated Metabolic Alkalosis": (truncateValues: boolean = true) => {
+	"Poorly Compensated Metabolic Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.bicarb = randFloat(RefRngs.aBicarb!.upper + 1, upperLimitBicarb, truncateValues ? 0 : floatLenMax);
 		const formulaMid = (0.7 * newGas.abg.bicarb!) + 20;
-		newGas.abg.PaCO2 = randFloat(formulaMid - 6, formulaMid - 3, truncateValues ? 0 : floatLenMax);
+		newGas.abg.PaCO2 = randFloat(Math.max(RefRngs.PaCO2!.upper, formulaMid - 10), formulaMid - 6, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, truncateValues ? 0 : floatLenMax);
 		newGas.abg.Cl = randFloat(
@@ -100,7 +96,21 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.MetAlk]]];
+		return [newGas, [DisturbType.MetAlk, DisturbType.RespAlk], CompType.Partial];
+	},
+	"Decompensated Metabolic Alkalosis": (truncateValues: boolean = true) => {
+		const newGas = new BloodGas({abg: {}});
+		newGas.abg.bicarb = randFloat(RefRngs.aBicarb!.upper + 1, upperLimitBicarb, truncateValues ? 0 : floatLenMax);
+		const formulaMid = (0.7 * newGas.abg.bicarb!) + 20;
+		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower, truncateValues ? 0 : floatLenMax);
+		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
+		newGas.abg.Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper, truncateValues ? 0 : floatLenMax);
+		newGas.abg.Cl = randFloat(
+			newGas.abg.Na - (RefRngs.AnionGap!.upper - 1 + newGas.abg.bicarb!),
+			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
+			0,
+		);
+		return [newGas, [DisturbType.MetAlk, DisturbType.RespAlk], CompType.None];
 	},
 	"Compensated Metabolic Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
@@ -115,7 +125,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.MetAlk], [DisturbType.RespAcid]]];
+		return [newGas, [DisturbType.MetAlk, DisturbType.RespAcid], CompType.Full];
 	},
 	"Uncompensated Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
@@ -129,7 +139,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.MetAcid]]];
+		return [newGas, [DisturbType.MetAcid, DisturbType.RespAcid], CompType.None];
 	},
 	"Compensated Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
@@ -143,7 +153,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na - (RefRngs.AnionGap!.lower + 1 + newGas.abg.bicarb!),
 			0,
 		);
-		return [newGas, [[DisturbType.MetAcid], [DisturbType.RespAlk]]];
+		return [newGas, [DisturbType.MetAcid, DisturbType.RespAlk], CompType.Full];
 	},
 	"Uncompensated Anion Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
@@ -160,7 +170,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
-		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap]]];
+		return [newGas, [DisturbType.AnionGap,  DisturbType.RespAcid], CompType.None];
 	},
 	"Compensated Anion Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
@@ -177,7 +187,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
-		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.RespAlk]]];
+		return [newGas, [DisturbType.AnionGap, DisturbType.RespAlk], CompType.Full];
 	},
 	// Wrenn, K. (1990). The delta (Δ) gap: An approach to mixed acid-base disorders. Annals of emergency medicine, 19(11), 1310-1313.
 	// "Most commonly, there is either a mixed high AG and normal AG acidosis, or a mixed high AG acidosis and chronic respiratory alkalosis with a compensating hyperchloremic acidosis."
@@ -186,9 +196,9 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		// DeltaGap - AnionGap > -(RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower)
 		// randAnionGap < (RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower + randDeltaGap)
 	/**
-	 * Generates a mixed high AG and normal AG acidosis
+	 * Generates a mixed high AG and normal AG acidosis, without appropriate respiratory compensation
 	 */
-	"Negative Delta Gap": (truncateValues: boolean = true) => {
+	/*"Uncompensated Negative Delta Gap": (truncateValues: boolean = true) => {
 		let pH = Infinity;
 		const newGas = new BloodGas({abg: {}});
 		// TODO: Fix me! Unclear why (math error somewhere), but occasionally returns bicarb of 0, causing pH = Infinity
@@ -201,19 +211,41 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 			// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
 			const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
-			newGas.abg.PaCO2 = randFloat(wintersFormulaMid + 3, wintersFormulaMid + 6, truncateValues ? 0 : floatLenMax);
+			newGas.abg.PaCO2 = randFloat(wintersFormulaMid + 4, wintersFormulaMid + 6, truncateValues ? 0 : floatLenMax);
 			newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
 			pH = newGas.abg.pH;
 			newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 			// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 			newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		}
-		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]]];
+		return [newGas, [DisturbType.AnionGap, DisturbType.MetAcid, DisturbType.RespAcid], CompType.None];
 	},
+	"Compensated Negative Delta Gap": (truncateValues: boolean = true) => {
+		let pH = Infinity;
+		const newGas = new BloodGas({abg: {}});
+		// TODO: Fix me! Unclear why (math error somewhere), but occasionally returns bicarb of 0, causing pH = Infinity
+		while (!isFinite(pH)) {
+			const randDeltaGap =  randFloat(-upperLimitDG + 4, -RefRngs.AnionGap!.upper - 1, truncateValues ? 0 : floatLenMax);
+			const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 1, randDeltaGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower, truncateValues ? 0 : floatLenMax);
+			// DeltaGap = AG - AG.upper - Bicarb.lower + Bicarb
+			// Bicarb = DeltaGap - AG + AG.upper + Bicarb.lower > lowerLimitBicarb
+			// AG > lowerLimitBicarb - AG.upper - Bicarb.lower
+			newGas.abg.bicarb = randDeltaGap - randAnionGap + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+			// newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
+			const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
+			newGas.abg.PaCO2 = randFloat(wintersFormulaMid - 2, wintersFormulaMid + 2, truncateValues ? 0 : floatLenMax);
+			newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
+			pH = newGas.abg.pH;
+			newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
+			// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
+			newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
+		}
+		return [newGas, [DisturbType.AnionGap, DisturbType.MetAcid, DisturbType.RespAlk], CompType.Full];
+	},*/
 	/**
 	 * Generates a mixed high AG acidosis (like AKA) coexisting with a chronic respiratory alkalosis (hyperventilation) with a compensatory hyperchloremic acidosis (renal excretion of base)
 	 */
-	"Negative Delta Gap + Chronic Respiratory Alkalosis": (truncateValues: boolean = true) => {
+	/*"Mixed Negative Delta Gap": (truncateValues: boolean = true) => {
 		let pH = Infinity;
 		const newGas = new BloodGas({abg: {}});
 		// TODO: Fix me! Unclear why (math error somewhere), but occasionally returns bicarb of 0, causing pH = Infinity
@@ -234,11 +266,11 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		}
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid], [DisturbType.RespAlk]]];
-	},
+	},*/
 	/**
 	 * 	Generates a high AG acidosis mixed with a primary metabolic alkalosis
 	 */
-	"Positive Delta Gap": (truncateValues: boolean = true) => {
+	/*"Uncompensated Positive Delta Gap": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
 		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, truncateValues ? 0 : floatLenMax);
@@ -253,7 +285,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		newGas.abg.Cl = randFloat(RefRngs.Cl!.lower, RefRngs.Cl!.upper, truncateValues ? 0 : floatLenMax);
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
-		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk]]];
+		return [newGas, [DisturbType.AnionGap DisturbType.MetAlk, Resp A], ];
 	},
 	"Positive Delta Gap + Respiratory Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
@@ -270,5 +302,5 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk], [DisturbType.RespAcid]]];
-	},
+	},*/
 };
