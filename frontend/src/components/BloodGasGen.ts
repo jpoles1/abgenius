@@ -188,7 +188,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	/**
 	 * Generates a mixed high AG and normal AG acidosis
 	 */
-	"Negative Delta Gap": (truncateValues: boolean = true) => {
+	/*"Negative Delta Gap": (truncateValues: boolean = true) => {
 		let pH = Infinity;
 		const newGas = new BloodGas({abg: {}});
 		// TODO: Fix me! Unclear why (math error somewhere), but occasionally returns bicarb of 0, causing pH = Infinity
@@ -209,11 +209,11 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		}
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]]];
-	},
+	},*/
 	/**
 	 * Generates a mixed high AG acidosis (like AKA) coexisting with a chronic respiratory alkalosis (hyperventilation) with a compensatory hyperchloremic acidosis (renal excretion of base)
 	 */
-	"Negative Delta Gap + Chronic Respiratory Alkalosis": (truncateValues: boolean = true) => {
+	/*"Negative Delta Gap + Chronic Respiratory Alkalosis": (truncateValues: boolean = true) => {
 		let pH = Infinity;
 		const newGas = new BloodGas({abg: {}});
 		// TODO: Fix me! Unclear why (math error somewhere), but occasionally returns bicarb of 0, causing pH = Infinity
@@ -234,11 +234,11 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 			newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		}
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid], [DisturbType.RespAlk]]];
-	},
+	},*/
 	/**
 	 * 	Generates a high AG acidosis mixed with a primary metabolic alkalosis
 	 */
-	"Positive Delta Gap": (truncateValues: boolean = true) => {
+	/*"Positive Delta Gap": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		// DeltaGap = DeltaAG - DeltaBicarb = (AG - AG.upper) - (Bicarb.lower - Bicarb)
 		const randAnionGap = randFloat(RefRngs.AnionGap!.upper + 2, upperLimitAG, truncateValues ? 0 : floatLenMax);
@@ -270,5 +270,5 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		// DeltaGap = Na - Cl - AG.upper - Bicarb.lower
 		newGas.abg.Na = randDeltaGap + newGas.abg.Cl + RefRngs.AnionGap!.upper + RefRngs.aBicarb!.lower;
 		return [newGas, [[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk], [DisturbType.RespAcid]]];
-	},
+	},*/
 };
