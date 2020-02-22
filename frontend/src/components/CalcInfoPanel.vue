@@ -365,6 +365,7 @@
 												<li>Head injury/Stroke</li>
 												<li>CNS depressants (opioids, sedative/hypnotics)</li>
 												<li>Neuromuscular blockade (paralytics, botulism, Guillain-Barre syndrome)</li>
+												<li>Sleep Apnea/Obesity hypoventilation syndrome</li>
 											</ul>
 										</div>
 										<div style="width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
@@ -373,7 +374,7 @@
 											<ul style="text-align: left;">
 												<li>Respiratory Failure</li>
 												<li>Airflow obstruction (COPD, asthma)</li>
-												<li>Sleep Apnea/Obesity hypoventilation syndrome</li>
+												<li>Severe interstitial lung disease</li>
 											</ul>
 										</div>
 									</div>
@@ -455,10 +456,10 @@
 										Expected P<sub>A</sub>CO<sub>2</sub> = (1.5 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 8 &plusmn; 2
 										<hr>
 										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
-											<v-icon small>fa-check</v-icon>&nbsp;Respiratory Compensation
+											<v-icon small>fa-check</v-icon>&nbsp;Complete Respiratory Compensation
 										</v-chip>
 										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
-											<v-icon small>fa-times</v-icon>Poorly Compensated
+											<v-icon small>fa-times</v-icon>Incomplete Respiratory Compensation
 										</v-chip>
 									</div>
 								</div>
@@ -484,10 +485,10 @@
 										</div>
 										<hr>
 										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
-											<v-icon small>fa-check</v-icon>&nbsp;Respiratory Compensation
+											<v-icon small>fa-check</v-icon>&nbsp;Complete Respiratory Compensation
 										</v-chip>
 										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
-											<v-icon small>fa-times</v-icon>Poorly Compensated
+											<v-icon small>fa-times</v-icon>Incomplete Respiratory Compensation
 										</v-chip>
 									</div>
 								</div>
@@ -504,18 +505,18 @@
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
 										<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
-										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{24 - ((PaCO2Mid - abg.PaCO2) / 2)}} &plusmn; 2 = {{22 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{26 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{((abg.PaCO2 - PaCO2Mid) / 2)}} + 24 &plusmn; 2 = {{22 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{26 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
 										<div class="ref-rng-box">
 											<i>
-												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = 24 - (({{PaCO2Mid}} - P<sub>A</sub>CO<sub>2</sub>) / 2) &plusmn; 2
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>A</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 2) + 24 &plusmn; 2
 											</i>
 										</div>
 										<hr>
 										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
-											<v-icon small>fa-check</v-icon>&nbsp;Metabolic Compensation
+											<v-icon small>fa-check</v-icon>&nbsp;Complete Metabolic Compensation
 										</v-chip>
 										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
-											<v-icon small>fa-times</v-icon>Poorly Compensated
+											<v-icon small>fa-times</v-icon>Incomplete Metabolic Compensation
 										</v-chip>
 									</div>
 								</div>
@@ -540,10 +541,10 @@
 										</div>
 										<hr>
 										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
-											<v-icon small>fa-check</v-icon>&nbsp;Metabolic Compensation
+											<v-icon small>fa-check</v-icon>&nbsp;Complete Metabolic Compensation
 										</v-chip>
 										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
-											<v-icon small>fa-times</v-icon>Poorly Compensated
+											<v-icon small>fa-times</v-icon>Incomplete Metabolic Compensation
 										</v-chip>
 									</div>
 								</div>
