@@ -167,8 +167,8 @@
 					<div v-if="activeChip.includes('Primary')" key="primary">
 						<v-tabs>
 							<v-tab href="#primary-dx">Diagnosis</v-tab>
-							<v-tab href="#primary-causes">Causes</v-tab>
-							<v-tab href="#primary-treatment">Treatment</v-tab>
+							<v-tab href="#primary-causes" v-if="results.disturbances[0] !== 'Normal'">Causes</v-tab>
+							<v-tab href="#primary-treatment"  v-if="results.disturbances[0] !== 'Normal'">Treatment</v-tab>
 							<v-tab-item value="primary-dx" class="primary-disturb-tab">
 								<center><h2>Interpreting: Primary Disturbance</h2></center>
 								<center>
