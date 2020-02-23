@@ -259,8 +259,8 @@
 										</v-layout>
 										<p style="font-size: 100%; margin-top: 12px;">
 											Primary metabolic acid-base disorders are characterized by shifts in the plasma concentrations of bicarbonate.
-											An increase in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> represents a <u>metabolic alkalosis</u>. 
-											On the other hand a decrease in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> represents a (non-anion gap) <u>metabolic acidosis</u>.
+											An increase in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> suggests the presence of a <u>metabolic alkalosis</u>. 
+											On the other hand a decrease in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> suggests the presence of a <u>metabolic acidosis</u>.
 										</p>
 									</div>
 								</center>
