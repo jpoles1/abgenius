@@ -439,10 +439,10 @@
 							<h2>Interpreting: Respiratory Compensation</h2>
 							<hr>
 							<p style="font-size: 100%; margin-top: 12px;">
-								In 1967, Dr. Robert Winters <i>et al.</i> published a paper entitled <u>Quantitative Displacement of Acid-Base Equilibrium in Metabolic Acidosis</u>,
+								In 1967 Albert, Dell, and Winters published a paper entitled <a style="color: white" href="https://annals.org/aim/fullarticle/681186/quantitative-displacement-acid-base-equilibrium-metabolic-acidosis"><u><i>Quantitative Displacement of Acid-Base Equilibrium in Metabolic Acidosis</i></u></a>,
 								which included a population of 60 patients with a known metabolic acidosis who had not yet received treatment.
 								The manuscript describes a linear trend between plasma bicarbonate and the expected compensatory change in P<sub>a</sub>CO<sub>2</sub> (see below).
-								We can use an equation derived from this linear regression to determine if our patient is adequately compensating for the metabolic acidosis by increasing their ventilation and causing a respiratory alkalosis. 
+								We can use an equation derived from this linear regression to determine if our patient is adequately compensating for a metabolic acidosis by increasing their ventilation in order to breathe off CO<sub>2</sub> and raise blood pH. 
 							</p>
 							<hr>
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
@@ -451,7 +451,7 @@
 										<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
 										<h3>Expected P<sub>a</sub>CO<sub>2</sub> = {{ (1.5 * abg.bicarb) + 8}} &plusmn; 2 = {{ (1.5 * abg.bicarb) + 6}} to {{ (1.5 * abg.bicarb) + 10}} </h3>
 										<hr>
-										<b>Winter's Formula:</b>
+										<b>Winters' Formula:</b>
 										<br>
 										Expected P<sub>a</sub>CO<sub>2</sub> = (1.5 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 8 &plusmn; 2
 										<hr>

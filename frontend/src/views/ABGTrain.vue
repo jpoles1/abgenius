@@ -170,7 +170,7 @@
 		<hr>
 		<div id="answer-container" v-if="!answerSumitted">
 			<center>
-				<h2>Click the chips below to describe the primary process!</h2>
+				<h2>Click the chips below to describe the ABG!</h2>
 				<i>Remember to check for complete compensation of the primary process.</i>
 				<br><br>
 				<div v-if="addableDisturb.length > 0">
