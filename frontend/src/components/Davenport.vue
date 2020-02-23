@@ -1,12 +1,16 @@
 <template>
 	<div class="davenport-diagram">
 		<div style="display: flex; justify-content: center; flex-wrap: wrap; margin-top: 12px;">
+			<b>Color Points Using:</b>
+			<div class="flex-break" style="margin: 0;"></div>
 			<v-select v-model="colorBy" :items="['Generator', 'Genius']" @change="plotDavenport();" style="max-width: 200px; display: inline-block; margin: 5px 15px;"/>
 			<v-btn @click="genDiagramData(); plotDavenport();">Regen</v-btn>
-			<div style="flex-basis: 100%; height: 0;"></div>
-			<div style="transform: scale(0.8); transform-origin: top center;">
-			<svg :width="width" :height="height"/>
-		</div>
+			<div class="flex-break" style="margin: 0;"></div>
+			<sup><i>Grouping of points should match between genius (calculated disturbances) and generator (actual disturbances).</i></sup>
+			<div style="flex-basis: 100%; height: 16px;"></div>
+			<div style="transform: scale(0.85); transform-origin: top center;">
+				<svg :width="width" :height="height"/>
+			</div>
 		</div>
 	</div>
 </template>
