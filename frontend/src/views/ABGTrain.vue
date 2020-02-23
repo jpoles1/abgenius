@@ -217,6 +217,7 @@
 					</div>
 				</v-sheet>-->
 				<h2>Your Answer<span v-if="learnerAnswer.length > 0"> (click to remove)</span>:</h2>
+				{{geniusAnswer}}
 				<div class="flex-break" style="margin: 10px;"/>
 				<v-btn v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex" 
 				@click="deleteDisturb(disturb)" round class="disturb-btn" style="padding-left: 0px;">	
@@ -413,7 +414,7 @@
 												{{results.disturbances[0]}}
 											</div>
 											<div v-else>
-												None
+												None Detected
 											</div>
 										</v-chip>
 									</div>

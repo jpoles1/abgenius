@@ -283,7 +283,7 @@
 						{{results.disturbances[0]}}
 					</div>
 					<div v-else>
-						None
+						None Detected
 					</div>
 				</v-chip>
 			</div>
