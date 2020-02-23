@@ -217,7 +217,6 @@
 					</div>
 				</v-sheet>-->
 				<h2>Your Answer<span v-if="learnerAnswer.length > 0"> (click to remove)</span>:</h2>
-				{{geniusAnswer}}
 				<div class="flex-break" style="margin: 10px;"/>
 				<v-btn v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex" 
 				@click="deleteDisturb(disturb)" round class="disturb-btn" style="padding-left: 0px;">	
@@ -444,6 +443,7 @@
 							<transition name="infos" mode="out-in">
 								<CalcInfoPanel id="genius-info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="genBloodGas.abg" :results="results"/>
 							</transition>
+							<div class="flex-break" style="margin: 0px;"/>
 							<div style="text-align: center; width: 400px; transform: scale(0.7); box-shadow: inset 0 0 4px #222; border-radius: 4px; padding: 18px 28px 0 28px;">
 								Click to copy ABG URL:
 								<br>
