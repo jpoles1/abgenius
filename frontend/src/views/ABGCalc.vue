@@ -240,15 +240,15 @@
 						</v-icon>
 					</v-avatar>
 					<div>						
-						{{results.disturbances[1][0]}}
+						{{results.disturbances[1]}}
 					</div>
 				</v-chip>
 			</div>
 			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap'">
 				<b>Step 5: Add Respiratory Disturbances</b>
 				<br>
-				<v-chip @click="activateChipInfo('Compensatory ' + results.disturbances[2][0])">
-						<v-avatar class="warning" v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2][0])">
+				<v-chip @click="activateChipInfo('Compensatory ' + results.disturbances[2])">
+						<v-avatar class="warning" v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2])">
 							<v-icon small>
 								fa-wind
 							</v-icon>
@@ -256,57 +256,54 @@
 						<v-avatar class="warning" v-else>
 							<v-icon small>fas fa-not-equal</v-icon>
 						</v-avatar>
-						<div v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2][0])">
-							{{results.disturbances[2][0]}}
+						<div v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2])">
+							{{results.disturbances[2]}}
 						</div>
 						<div v-else>
 							None
 						</div>
 				</v-chip>
 			</div>
-			<div class="instruction-box" v-if="results.serumAnionGap.disturb !== 'Anion Gap'">
+			<div class="instruction-box" v-if="results.serumAnionGap.disturb !== 'Anion Gap' && results.disturbances.length > 0">
 				<b>Step 3: Check Primary Disturbance</b>
 				<br>
-				<v-chip @click="activateChipInfo('Primary ' + (results.primaryDisturb ? results.primaryDisturb[0] : ''))">
-					<v-avatar class="warning" v-if="results.primaryDisturb">
-						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.primaryDisturb[0])'>
+				<v-chip @click="activateChipInfo('Primary ' + results.disturbances[0])">
+					<v-avatar class="warning" v-if="results.disturbances[0] !== 'Normal'">
+						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.disturbances[0])'>
 							fa-wind
 						</v-icon>
-						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.primaryDisturb[0])'>
+						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.disturbances[0])'>
 							fa-vial
 						</v-icon>
 					</v-avatar>
 					<v-avatar class="success" v-else>        
 						<v-icon small>fas fa-check</v-icon>
 					</v-avatar>
-					<div v-if="results.primaryDisturb">
-						{{results.primaryDisturb[0]}}
+					<div v-if="results.disturbances[0] !== 'Normal'">
+						{{results.disturbances[0]}}
 					</div>
 					<div v-else>
 						None
 					</div>
 				</v-chip>
 			</div>
-			<div class="instruction-box" v-if="(results.serumDeltaGap.disturb !== 'Delta Gap' || results.serumDeltaGap.disturb !== 'Anion Gap') && results.primaryDisturb">
+			<div class="instruction-box" v-if="(results.serumDeltaGap.disturb !== 'Delta Gap' || results.serumDeltaGap.disturb !== 'Anion Gap') && results.disturbances[0] !== 'Normal'">
 				<b>Step 4: Check For Compensation</b>
 				<br>
-				<v-chip @click="activateChipInfo('Compensatory ' + (results.compensatoryDisturb ? results.compensatoryDisturb[0] : results.expectedCompensation[0]))">
-					<v-avatar class="warning" v-if="results.compensatoryDisturb">
-						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.compensatoryDisturb[0])'>
+				<v-chip @click="activateChipInfo('Compensatory ' + (results.expectedCompensation))">
+					<v-avatar :class="results.completeCompensation ? 'success' : 'warning'">
+						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.expectedCompensation)'>
 							fa-wind
 						</v-icon>
-						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.compensatoryDisturb[0])'>
+						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.expectedCompensation)'>
 							fa-vial
 						</v-icon>
 					</v-avatar>
-					<v-avatar class="warning" v-else>        
-						<v-icon small>fas fa-not-equal</v-icon>
-					</v-avatar>
-					<div v-if="results.compensatoryDisturb">
-						{{results.compensatoryDisturb[0].split(" ")[0]}} Compensation
+					<div v-if="results.completeCompensation">
+						Complete Compensation
 					</div>
 					<div v-else>
-						Poorly Compensated
+						Incomplete Compensation
 					</div>
 				</v-chip>
 			</div>
@@ -370,10 +367,9 @@
 					realisticABG: true,
 					o2Disturbance: BG.DisturbType.Normal,
 					pHDisturbance: BG.DisturbType.Normal,
-					disturbances: [[BG.DisturbType.Unknown]] as BG.DisturbType[][],
-					primaryDisturb: undefined as BG.DisturbType[] | undefined,
-					compensatoryDisturb: undefined as BG.DisturbType[] | undefined,
-					expectedCompensation: undefined as BG.DisturbType[] | undefined,
+					disturbances: [BG.DisturbType.Unknown] as BG.DisturbType[],
+					expectedCompensation: undefined as BG.DisturbType | undefined,
+					completeCompensation: false,
 				},
 				inputDebounce: undefined as number | undefined,
 			};
@@ -398,18 +394,18 @@
 				const urlQuery = Object.assign({}, this.userBloodGas.abg);
 				// @ts-ignore
 				this.$router.replace({query: urlQuery});
+				const disturb = this.userBloodGas.guessDisturbances();
 				this.results = {
 					adjustedPaO2: this.userBloodGas.adjustedPaO2(),
 					o2Disturbance: this.userBloodGas.o2Disturbance(),
 					pHDisturbance: this.userBloodGas.phDisturbance(),
 					realisticABG: this.userBloodGas.realisticABG(),
-					disturbances: this.userBloodGas.guessDisturbances(),
 					pHExpected: this.userBloodGas.pHExpected(),
 					serumAnionGap: this.userBloodGas.serumAnionGap(),
 					serumDeltaGap: this.userBloodGas.serumDeltaGap(),
-					primaryDisturb: this.userBloodGas.guessPrimaryDisturbance(),
-					compensatoryDisturb: this.userBloodGas.guessCompensation(),
+					disturbances: disturb,
 					expectedCompensation: this.userBloodGas.expectedCompensation(),
+					completeCompensation: disturb.includes(BG.DisturbType.CompleteComp),
 				};
 				if (!["pH", "O2", "anionGap", "deltaGap", undefined].includes(this.activeChip)) {
 					this.activeChip = undefined;

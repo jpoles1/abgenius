@@ -10,7 +10,7 @@ describe("BloodGas utilities", () => {
 				expect(testABG[0].validABG()).toBe(true);
 				expect(testABG[0].validLytes()).toBe(true);
 				expect(testABG[0].realisticABG()).toBe(true);
-				expect(testABG[0].guessDisturbances().sort()).toEqual(testABG[1].sort());
+				expect(testABG[0].guessDisturbances()).toEqual(testABG[1]);
 			});
 			/*expect([...Array(testsPerRule)].map(() => {
 				const testABG = GenBG.abgGenerators[ruleName]();

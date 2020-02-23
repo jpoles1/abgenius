@@ -26,7 +26,7 @@
 
 	import Vue from "vue";
 	import { color } from "d3";
-	type DavenportDatum = [string, [BG.BloodGas, BG.DisturbType[][]]];
+	type DavenportDatum = [string, [BG.BloodGas, BG.DisturbType[]]];
 	export default Vue.extend({
 		data() {
 			return {
@@ -35,7 +35,7 @@
 				width: 690,
 				height: 606,
 				padding: {top: 10, right: 30, bottom: 30, left: 60},
-				genData: [] as [string, [BG.BloodGas, BG.DisturbType[][]]][],
+				genData: [] as [string, [BG.BloodGas, BG.DisturbType[]]][],
 			};
 		},
 		methods: {
@@ -119,13 +119,13 @@
 				const nPoints = 500;
 				const selectedGenerators = [
 					"Normal",
-					"Acute Respiratory Acidosis", "Chronic Respiratory Acidosis",
-					"Acute Respiratory Alkalosis", "Chronic Respiratory Alkalosis",
+					"Uncompensated Respiratory Acidosis", "Compensated Respiratory Acidosis",
+					"Uncompensated Respiratory Alkalosis", "Compensated Respiratory Alkalosis",
 					"Compensated Metabolic Acidosis", "Compensated Metabolic Alkalosis",
 					"Uncompensated Metabolic Acidosis", "Uncompensated Metabolic Alkalosis",
 					"Compensated Anion Gap Metabolic Acidosis", "Uncompensated Anion Gap Metabolic Acidosis",
-					"Positive Delta Gap", "Positive Delta Gap + Respiratory Acidosis",
-					"Negative Delta Gap",	"Negative Delta Gap + Chronic Respiratory Alkalosis",
+					//"Positive Delta Gap", "Positive Delta Gap + Respiratory Acidosis",
+					//"Negative Delta Gap",	"Negative Delta Gap + Chronic Respiratory Alkalosis",
 				];
 				this.genData = selectedGenerators.reduce((agg, genName) => {
 				//this.genData = Object.keys(abgGenerators).reduce((agg, genName) => {
@@ -134,7 +134,7 @@
 						agg.push([genName, gen(false)]);
 					});
 					return agg;
-				}, [] as [string, [BG.BloodGas, BG.DisturbType[][]]][]);
+				}, [] as [string, [BG.BloodGas, BG.DisturbType[]]][]);
 			},
 		},
 		mounted() {

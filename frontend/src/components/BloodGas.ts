@@ -52,6 +52,7 @@ export enum DisturbType {
 	AnionGap = "Anion Gap",
 	DeltaGap = "Delta Gap",
 	Unknown = "Unknown",
+	CompleteComp = "Complete Compensation",
 }
 
 export interface Gap {
@@ -80,8 +81,8 @@ export interface ABGResults {
 // ABGAnswer stores information regarding a user's interpretation of a given ABG.
 export interface ABGAnswer {
 	abg: BloodGas;
-	learner: DisturbType[][];
-	genius: DisturbType[][];
+	learner: DisturbType[];
+	genius: DisturbType[];
 	timeElapsed: number;
 	peekedAtGaps: boolean;
 	grade: number;
@@ -128,8 +129,23 @@ export class BloodGas {
 		if (this.abg.pH! < RefRngs.apH!.lower) return DisturbType.Acidemia;
 		return DisturbType.Normal;
 	}
-	public expectedBicarb = (adjFactor: number): number => {
+	// Adj factor for Respiratory Alkalosis = -1/2
+	// Adj factor for Respiratory Acidosis = 1/3
+	public compensatedBicarb(): number {
+		const adjFactor = (this.abg.PaCO2! > RefRngMidpoint("PaCO2")) ? (1 / 3) : (1 / 2);
 		return RefRngMidpoint("aBicarb") + (adjFactor * (this.abg.PaCO2! - RefRngMidpoint("PaCO2")!));
+	}
+	public wintersFormula(): RefRange {
+		const lowerLimit = (1.5 * this.abg.bicarb!) + 8 - 2;
+		const upperLimit = (1.5 * this.abg.bicarb!) + 8 + 2;
+		return {lower: lowerLimit, upper: upperLimit};
+	}
+	public compensatedPaCO2(): number {
+		if (this.abg.bicarb! > RefRngMidpoint("aBicarb")) {
+			return (0.7 * this.abg.bicarb!) + 20;
+		} else {
+			return (1.5 * this.abg.bicarb!) + 8;
+		}
 	}
 	public serumAnionGap(): Gap {
 		if (!this.validLytes()) return {disturb: DisturbType.Unknown, gap: NaN};
@@ -146,11 +162,6 @@ export class BloodGas {
 		const deltaGap = deltaAnionGap - deltaBicarb;
 		if (Math.abs(deltaGap) > RefRngs.DeltaGap!.upper) return {disturb: DisturbType.DeltaGap, gap: deltaGap};
 		return {gap: deltaGap, disturb: DisturbType.Normal};
-	}
-	public wintersFormula(): RefRange {
-		const lowerLimit = (1.5 * this.abg.bicarb!) + 8 - 2;
-		const upperLimit = (1.5 * this.abg.bicarb!) + 8 + 2;
-		return {lower: lowerLimit, upper: upperLimit};
 	}
 	public o2Disturbance(): DisturbType {
 		if (this.abg.PaO2 === undefined) return DisturbType.Unknown;
@@ -170,75 +181,72 @@ export class BloodGas {
 		}
 		return RefRngs.PaO2!;
 	}
-	public guessDisturbances(): DisturbType[][] {
-		const disturbList: DisturbType[][] = [];
-		const pHmidpoint = RefRngMidpoint("apH");
-		let addedMetAcid = false;
-		let addedMetAlk = false;
+	public guessDisturbances(): DisturbType[] {
+		const disturbList: DisturbType[] = [];
 		// Do we have a valid ABG: pH, PaCO2, HCO3
 		// Do we have the required electrolytes: Na, Cl, HCO3
 		if (this.validABG() && this.validLytes()) {
 			// Do we have a low bicarb, or an anion gap?
-			if (this.abg.bicarb! < RefRngs.aBicarb!.lower || this.serumAnionGap().gap > RefRngs.AnionGap!.upper) {
+			if (this.serumAnionGap().gap > RefRngs.AnionGap!.upper) {
 				// Do we have an anion gap?
 				if (this.serumAnionGap().disturb === DisturbType.AnionGap) {
 					// We have an anion gap metabolic acidosis
-					disturbList.push([DisturbType.MetAcid, DisturbType.AnionGap]);
-					addedMetAcid = true;
+					disturbList.push(DisturbType.AnionGap);
 					// Do we have a delta gap?
 					if (this.serumDeltaGap().gap > RefRngs.DeltaGap!.upper) {
 						// We have a superimposed metabolic alkalosis
 						// Rise in AG is more than fall in HCO3
-						disturbList.push([DisturbType.MetAlk]);
-						addedMetAlk = true;
+						disturbList.push(DisturbType.MetAlk);
 					} else if (this.serumDeltaGap().gap < RefRngs.DeltaGap!.lower) {
 						// We have a superimposed non-gap, hyperchloremic metabolic acidosis
 						// Rise in AG is less than fall in HCO3
-						disturbList.push([DisturbType.MetAcid]);
-						addedMetAcid = true;
+						disturbList.push(DisturbType.MetAcid);
+					} else {
+						if (this.abg.PaCO2! <= this.compensatedPaCO2() + 2) {
+							disturbList.push(DisturbType.CompleteComp);
+						}
 					}
-				} else if (this.abg.bicarb! - 1 <= (24 - ((RefRngMidpoint("PaCO2") - this.abg.PaCO2!) / 2))) {
-					// We have a non-gap metabolic acidosis
-					disturbList.push([DisturbType.MetAcid]);
-					addedMetAcid = true;
 				}
-			} else if (this.abg.bicarb! + 2 >= Math.max(RefRngs.aBicarb!.upper, ((this.abg.PaCO2! - RefRngMidpoint("PaCO2")) / 3) + 24)) {
-				//TODO: why did I have to add two to bicarb in the above conditional??
-				// We have a metabolic alkalosis
-				disturbList.push([DisturbType.MetAlk]);
-				addedMetAlk = true;
-			}
-			// Do we have a low PaCO2
-			if ((this.abg.PaCO2! <= (addedMetAcid ? ((1.5 * this.abg.bicarb!) + 8 + 2) :  RefRngs.PaCO2!.lower - 2))) {
-				// We have a respiratory alkalosis
-				// As long as we're not in negative delta gap land
-				if (JSON.stringify(disturbList.sort().slice(0, 2)) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAlk]].sort())) {
-					disturbList.push([DisturbType.RespAlk]);
+			} else if (this.abg.pH! > RefRngMidpoint("apH")) {
+				if (this.abg.bicarb! > RefRngs["aBicarb"]!.upper) {
+					disturbList.push(DisturbType.MetAlk);
+					if (this.abg.PaCO2! >= this.compensatedPaCO2() - 2) {
+						disturbList.push(DisturbType.CompleteComp);
+					}
+				} else if (this.abg.PaCO2! < RefRngs["PaCO2"]!.lower) {
+					disturbList.push(DisturbType.RespAlk);
+					if (this.abg.bicarb! <= this.compensatedBicarb() + 2) {
+						disturbList.push(DisturbType.CompleteComp);
+					}
 				}
-			}
-			// Do we have a high PaCO2
-			if ((this.abg.PaCO2! >= (addedMetAlk ?  ((0.7 * this.abg.bicarb!) + 20 - 2) : RefRngs.PaCO2!.upper + 2))) {
-				// We have a respiratory acidosis
-				// As long as we're not in positive delta gap land
-				if (JSON.stringify(disturbList.sort().slice(0, 2)) !== JSON.stringify([[DisturbType.MetAcid, DisturbType.AnionGap], [DisturbType.MetAcid]].sort())) {
-					disturbList.push([DisturbType.RespAcid]);
+			} else {
+				if (this.abg.bicarb! < RefRngs["aBicarb"]!.lower) {
+					disturbList.push(DisturbType.MetAcid);
+					if (this.abg.PaCO2! <= this.compensatedPaCO2() + 2) {
+						disturbList.push(DisturbType.CompleteComp);
+					}
+				} else if (this.abg.PaCO2! > RefRngs["PaCO2"]!.upper) {
+					disturbList.push(DisturbType.RespAcid);
+					if (this.abg.bicarb! >= this.compensatedBicarb() - 2) {
+						disturbList.push(DisturbType.CompleteComp);
+					}
 				}
 			}
 		} else {
-			disturbList.push([DisturbType.Unknown]);
+			disturbList.push(DisturbType.Unknown);
 		}
 		if (disturbList.length === 0) {
-			disturbList.push([DisturbType.Normal]);
+			disturbList.push(DisturbType.Normal);
 		}
-		return disturbList.sort();
+		return disturbList;
 	}
-	public guessPrimaryDisturbance(): DisturbType[] | undefined {
+	/*public guessPrimaryDisturbance(): DisturbType | undefined {
 		const disturbs = this.guessDisturbances();
 		if (!this.validABG() || !this.validLytes() || (this.serumAnionGap().disturb === "Anion Gap" && this.serumDeltaGap().disturb === "Delta Gap")) return undefined;
 		if (this.abg.pH! > RefRngMidpoint("apH") ) {
-			return disturbs.find((x) => [DisturbType.MetAlk, DisturbType.RespAlk].includes(x[0]));
+			return disturbs.find((x) => [DisturbType.MetAlk, DisturbType.RespAlk].includes(x));
 		} else {
-			return disturbs.find((x) => [DisturbType.MetAcid, DisturbType.RespAcid].includes(x[0]));
+			return disturbs.find((x) => [DisturbType.MetAcid, DisturbType.RespAcid].includes(x));
 		}
 	}
 	public guessCompensation(): DisturbType[] | undefined {
@@ -249,14 +257,15 @@ export class BloodGas {
 		} else {
 			return disturbs.find((x) => [DisturbType.MetAlk, DisturbType.RespAlk].includes(x[0]));
 		}
-	}
-	public expectedCompensation(): DisturbType[] | undefined {
-		const primaryDisturb = this.guessPrimaryDisturbance();
+	}*/
+	public expectedCompensation(): DisturbType | undefined {
+		const primaryDisturb = this.guessDisturbances()[0];
 		if (primaryDisturb === undefined) return undefined;
-		if (primaryDisturb[0] === DisturbType.MetAcid) return [DisturbType.RespAlk];
-		if (primaryDisturb[0] === DisturbType.MetAlk) return [DisturbType.RespAcid];
-		if (primaryDisturb[0] === DisturbType.RespAcid) return [DisturbType.MetAlk];
-		if (primaryDisturb[0] === DisturbType.RespAlk) return [DisturbType.MetAcid];
+		if (primaryDisturb === DisturbType.AnionGap) return DisturbType.RespAlk;
+		if (primaryDisturb === DisturbType.MetAcid) return DisturbType.RespAlk;
+		if (primaryDisturb === DisturbType.MetAlk) return DisturbType.RespAcid;
+		if (primaryDisturb === DisturbType.RespAcid) return DisturbType.MetAlk;
+		if (primaryDisturb === DisturbType.RespAlk) return DisturbType.MetAcid;
 	}
 }
 

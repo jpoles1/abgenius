@@ -179,10 +179,10 @@
 												<v-icon small>fa-arrow-up</v-icon>pH&nbsp;<b>=</b>&nbsp;Alkalemia
 											</v-chip>
 											<hr>
-											<v-chip :color="results.primaryDisturb == 'Metabolic Alkalosis' ? 'success' : '#383838'">
+											<v-chip :color="results.disturbances[0] == 'Metabolic Alkalosis' ? 'success' : '#383838'">
 												<v-icon small>fa-arrow-up</v-icon>[HCO<sub>3</sub>]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
 											</v-chip>
-											<v-chip :color="results.primaryDisturb == 'Respiratory Alkalosis' ? 'success' : '#383838'">
+											<v-chip :color="results.disturbances[0] == 'Respiratory Alkalosis' ? 'success' : '#383838'">
 												<v-icon small>fa-arrow-down</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Alkalosis
 											</v-chip>
 										</div>
@@ -191,10 +191,10 @@
 												<v-icon small>fa-arrow-down</v-icon>pH&nbsp;<b>=</b>&nbsp;Acidemia
 											</v-chip>
 											<hr>
-											<v-chip :color="results.primaryDisturb == 'Metabolic Acidosis' ? 'success' : '#383838'">
+											<v-chip :color="results.disturbances[0] == 'Metabolic Acidosis' ? 'success' : '#383838'">
 												<v-icon small>fa-arrow-down</v-icon>[HCO<sub>3</sub>]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
 											</v-chip>
-											<v-chip :color="results.primaryDisturb == 'Respiratory Acidosis' ? 'success' : '#383838'">
+											<v-chip :color="results.disturbances[0] == 'Respiratory Acidosis' ? 'success' : '#383838'">
 												<v-icon small>fa-arrow-up</v-icon>PaCO<sub>2</sub>&nbsp;<b>=</b>&nbsp;Respiratory Acidosis
 											</v-chip>
 										</div>
@@ -436,12 +436,12 @@
 					</div>
 					<v-container v-if="['Compensatory Respiratory Alkalosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Compensatory Respiratory Alkalosis</h2>
+							<h2>Interpreting: Respiratory Compensation</h2>
 							<hr>
 							<p style="font-size: 100%; margin-top: 12px;">
 								In 1967, Dr. Robert Winters <i>et al.</i> published a paper entitled <u>Quantitative Displacement of Acid-Base Equilibrium in Metabolic Acidosis</u>,
 								which included a population of 60 patients with a known metabolic acidosis who had not yet received treatment.
-								The manuscript describes a linear trend between plasma bicarbonate and the expected compensatory change in P<sub>A</sub>CO<sub>2</sub> (see below).
+								The manuscript describes a linear trend between plasma bicarbonate and the expected compensatory change in P<sub>a</sub>CO<sub>2</sub> (see below).
 								We can use an equation derived from this linear regression to determine if our patient is adequately compensating for the metabolic acidosis by increasing their ventilation and causing a respiratory alkalosis. 
 							</p>
 							<hr>
@@ -449,16 +449,16 @@
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
 										<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
-										<h3>Expected P<sub>A</sub>CO<sub>2</sub> = {{ (1.5 * abg.bicarb) + 8}} &plusmn; 2 = {{ (1.5 * abg.bicarb) + 6}} to {{ (1.5 * abg.bicarb) + 10}} </h3>
+										<h3>Expected P<sub>a</sub>CO<sub>2</sub> = {{ (1.5 * abg.bicarb) + 8}} &plusmn; 2 = {{ (1.5 * abg.bicarb) + 6}} to {{ (1.5 * abg.bicarb) + 10}} </h3>
 										<hr>
 										<b>Winter's Formula:</b>
 										<br>
-										Expected P<sub>A</sub>CO<sub>2</sub> = (1.5 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 8 &plusmn; 2
+										Expected P<sub>a</sub>CO<sub>2</sub> = (1.5 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 8 &plusmn; 2
 										<hr>
-										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
+										<v-chip :color="results.completeCompensation ? 'success' : '#383838'">
 											<v-icon small>fa-check</v-icon>&nbsp;Complete Respiratory Compensation
 										</v-chip>
-										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
+										<v-chip :color="!results.completeCompensation ? 'warning' : '#383838'">
 											<v-icon small>fa-times</v-icon>Incomplete Respiratory Compensation
 										</v-chip>
 									</div>
@@ -469,7 +469,7 @@
 					</v-container>
 					<v-container v-if="['Compensatory Respiratory Acidosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Compensatory Respiratory Acidosis</h2>
+							<h2>Interpreting: Respiratory Compensation</h2>
 							<hr>
 							<p style="font-size: 100%; margin-top: 12px;">
 							</p>
@@ -477,17 +477,17 @@
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
 										<h3>PaCO<sub>2</sub> = {{abg.PaCO2}}</h3>
-										<h3>Expected P<sub>A</sub>CO<sub>2</sub> = {{ ((0.7 * abg.bicarb) + 20).toFixed(1) }} &plusmn; 2 = {{ ((0.7 * abg.bicarb) + 18).toFixed(1) }} to {{ ((0.7 * abg.bicarb) + 22).toFixed(1) }} </h3>
+										<h3>Expected P<sub>a</sub>CO<sub>2</sub> = {{ ((0.7 * abg.bicarb) + 20).toFixed(1) }} &plusmn; 2 = {{ ((0.7 * abg.bicarb) + 18).toFixed(1) }} to {{ ((0.7 * abg.bicarb) + 22).toFixed(1) }} </h3>
 										<div class="ref-rng-box">
 											<i>
-												Expected P<sub>A</sub>CO<sub>2</sub> = (0.7 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 20 &plusmn; 2
+												Expected P<sub>a</sub>CO<sub>2</sub> = (0.7 * [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) + 20 &plusmn; 2
 											</i>
 										</div>
 										<hr>
-										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
+										<v-chip :color="results.completeCompensation ? 'success' : '#383838'">
 											<v-icon small>fa-check</v-icon>&nbsp;Complete Respiratory Compensation
 										</v-chip>
-										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
+										<v-chip :color="!results.completeCompensation ? 'warning' : '#383838'">
 											<v-icon small>fa-times</v-icon>Incomplete Respiratory Compensation
 										</v-chip>
 									</div>
@@ -497,7 +497,7 @@
 					</v-container>
 					<v-container v-if="['Compensatory Metabolic Acidosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Compensatory Metabolic Acidosis</h2>
+							<h2>Interpreting: Metabolic Compensation</h2>
 							<hr>
 							<p style="font-size: 100%; margin-top: 12px;">
 							</p>
@@ -508,14 +508,14 @@
 										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{((abg.PaCO2 - PaCO2Mid) / 2)}} + 24 &plusmn; 2 = {{22 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{26 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
 										<div class="ref-rng-box">
 											<i>
-												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>A</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 2) + 24 &plusmn; 2
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 2) + 24 &plusmn; 2
 											</i>
 										</div>
 										<hr>
-										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
+										<v-chip :color="results.completeCompensation ? 'success' : '#383838'">
 											<v-icon small>fa-check</v-icon>&nbsp;Complete Metabolic Compensation
 										</v-chip>
-										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
+										<v-chip :color="!results.completeCompensation ? 'warning' : '#383838'">
 											<v-icon small>fa-times</v-icon>Incomplete Metabolic Compensation
 										</v-chip>
 									</div>
@@ -525,9 +525,10 @@
 					</v-container>
 					<v-container v-if="['Compensatory Metabolic Alkalosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Compensatory Metabolic Alkalosis</h2>
+							<h2>Interpreting: Metabolic Compensation</h2>
 							<hr>
 							<p style="font-size: 100%; margin-top: 12px;">
+								In order to counteract the rise in pH which results from excess P<sub>a</sub>CO2
 							</p>
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
@@ -536,14 +537,14 @@
 										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 24).toFixed(1)}} &plusmn; 2 = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 22).toFixed(1)}} to {{(((abg.PaCO2 - PaCO2Mid) / 3) + 26).toFixed(1)}}</h3>
 										<div class="ref-rng-box">
 											<i>
-												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>A</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + 24 &plusmn; 2
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + 24 &plusmn; 2
 											</i>
 										</div>
 										<hr>
-										<v-chip :color="results.compensatoryDisturb ? 'success' : '#383838'">
+										<v-chip :color="results.completeCompensation ? 'success' : '#383838'">
 											<v-icon small>fa-check</v-icon>&nbsp;Complete Metabolic Compensation
 										</v-chip>
-										<v-chip :color="!results.compensatoryDisturb ? 'success' : '#383838'">
+										<v-chip :color="!results.completeCompensation ? 'warning' : '#383838'">
 											<v-icon small>fa-times</v-icon>Incomplete Metabolic Compensation
 										</v-chip>
 									</div>
