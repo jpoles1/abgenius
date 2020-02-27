@@ -279,8 +279,9 @@
 							</center>
 							<div class="flex-break" style="margin: 10px;"/>
 							<center style="border: 1px dotted #222; min-width: 90%; max-width: 98%; padding: 10px;">
-								<h3>Your Answer (took {{timeElapsed}} sec):</h3>
-								<br>
+								<h3 style="margin-bottom: 8px;">
+									Your Answer (took {{timeElapsed}} sec):
+								</h3>
 								<v-chip v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex">
 									<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb)'>
 										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
@@ -305,8 +306,33 @@
 								</v-chip>
 							</center>
 							<center style="border: 1px dotted #222; min-width: 90%; max-width: 98%; padding: 10px; margin-top: 15px;">
-								<h3>Genius Answer: <span v-if="conditionName">{{conditionName}}</span></h3>
-								<i>Click below for further explanation!</i>
+								<h3 style="margin-bottom: 8px;">
+									Genius Answer: <span v-if="conditionName">{{conditionName}}</span>
+								</h3>
+								<v-chip v-for="(disturb, disturbIndex) in geniusAnswer" :key="disturbIndex">
+									<v-avatar class="warning" v-if='!["Normal", "Unknown"].includes(disturb)'>
+										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
+											fa-wind
+										</v-icon>
+										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
+											fa-vial
+										</v-icon>
+										<v-icon small v-else-if='["Complete Compensation"].includes(disturb)'>
+											fa-balance-scale
+										</v-icon>
+									</v-avatar>
+									<v-avatar class="success" v-if="disturb == 'Normal'">        
+										<v-icon small>fas fa-check</v-icon>
+									</v-avatar>
+									<div v-if="disturb == 'Normal'">
+										No Acid Base Disorder
+									</div>
+									<div v-else>
+										{{disturb}}
+									</div>
+								</v-chip>
+								<hr>
+								<i style="font-size: 118%;">Click on the results of each step for more explanation:</i>
 								<v-layout wrap justify-center id="info-chips">
 									<div class="instruction-box">
 										<b>Step 1: Assess Overall Blood pH</b>
@@ -448,11 +474,6 @@
 								<CalcInfoPanel id="genius-info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="genBloodGas.abg" :results="results"/>
 							</transition>
 							<div class="flex-break" style="margin: 0px;"/>
-							<div style="text-align: center; width: 400px; transform: scale(0.7); box-shadow: inset 0 0 4px #222; border-radius: 4px; padding: 18px 28px 0 28px;">
-								Click to copy ABG URL:
-								<br>
-								<v-text-field solo light readonly v-model="abgUrl" @click="abgUrlCopy" id="abg-url-field"/>
-							</div>
 						</v-card-text>
 					</v-card>
 				</v-tab-item>
@@ -462,7 +483,7 @@
 					</v-card>
 				</v-tab-item>
 				<v-tab-item value="davenport-tab">
-					<v-card flat style="overflow: auto;">
+					<v-card flat style="overflow: auto; padding-top: 20px;">
 						<mini-davenport :answer-data="genBloodGas" style="margin: auto;"/>
 					</v-card>
 				</v-tab-item>
@@ -472,6 +493,11 @@
 					Next ABG
 				</v-btn>
 			</center>
+			<div style="margin: auto; margin-top: 15px; text-align: center; width: 400px; transform: scale(0.7); box-shadow: inset 0 0 4px #222; border-radius: 4px; padding: 18px 28px 0 28px;">
+				Click to copy ABG URL:
+				<br>
+				<v-text-field solo light readonly v-model="abgUrl" @click="abgUrlCopy" id="abg-url-field"/>
+			</div>
 		</div>
 	</v-container>
 </template>
