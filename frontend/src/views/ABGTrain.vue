@@ -259,12 +259,16 @@
 					Answer
 					<v-icon>fa-stethoscope</v-icon>
 				</v-tab>
-				<v-tab href="#performance-tab" class="review-tab" v-if="answerData && answerData.length > 0"
+				<v-tab href="#performance-tab" class="performance-tab" v-if="answerData && answerData.length > 0"
 				@click="goTo('#feedback-tabs', { 'offset': 20 })">
 					Learning Curve
 					<v-icon>fa-chart-line</v-icon>
 				</v-tab>
-
+				<v-tab href="#davenport-tab" class="davenport-tab"
+				@click="goTo('#feedback-tabs', { 'offset': 20 })">
+					Davenport Diagram
+					<v-icon>fa-glasses</v-icon>
+				</v-tab>
 				<v-tab-item value="answer-tab">
 					<v-card flat>
 						<v-card-text style="padding-top: 24px; display: flex; justify-content: center; flex-wrap: wrap;">
@@ -457,6 +461,11 @@
 						<learning-curve :answer-data="answerData" :width="380" :height="260" style="margin: auto"/>
 					</v-card>
 				</v-tab-item>
+				<v-tab-item value="davenport-tab">
+					<v-card flat style="overflow: auto;">
+						<mini-davenport :answer-data="genBloodGas" style="margin: auto;"/>
+					</v-card>
+				</v-tab-item>
 			</v-tabs>
 			<center style="margin-top: 6px;">
 				<v-btn color="primary" @click="nextABG">
@@ -490,6 +499,7 @@
 
 	import CalcInfoPanel from "@/components/CalcInfoPanel.vue";
 	import LearningCurve from "@/components/LearningCurve.vue";
+	import MiniDavenport from "@/components/MiniDavenport.vue";
 
 	const generatorDisturbs = Object.entries(abgGenerators).reduce((agg, [genName, gen]) => {
 		agg[JSON.stringify(gen(true)[1])] = genName;
@@ -501,6 +511,7 @@
 		components: {
 			CalcInfoPanel,
 			LearningCurve,
+			MiniDavenport,
 		},
 		data() {
 			return {

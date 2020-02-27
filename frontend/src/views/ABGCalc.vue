@@ -245,7 +245,7 @@
 				</v-chip>
 			</div>
 			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap'">
-				<b>Step 5: Add Respiratory Disturbances</b>
+				<b>Step 5: Check for Respiratory Disturbances</b>
 				<br>
 				<v-chip @click="activateChipInfo('Compensatory ' + results.disturbances[2])">
 						<v-avatar class="warning" v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2])">
@@ -287,7 +287,7 @@
 					</div>
 				</v-chip>
 			</div>
-			<div class="instruction-box" v-if="(results.serumDeltaGap.disturb !== 'Delta Gap' || results.serumDeltaGap.disturb !== 'Anion Gap') && results.disturbances[0] !== 'Normal'">
+			<div class="instruction-box" v-if="!(results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap') && results.disturbances[0] !== 'Normal'">
 				<b>Step 4: Check For Compensation</b>
 				<br>
 				<v-chip @click="activateChipInfo('Compensatory ' + (results.expectedCompensation))">
@@ -329,6 +329,14 @@
 					</center>
 				</v-card>
 			</v-expansion-panel-content>
+			<v-expansion-panel-content>
+				<template v-slot:header>
+					<div>Davenport Diagram</div>
+				</template>
+				<v-card style="padding: 20px; box-shadow: 0px 0px 5px #202020 inset !important; overflow: auto;">
+					<mini-davenport :answer-data="userBloodGas" style="margin: auto;"/>
+				</v-card>
+			</v-expansion-panel-content>
 		</v-expansion-panel>
 		<br><br>
 		<ReferenceList/>
@@ -339,6 +347,7 @@
 	import * as BG from "@/components/BloodGas";
 	import { abgGenerators } from "@/components/BloodGasGen";
 	import CalcInfoPanel from "@/components/CalcInfoPanel.vue";
+	import MiniDavenport from "@/components/MiniDavenport.vue";
 	import ReferenceList from "@/components/ReferenceList.vue";
 
 	import Vue from "vue";
@@ -346,6 +355,7 @@
 	export default Vue.extend({
 		components: {
 			CalcInfoPanel,
+			MiniDavenport,
 			ReferenceList,
 		},
 		data() {
