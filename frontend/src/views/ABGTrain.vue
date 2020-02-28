@@ -219,7 +219,7 @@
 				<h2>Your Answer<span v-if="learnerAnswer.length > 0"> (click to remove)</span>:</h2>
 				<div class="flex-break" style="margin: 10px;"/>
 				<v-btn v-for="(disturb, disturbIndex) in learnerAnswer" :key="disturbIndex" 
-				@click="deleteDisturb(disturb)" round class="disturb-btn" style="padding-left: 0px;">	
+				@click="deleteDisturb(disturbIndex)" round class="disturb-btn" style="padding-left: 0px;">	
 					<div style="padding: 7px 6px; border-radius: 50px; background-color: #7b591c">
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
 							fa-wind
