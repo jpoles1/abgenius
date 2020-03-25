@@ -34,11 +34,11 @@ export default Vue.extend({
 			const height = this.height - margin.top - margin.bottom;
 			// Color palatte: http://paletton.com/#uid=75o0T0kllllaFw0g0qFqFg0w0aF
 			const ionData = {
-				"Anions": [
+				"Cations": [
 					{name: "Na⁺", value: this.abg.Na, color: "#27556C"},
 					// {name: "Other", value: this.abg.K, color: "#032536"},
 				],
-				"Cations": [
+				"Anions": [
 					{name: "Cl⁻", value: this.abg.Cl, color: "#BD5E7D"},
 					{name: "HCO3⁻", value: this.abg.bicarb, color: "#973253"},
 					// {name: "Albumin", value: this.abg.Albumin * 2.5, color: "#711331"},
