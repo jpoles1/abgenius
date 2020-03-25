@@ -57,7 +57,7 @@ export default Vue.extend({
 			const colMax = Math.max(...Object.values(ionSums));
 			Object.keys(ionSums).forEach((ionCat) => {
 				if (ionSums[ionCat] < colMax) {
-					plotData[ionCat].push({name: (ionCat === "Anions" ? "Cation" : "Anion") + " Gap", value: colMax - ionSums[ionCat], offset: ionSums[ionCat], color: "#AA7539"});
+					plotData[ionCat].push({name: (ionCat === "Anions" ? "Anion" : "Cation") + " Gap", value: colMax - ionSums[ionCat], offset: ionSums[ionCat], color: "#AA7539"});
 				}
 			});
 			// clear div
