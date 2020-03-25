@@ -22,8 +22,8 @@ export const RefRngs: { [testName: string]: RefRange | undefined } = {
 	"SaO2": {lower: 95, upper: 100},
 	"SvO2": {lower: 50, upper: 70},
 	"Na": {lower: 135, upper: 145},
-	"K": {lower: 3.5, upper: 5.1},
-	"Cl": {lower: 98, upper: 106},
+	"K": {lower: 3.5, upper: 5.0},
+	"Cl": {lower: 95, upper: 105},
 	"Albumin": {lower: 3.5, upper: 5.5}, // in g/dL
 	"aLactate": {lower: 0.5, upper: 1.5},
 	"aLactateCrit": {lower: 0.5, upper: 2},
