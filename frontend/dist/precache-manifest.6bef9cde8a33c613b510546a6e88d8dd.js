@@ -8,8 +8,8 @@ self.__precacheManifest = [
     "url": "/js/about.45312a9a.js"
   },
   {
-    "revision": "e7055ab1b2737cf53e2b",
-    "url": "/js/app.2d789582.js"
+    "revision": "6b8bba2acd669893a167",
+    "url": "/js/app.77e08804.js"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
@@ -20,12 +20,16 @@ self.__precacheManifest = [
     "url": "/js/chunk-vendors.6ee39ba0.js"
   },
   {
-    "revision": "9905126488355729c7761aeeb8d826fe",
+    "revision": "f70c40bd567fbdf31d4996e1cfe345a3",
     "url": "/index.html"
   },
   {
     "revision": "7bd589215ba03ebe054418298398e8ab",
     "url": "/img/winters_formula_plot.png"
+  },
+  {
+    "revision": "8f7511353660bc0b45b7c97dbc4e4d6f",
+    "url": "/img/social.png"
   },
   {
     "revision": "72ce0907b403404df65b7f057c230b0a",
@@ -52,7 +56,7 @@ self.__precacheManifest = [
     "url": "/css/chunk-vendors.17ef6989.css"
   },
   {
-    "revision": "e7055ab1b2737cf53e2b",
+    "revision": "6b8bba2acd669893a167",
     "url": "/css/app.61a949f6.css"
   }
 ];
