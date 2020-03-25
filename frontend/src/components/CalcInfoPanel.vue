@@ -77,7 +77,7 @@
 								</v-chip>
 							</div>
 						</v-layout>
-						<p style="text-align: center;">
+						<p style="text-align: center;" hidden>
 							There are many different organic and inorganic acids which can accumulate in the blood of a patient causing acidosis.
 							Unlike the bicarbonate value, we cannot hope to measure the levels of all of these acidic species to figure out if any are present.   
 							Instead, we use the anion gap to decide if there is a significant contribution of H<sup>+</sup> ions from unmeasured acidic species in a patient's blood. 
