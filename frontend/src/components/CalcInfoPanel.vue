@@ -30,10 +30,10 @@
 						<center style="margin-bottom: 8px; text-align: center;"><h2>Interpreting: pH values</h2></center>
 						<hr>
 						<p style="text-align: center;">
-							Normal human body pH is typically estimated to range between 7.35 and 7.45. 
+							The pH of blood in the human body normally ranges between 7.35 and 7.45. 
 							When values fall below this range, it is called an <u>acidemia</u>, as the blood is abnormally acidic.
 							Above this range, and you will have an <u>alkalemia</u>, as the blood is abnormally basic.
-							The terms <i>acidosis</i> and <i>alkalosis</i> are used to describe the processes which result in these pH perturbations.
+							The terms <i>acidosis</i> and <i>alkalosis</i> are used to describe the processes which result in these pH disturbances.
 						</p>
 						<p class="subheading font-weight-medium" style="text-align: center;"> 
 							This ABG sample had a pH of <u class="font-weight-black">{{abg.pH}}</u> and is thus classified as <u class="font-weight-black">{{results.pHDisturbance.toUpperCase()}}</u>.
