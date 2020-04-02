@@ -162,7 +162,14 @@
 				</v-tooltip>
 			</v-layout>
 		</v-form>
-		<hr>
+		<hr style="margin: 0; border-color: #9b9b9b;">
+		<div style="display: flex; justify-content: center; flex-wrap: wrap;">
+			<div style="width: 380px; margin: 0 15px;"><v-select v-model="abgGenPick" :items="abgGenOptions"/></div>
+			<v-btn color="primary" @click="generateABG" style="margin: 15px;">
+				Auto-Generate
+			</v-btn>
+		</div>
+		<hr style="margin: 0 0 14px 0; border-color: #9b9b9b;">
 		<v-layout wrap justify-center id="info-chips">
 			<v-chip @click="activateChipInfo('O2')" v-if="showPaO2">
 				<v-avatar class="error" v-if="results.o2Disturbance != 'Normal'">        
@@ -309,26 +316,11 @@
 			</div>
 		</v-layout>
 		<hr>
-		<br>
 		<transition name="infos" mode="out-in">
-			<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
+			<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" style="margin-bottom: 20px;"
+			:activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
 		</transition>
-		<br>
 		<v-expansion-panel>
-			<v-expansion-panel-content>
-				<template v-slot:header>
-					<div>Auto-Generate ABG</div>
-				</template>
-				<v-card style="padding: 20px; box-shadow: 0px 0px 5px #202020 inset !important;">
-					<center>
-						<v-select v-model="abgGenPick" :items="abgGenOptions" style="width: 380px; max-width: 100%;"/>
-						<br>
-						<v-btn color="primary" @click="generateABG">
-							Generate
-						</v-btn>
-					</center>
-				</v-card>
-			</v-expansion-panel-content>
 			<v-expansion-panel-content>
 				<template v-slot:header>
 					<div>Davenport Diagram</div>
