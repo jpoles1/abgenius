@@ -9,6 +9,10 @@
 			<a href="/tos" target="_blank">
 				Terms of Service
 			</a>
+			<div class="bottom-nav-spacer"></div>
+			<a href="https://forms.gle/xXvu65bcWa3gpxE18" target="_blank">
+				Feedback
+			</a>
 		</div>
 	</div>
 </template>
