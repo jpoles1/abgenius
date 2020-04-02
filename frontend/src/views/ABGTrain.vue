@@ -262,7 +262,7 @@
 								</v-sheet>
 							</center>
 							<div class="flex-break" style="margin: 10px;"/>
-							<center style="border: 1px dotted #222; min-width: 90%; max-width: 98%; padding: 10px;">
+							<center style="border: 1px dotted #222; width: 98%; padding: 10px;">
 								<h3 style="margin-bottom: 8px;">
 									Your Answer (took {{timeElapsed}} sec):
 								</h3>
@@ -289,7 +289,7 @@
 									</div>
 								</v-chip>
 							</center>
-							<center style="border: 1px dotted #222; min-width: 90%; max-width: 98%; padding: 10px; margin-top: 15px;">
+							<center style="border: 1px dotted #222; width: 98%; padding: 10px; margin-top: 15px;">
 								<h3 style="margin-bottom: 8px;">
 									Genius Answer: <span v-if="conditionName">{{conditionName}}</span>
 								</h3>
@@ -802,7 +802,6 @@
 	}
 	#genius-info-panel {
 		border-radius: 8px;
-		padding: 20px;
 		width: 94%;
 		max-width: 1200px;
 		margin: auto;
@@ -817,5 +816,8 @@
 	}
 	.review-tab{
 		font-size: 80%;
+	}
+	.v-card__text {
+		padding: 0px;
 	}
 </style>
