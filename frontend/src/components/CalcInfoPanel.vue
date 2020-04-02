@@ -133,13 +133,13 @@
 						<center style="margin-bottom: 8px;">
 							<h2>Interpreting: Delta Gap</h2>
 							<hr>
-							<p style="font-size: 115%; margin-top: 12px;">
-								Delta Gap = ΔΔ Gap = Δ Anion Gap - Δ Bicarb = <b>{{results.serumDeltaGap.gap}}</b>
-								<br>
-								Δ Anion Gap = (Serum Anion Gap - Upper Range of Normal Anion Gap)
-								<br>
-								Δ Bicarb = (Serum Bicarb - Upper Range of Normal Bicarb)
-							</p>
+							<div style="font-size: 115%; margin-top: 12px; margin-bottom: 12px; border: 1px solid #555; padding: 8px; width: 725px; max-width: 100%;">
+								Delta Gap = ΔΔ Gap = Δ Anion Gap - Δ Bicarb = {{results.serumAnionGap.gap - refRngs["AnionGap"].upper}} - {{refRngs["aBicarb"].lower - abg.bicarb}} = <b>{{results.serumDeltaGap.gap}}</b>
+								<hr style="border-color: #555; margin: 8px;">
+								Δ Anion Gap = (Serum Anion Gap - Upper Range of Normal Anion Gap) = {{results.serumAnionGap.gap}} - {{refRngs["AnionGap"].upper}} = {{results.serumAnionGap.gap - refRngs["AnionGap"].upper}}
+								<hr style="border-color: #555; margin: 8px;">
+								Δ Bicarb = (Lower Range of Normal Bicarb - Serum Bicarb) = {{abg.bicarb}} - {{refRngs["aBicarb"].upper}} = {{refRngs["aBicarb"].lower - abg.bicarb}}
+							</div>
 							<v-layout wrap justify-center>
 								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap > 6 ? '#4CAF50' : '#333'}">
 									if &nbsp;<u>Delta Gap &gt; 6</u>&nbsp; then
