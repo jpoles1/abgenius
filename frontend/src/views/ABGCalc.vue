@@ -463,7 +463,6 @@
 	#info-panel {
 		border-radius: 8px;
 		background-color: hsla(0, 0%, 16%, 1);
-		padding: 20px;
 		width: 100%;
 		max-width: 1200px;
 		margin: auto;
