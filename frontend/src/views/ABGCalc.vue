@@ -163,10 +163,10 @@
 			</v-layout>
 		</v-form>
 		<hr style="margin: 0; border-color: #9b9b9b;">
-		<div style="display: flex; justify-content: center; flex-wrap: wrap;">
+		<div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; transform: scale(0.9);">
 			<div style="width: 380px; margin: 0 15px;"><v-select v-model="abgGenPick" :items="abgGenOptions"/></div>
 			<v-btn color="primary" @click="generateABG" style="margin: 15px;">
-				Auto-Generate
+				Generate
 			</v-btn>
 		</div>
 		<hr style="margin: 0 0 14px 0; border-color: #9b9b9b;">
