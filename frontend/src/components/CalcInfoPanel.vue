@@ -138,7 +138,7 @@
 								<hr style="border-color: #555; margin: 8px;">
 								Δ Anion Gap = (Serum Anion Gap - Upper Range of Normal Anion Gap) = {{results.serumAnionGap.gap}} - {{refRngs["AnionGap"].upper}} = {{results.serumAnionGap.gap - refRngs["AnionGap"].upper}}
 								<hr style="border-color: #555; margin: 8px;">
-								Δ Bicarb = (Lower Range of Normal Bicarb - Serum Bicarb) = {{abg.bicarb}} - {{refRngs["aBicarb"].upper}} = {{refRngs["aBicarb"].lower - abg.bicarb}}
+								Δ Bicarb = (Lower Range of Normal Bicarb - Serum Bicarb) = {{refRngs["aBicarb"].lower}} - {{abg.bicarb}} = {{refRngs["aBicarb"].lower - abg.bicarb}}
 							</div>
 							<v-layout wrap justify-center>
 								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap > 6 ? '#4CAF50' : '#333'}">
