@@ -1,8 +1,15 @@
 <template>
-	<div :style="{'width': width + 'px', 'height': height + 'px', 'position': 'relative'}">
-		<svg id="learning-curve-container">
-		</svg>
-	</div>
+	<center>
+		<div v-if="!(answerData && answerData.length > 11)" style="max-width: 800px; padding: 25px 15px 15px 15px; font-style: italic;">
+			New points will start appearing on your learning curve once you have done 10 questions.
+			<br>
+			Use these first few questions to get a feel for how everything works!
+		</div>
+		<div id="learning-curve-container" :style="{'width': width + 'px', 'height': height + 'px', 'position': 'relative'}">
+			<svg>
+			</svg>
+		</div>
+	</center>
 </template>
 
 <script lang="ts">
@@ -61,7 +68,7 @@
 			drawLearningCurve() {
 				if (!this.answerData || this.answerData.length === 0) return;
 				const plotData = this.generateWindows();
-				const svg = d3.select(this.$el).select("svg");
+				const svg = d3.select("#learning-curve-container").select("svg");
 				svg.selectAll("*").remove();
 				if (svg === undefined) return;
 				const margin = {
@@ -82,7 +89,7 @@
 				.domain([0, 108])
 				.range([height - margin.bottom, margin.top]);
 				// Tooltips
-				const tooltip = d3.select(this.$el).append("div").attr("class", "d3-tip")
+				const tooltip = d3.select("#learning-curve-container").append("div").attr("class", "d3-tip")
 					.style("position", "absolute").style("font-size", "90%")
 					.style("top", (margin.top + 4) + "px")
 					.style("left", (margin.left + 10) + "px");
