@@ -57,77 +57,87 @@
 							</span>
 						</p>
 					</div>
-					<v-container v-if="activeChip == 'anionGap'" key="anionGap">
-						<center style="margin-bottom: 8px;"><h2>Interpreting: Anion Gap</h2></center>
-						<hr>
-						<v-layout wrap justify-center style="margin: 22px; text-align: center;">
-							<div class="decision-box">
-								<h3>Anion Gap = [Na<sup>+</sup>] - [Cl<sup>-</sup>] - [HCO<sub>3</sub><sup>-</sup>] = {{results.serumAnionGap.gap}}</h3>
-								<div class="ref-rng-box">
-									<i>
-										Ref Range&nbsp; &#8776; &nbsp;{{refRngs.AnionGap.lower + "&nbsp; to &nbsp;" + refRngs.AnionGap.upper}}
-									</i>
-								</div>
-								<hr>
-								<v-chip :color="results.serumAnionGap.disturb === 'Anion Gap' ? 'success' : '#383838'">
-									<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
-								</v-chip>
-								<v-chip :color="results.serumAnionGap.disturb !== 'Anion Gap' ? 'success' : '#383838'">
-									<v-icon small>fa-arrows-alt-h</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Normal
-								</v-chip>
-							</div>
-						</v-layout>
-						<p style="text-align: center;" hidden>
-							There are many different organic and inorganic acids which can accumulate in the blood of a patient causing acidosis.
-							Unlike the bicarbonate value, we cannot hope to measure the levels of all of these acidic species to figure out if any are present.   
-							Instead, we use the anion gap to decide if there is a significant contribution of H<sup>+</sup> ions from unmeasured acidic species in a patient's blood. 
-							We rely on the principle of electroneutrality (described below)	to indirectly detect increases in the negatively charged particles produced be deprotonation.
-						</p>
-						<v-layout row justify-center wrap style="border-radius: 8px; background-color: #262626; padding: 18px; margin: 20px 0; box-shadow: 0px 0px 5px #202020 inset;">
-							<v-flex md7 sm12 style="margin-bottom: 30px;">
-								<Gamblegram :abg="abg" :results="results"/>
-							</v-flex>
-							<v-flex md5 style="background-color: #333; padding: 22px; box-shadow: 0px 0px 5px #202020 inset;">
-								<p>
-									This plot provides a visual representation of the balance between the "strong" anions and cations disolved in the serum. 
-									Interpretation relies on the following rules:
-									<ul>
-										<li>
-											Human serum is electroneutral, so the concentrations of anions and cations should cancel out.
-										</li>
-										<li>
-											We measure the charged particles which dissociate completely and are present in the highest concentrations in serum, because they have the strongest effects on the overall balance of charges. We call them "strong ions".
-										</li>
-										<li>
-											We cannot measure every charged species, so we must estimate the gap between the unknown anions and unknown cations, termed the anion gap. 
-										</li>
-									</ul>
+					<v-container v-if="activeChip == 'anionGap'" key="anionGap">						
+						<v-tabs>
+							<v-tab href="#ag-dx">Diagnosis</v-tab>
+							<v-tab href="#ag-causes">Causes</v-tab>
+							<!--<v-tab href="#ag-treatment">Treatment</v-tab>-->
+							<v-tab-item value="ag-dx">
+								<br>
+								<center style="margin-bottom: 8px;"><h2>Interpreting: Anion Gap</h2></center>
+								<v-layout wrap justify-center style="margin: 22px; text-align: center;">
+									<div class="decision-box">
+										<h3>Anion Gap = [Na<sup>+</sup>] - [Cl<sup>-</sup>] - [HCO<sub>3</sub><sup>-</sup>] = {{results.serumAnionGap.gap}}</h3>
+										<div class="ref-rng-box">
+											<i>
+												Ref Range&nbsp; &#8776; &nbsp;{{refRngs.AnionGap.lower + "&nbsp; to &nbsp;" + refRngs.AnionGap.upper}}
+											</i>
+										</div>
+										<hr>
+										<v-chip :color="results.serumAnionGap.disturb === 'Anion Gap' ? 'success' : '#383838'">
+											<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+										</v-chip>
+										<v-chip :color="results.serumAnionGap.disturb !== 'Anion Gap' ? 'success' : '#383838'">
+											<v-icon small>fa-arrows-alt-h</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Normal
+										</v-chip>
+									</div>
+								</v-layout>
+								<p style="text-align: center;" hidden>
+									There are many different organic and inorganic acids which can accumulate in the blood of a patient causing acidosis.
+									Unlike the bicarbonate value, we cannot hope to measure the levels of all of these acidic species to figure out if any are present.   
+									Instead, we use the anion gap to decide if there is a significant contribution of H<sup>+</sup> ions from unmeasured acidic species in a patient's blood. 
+									We rely on the principle of electroneutrality (described below)	to indirectly detect increases in the negatively charged particles produced be deprotonation.
 								</p>
-							</v-flex>
-						</v-layout>
-						<center style="margin-bottom: 8px;"><h2>Causes of Anion Gap Acidosis</h2></center>
-						<hr>
-						<p style="text-align: center;">
-							There are numerous physiologic processes and biologically active substances which can cause to anion gap acidosis, and it's impossible to remember them all.
-							We recommend the GOLDMARK CAT mnemonic shown below in order to organize your differential around the most important causes of anion gap acidois:
-						</p>
-						<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; max-width: 800px; margin: auto;" class="anion-gap-chart">
-							<div style="font-size: 140%;">
-								<b>G</b>lycols (ethylene/propylene)<br>
-								<b>O</b>xoproline<br>
-								<b>L</b>-lactate<br>
-								<b>D</b>-lactate (short bowel syndrome)<br>
-								<b>M</b>ethanol<br>
-								<b>A</b>spirin<br>
-								<b>R</b>enal failure<br>
-								<b>K</b>etoacidosis<br>
-							</div>
-							<div style="font-size: 145%;">
-								<b>C</b>yanide (or Carbon Monoxide)<br>
-								<b>A</b>minoglycosides<br>
-								<b>T</b>olune (or Theophylline)<br>
-							</div>
-						</div>
+								<v-layout row justify-center wrap style="border-radius: 8px; background-color: #262626; padding: 18px; margin: 20px 0; box-shadow: 0px 0px 5px #202020 inset;">
+									<v-flex md7 sm12 style="margin-bottom: 30px;">
+										<Gamblegram :abg="abg" :results="results"/>
+									</v-flex>
+									<v-flex md5 style="background-color: #333; padding: 22px; box-shadow: 0px 0px 5px #202020 inset;">
+										<p>
+											This plot provides a visual representation of the balance between the "strong" anions and cations disolved in the serum. 
+											Interpretation relies on the following rules:
+											<ul>
+												<li>
+													Human serum is electroneutral, so the concentrations of anions and cations should cancel out.
+												</li>
+												<li>
+													We measure the charged particles which dissociate completely and are present in the highest concentrations in serum, because they have the strongest effects on the overall balance of charges. We call them "strong ions".
+												</li>
+												<li>
+													We cannot measure every charged species, so we must estimate the gap between the unknown anions and unknown cations, termed the anion gap. 
+												</li>
+											</ul>
+										</p>
+									</v-flex>
+								</v-layout>
+							</v-tab-item>
+							<v-tab-item value="ag-causes">
+								<br>
+								<center style="margin-bottom: 8px;"><h2>Causes of Anion Gap Acidosis</h2></center>
+								<hr>
+								<p style="text-align: center;">
+									There are numerous physiologic processes and biologically active substances which can cause to anion gap acidosis, and it's impossible to remember them all.
+									We recommend the GOLDMARK CAT mnemonic shown below in order to organize your differential around the most important causes of anion gap acidois:
+								</p>
+								<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; max-width: 800px; margin: auto;" class="anion-gap-chart">
+									<div style="font-size: 140%;">
+										<b>G</b>lycols (ethylene/propylene)<br>
+										<b>O</b>xoproline<br>
+										<b>L</b>-lactate<br>
+										<b>D</b>-lactate (short bowel syndrome)<br>
+										<b>M</b>ethanol<br>
+										<b>A</b>spirin<br>
+										<b>R</b>enal failure<br>
+										<b>K</b>etoacidosis<br>
+									</div>
+									<div style="font-size: 145%;">
+										<b>C</b>yanide (or Carbon Monoxide)<br>
+										<b>A</b>minoglycosides<br>
+										<b>T</b>olune (or Theophylline)<br>
+									</div>
+								</div>
+							</v-tab-item>
+						</v-tabs>
 					</v-container>
 					<v-container v-if="activeChip == 'deltaGap'" key="deltaGap">
 						<center style="margin-bottom: 8px;">
