@@ -189,7 +189,15 @@
 							</v-icon>
 						</div>
 						<div style="margin: 0 8px 0 18px; font-size: 90%">
-							{{disturb}}
+							<span v-if='disturb == "Metabolic Acidosis"'>
+								Non-Gap Metabolic Acidosis
+							</span>
+							<span v-else-if='disturb == "Anion Gap"'>
+								Anion Gap Metabolic Acidosis
+							</span>
+							<span v-else>
+								{{disturb}}
+							</span>
 						</div>
 					</v-btn>
 					<br><br>
@@ -216,7 +224,15 @@
 						</v-icon>
 					</div>
 					<div style="margin: 0 8px 0 18px; font-size: 90%">
-						{{disturb}}
+						<span v-if='disturb == "Metabolic Acidosis"'>
+							Non-Gap Metabolic Acidosis
+						</span>
+						<span v-else-if='disturb == "Anion Gap"'>
+							Anion Gap Metabolic Acidosis
+						</span>
+						<span v-else>
+							{{disturb}}
+						</span>
 					</div>
 				</v-btn>
 				<v-sheet class="answer-disturb-box" elevation=4 v-if="learnerAnswer.length === 0">
@@ -285,7 +301,15 @@
 										No Acid Base Disorder
 									</div>
 									<div v-else>
-										{{disturb}}
+										<span v-if='disturb == "Metabolic Acidosis"'>
+											Non-Gap Metabolic Acidosis
+										</span>
+										<span v-else-if='disturb == "Anion Gap"'>
+											Anion Gap Metabolic Acidosis
+										</span>
+										<span v-else>
+											{{disturb}}
+										</span>
 									</div>
 								</v-chip>
 							</center>
@@ -312,7 +336,15 @@
 										No Acid Base Disorder
 									</div>
 									<div v-else>
-										{{disturb}}
+										<span v-if='disturb == "Metabolic Acidosis"'>
+											Non-Gap Metabolic Acidosis
+										</span>
+										<span v-else-if='disturb == "Anion Gap"'>
+											Anion Gap Metabolic Acidosis
+										</span>
+										<span v-else>
+											{{disturb}}
+										</span>
 									</div>
 								</v-chip>
 								<hr>
