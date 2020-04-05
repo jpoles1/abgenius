@@ -38,13 +38,16 @@
 								Inspect the values and try to decide what acid-base disturbances are indicated by this lab test.
 							</li>
 							<li>
-								Scroll down to the section entitled "Interpret this ABG" and click on each of the acid-base disturbances which you believe are present.
+								Scroll down to the section entitled "Interpret this ABG" and click on each of the acid-base disturbances which you believe are present. Leave it blank if it's a normal ABG.
 							</li>
 							<li>
-								When you are ready, click "submit" and you will be able to see the ABGenius answer. Click on each acid-base disturbance in the correct answer to learn more.
+								If the patient has appropriately/completely compensated for the primary acid/base disturbance, click "Complete Compensation".
 							</li>
 							<li>
-								If you made a mistake, try and learn from it; if not, keep up the strong work! As you complete more questions you will be able to track your performance on the learning curve in your feedback panel.   
+								When you are ready, click "submit" and you will be able to see the ABGenius answer. Click on each step in the answer to learn more.
+							</li>
+							<li>
+								If you made a mistake, try and learn from it; if not, keep up the strong work! As you complete more questions you will be able to track your performance in the feedback after each question or your profile.   
 							</li>
 						</ol>
 					</v-card-text>
