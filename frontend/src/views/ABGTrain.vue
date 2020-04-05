@@ -269,6 +269,11 @@
 					Davenport Diagram
 					<v-icon>fa-glasses</v-icon>
 				</v-tab>
+				<v-tab href="#stats-tab" class="stats-tab"
+				@click="goTo('#feedback-tabs', { 'offset': 20 })">
+					Stats
+					<v-icon>fa-table</v-icon>
+				</v-tab>
 				<v-tab-item value="answer-tab">
 					<v-card flat>
 						<v-card-text style="padding-top: 24px; display: flex; justify-content: center; flex-wrap: wrap;">
@@ -503,6 +508,12 @@
 						<mini-davenport :answer-data="genBloodGas" style="margin: auto;"/>
 					</v-card>
 				</v-tab-item>
+				<v-tab-item value="stats-tab">
+					<v-card flat style="overflow: auto; padding-top: 20px;">
+						<disorder-detective :answer-data="answerData"/>
+						<br>
+					</v-card>
+				</v-tab-item>
 			</v-tabs>
 			<center style="margin-top: 6px;">
 				<v-btn color="primary" @click="nextABG">
@@ -542,6 +553,7 @@
 	import CalcInfoPanel from "@/components/CalcInfoPanel.vue";
 	import LearningCurve from "@/components/LearningCurve.vue";
 	import MiniDavenport from "@/components/MiniDavenport.vue";
+	import DisorderDetective from "@/components/DisorderDetective.vue";
 
 	const generatorDisturbs = Object.entries(abgGenerators).reduce((agg, [genName, gen]) => {
 		agg[JSON.stringify(gen(true)[1])] = genName;
@@ -554,6 +566,7 @@
 			CalcInfoPanel,
 			LearningCurve,
 			MiniDavenport,
+			DisorderDetective,
 		},
 		data() {
 			return {
