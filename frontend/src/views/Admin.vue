@@ -7,12 +7,12 @@
 			<v-tabs>
 				<v-tab href="#list-tab">User List</v-tab>
 				<v-tab-item value="list-tab" class="profile-tab-item">
-					{{profileList}}
 					<div style="width: 100%; height: 500px; max-height: 75vh; overflow: auto;">
 						<v-data-table
 							:headers="profileTableHeaders"
 							:items="profileList"
 							class="elevation-1"
+							:rows-per-page-items='[{"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1},5,10,25]'
 						>
 							<template v-slot:items="profile">
 							<td style="text-align: center;">{{profile.item.uname}}</td>
