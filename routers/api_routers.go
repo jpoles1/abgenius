@@ -19,8 +19,14 @@ func APIRouter(r chi.Router, apiHandler APIHandler) chi.Router {
 		r.Group(func(r chi.Router) {
 			//r.Use(apiHandler.TOSWall)
 			r.Route("/user/", func(r chi.Router) {
-				r.Get("/profile", apiHandler.GetUserProfile)
-				r.Post("/profile", apiHandler.PostUserProfile)
+				r.Get("/profile", apiHandler.GetMyProfile)
+				r.Post("/profile", apiHandler.PostMyProfile)
+				r.Group(func(r chi.Router) {
+					r.Use(apiHandler.AdminWall)
+					r.Get("/list", apiHandler.GetUserList)
+					r.Get("/getProfile/{userID}", apiHandler.GetUserProfile)
+					//r.Post("/updateProfile/{userID}", apiHandler.PostUpdateProfile)
+				})
 			})
 			r.Route("/answer/", func(r chi.Router) {
 				r.Post("/submit", apiHandler.PostSubmitAnswer)
