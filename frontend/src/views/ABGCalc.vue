@@ -241,26 +241,26 @@
 					</div>
 				</v-chip>
 			</div>
-			<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap'">
-				<b>Step 5: Check for Respiratory Disturbances</b>
+			<!--<div class="instruction-box" v-if="results.serumAnionGap.disturb == 'Anion Gap' && results.serumDeltaGap.disturb == 'Delta Gap'">
+				<b>Step 5: Respiratory compensation/process</b>
 				<br>
-				<v-chip label @click="activateChipInfo('Compensatory ' + results.disturbances[2])">
-						<v-avatar class="warning" v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2])">
-							<v-icon small>
-								fa-wind
-							</v-icon>
-						</v-avatar>
-						<v-avatar class="warning" v-else>
-							<v-icon small>fas fa-not-equal</v-icon>
-						</v-avatar>
-						<div v-if="results.disturbances[2] && ['Respiratory Acidosis', 'Respiratory Alkalosis'].includes(results.disturbances[2])">
-							{{results.disturbances[2]}}
-						</div>
-						<div v-else>
-							None
-						</div>
+				<v-chip label @click="activateChipInfo('Compensatory ' + (results.expectedCompensation))">
+					<v-avatar :class="results.completeCompensation ? 'success' : 'warning'">
+						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.expectedCompensation)'>
+							fa-wind
+						</v-icon>
+						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.expectedCompensation)'>
+							fa-vial
+						</v-icon>
+					</v-avatar>
+					<div v-if="results.completeCompensation">
+						Complete Compensation
+					</div>
+					<div v-else>
+						Incomplete Compensation
+					</div>
 				</v-chip>
-			</div>
+			</div>-->
 			<div class="instruction-box" v-if="results.serumAnionGap.disturb !== 'Anion Gap' && results.disturbances.length > 0">
 				<b>Step 3: Check Primary Disturbance</b>
 				<br>
