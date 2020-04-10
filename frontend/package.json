@@ -14,10 +14,12 @@
   },
   "dependencies": {
     "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.9.5",
     "@sentry/browser": "^5.4.3",
     "@types/d3": "^5.7.2",
     "@types/jwt-decode": "^2.2.1",
     "autoprefixer": "^9.7.1",
+    "babel-polyfill": "^6.26.0",
     "browser-interaction-time": "^2.0.2",
     "core-js": "^2.6.5",
     "d3": "^5.9.7",
