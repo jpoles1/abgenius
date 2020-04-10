@@ -26,7 +26,7 @@
 							This is most likely to be seen in patients receiving supplemental oxygen, and has been associated with increased rates of adverse events in acutely ill patients.
 						</p>
 					</div>
-					<div v-if="activeChip == 'pH'" key="pH">
+					<v-container v-if="activeChip == 'pH'" key="pH">
 						<center style="margin-bottom: 8px; text-align: center;"><h2>Interpreting: pH values</h2></center>
 						<hr>
 						<p style="text-align: center;">
@@ -56,9 +56,9 @@
 								<i>Check values!</i>
 							</span>
 						</p>
-					</div>
-					<v-container v-if="activeChip == 'anionGap'" key="anionGap">						
-						<v-tabs>
+					</v-container>
+					<div v-if="activeChip == 'anionGap'" key="anionGap">						
+						<v-tabs color="grey darken-2">
 							<v-tab href="#ag-dx">Diagnosis</v-tab>
 							<v-tab href="#ag-causes">Causes</v-tab>
 							<!--<v-tab href="#ag-treatment">Treatment</v-tab>-->
@@ -138,7 +138,7 @@
 								</div>
 							</v-tab-item>
 						</v-tabs>
-					</v-container>
+					</div>
 					<v-container v-if="activeChip == 'deltaGap'" key="deltaGap">
 						<center style="margin-bottom: 8px;">
 							<h2>Interpreting: Delta Gap</h2>
@@ -175,7 +175,7 @@
 						</center>
 					</v-container>
 					<div v-if="activeChip.includes('Primary')" key="primary">
-						<v-tabs>
+						<v-tabs color="grey darken-2">
 							<v-tab href="#primary-dx">Diagnosis</v-tab>
 							<v-tab href="#primary-causes" v-if="results.disturbances[0] !== 'Normal'">Causes</v-tab>
 							<v-tab href="#primary-treatment"  v-if="results.disturbances[0] !== 'Normal'">Treatment</v-tab>
