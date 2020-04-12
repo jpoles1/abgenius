@@ -168,6 +168,11 @@
 			<v-btn color="primary" @click="generateABG" style="margin: 15px;">
 				Generate
 			</v-btn>
+			<v-btn color="primary" @click="shuffleABG">
+				<v-icon>
+					fa fa-random
+				</v-icon>
+			</v-btn>
 		</div>
 		<hr style="margin: 0 0 14px 0; border-color: #9b9b9b;">
 		<v-layout wrap justify-center id="info-chips">
@@ -381,6 +386,10 @@
 			generateABG() {
 				const genABG = abgGenerators[this.abgGenPick](true)[0];
 				this.userBloodGas = genABG;
+			},
+			shuffleABG() {
+				this.abgGenPick = Object.keys(abgGenerators)[Math.ceil(Math.random() * Object.keys(abgGenerators).length) - 1];
+				this.generateABG();
 			},
 			updateBloodGas() {
 				const urlQuery = Object.assign({}, this.userBloodGas.abg);
