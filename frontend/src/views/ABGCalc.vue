@@ -3,7 +3,7 @@
 		<headful
 			title="ABGenius - Calculator"
 		/>
-		<v-form v-model="validABG">
+		<v-form v-model="validABG" class="abg-form">
 			<div v-if="showDemographics">
 				<center><h2>Patient Demographics</h2></center><br>
 				<v-layout text-xs-center wrap justify-center>
@@ -483,5 +483,8 @@
 		text-align: center;
 		border: 1px dotted white;
 		border-radius: 5px;
+	}
+	.abg-form .v-text-field {
+		width: 120px;
 	}
 </style>
