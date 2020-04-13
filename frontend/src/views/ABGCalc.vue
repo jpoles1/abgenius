@@ -310,6 +310,9 @@
 				</v-chip>
 			</div>
 		</v-layout>
+		<div style="max-width: 800px; margin: 15px auto; font-size: 80%; font-style: italic;">
+			DISCLAIMER: None of the information supplied herein is to be used as a substitute for sound clinical judgement from an appropriately trained and accredited medical professional. Reference ranges may vary, please compare with your those from your lab.
+		</div>
 		<hr>
 		<transition name="infos" mode="out-in">
 			<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" style="margin-bottom: 20px;"
