@@ -29,7 +29,7 @@
 								v-model.number="userBloodGas.abg.pH" 
 								type="number" label='Serum pH'
 								outline class="numeric-input" step="0.01"
-								min="6" max="14"
+								min="6" max="14" @input="editedABG"
 							></v-text-field>
 						</div>
 					</template>
@@ -44,7 +44,7 @@
 								v-model.number="userBloodGas.abg.bicarb" 
 								type="number" label='Serum Bicarb'
 								outline class="numeric-input" step="0.5"
-								min="0"
+								min="0" @input="editedABG"
 							></v-text-field>
 						</div>
 					</template>
@@ -59,7 +59,7 @@
 								v-model.number="userBloodGas.abg.PaCO2" 
 								type="number" label='PaCO2'
 								outline class="numeric-input" step="0.5"
-								min="0"
+								min="0" @input="editedABG"
 							></v-text-field>
 						</div>
 					</template>
@@ -74,7 +74,7 @@
 								v-model.number="userBloodGas.abg.PaO2" 
 								type="number" label='PaO2'
 								outline class="numeric-input" step="0.5"
-								min="0"
+								min="0" @input="editedABG"
 							></v-text-field>
 						</div>
 					</template>
@@ -92,7 +92,7 @@
 								v-model.number="userBloodGas.abg.Na" 
 								type="number" label='Serum Sodium'
 								outline class="numeric-input" step="0.5"
-								min="0"
+								min="0" @input="editedABG"
 							></v-text-field>
 						</div>
 					</template>
@@ -107,7 +107,7 @@
 								v-model.number="userBloodGas.abg.Cl" 
 								type="number" label='Serum Chloride'
 								outline class="numeric-input" step="0.5"
-								min="0"
+								min="0" @input="editedABG"
 							></v-text-field>
 						</div>
 					</template>
@@ -137,7 +137,7 @@
 								v-model.number="userBloodGas.abg.Albumin" 
 								type="number" label='Serum Albumin'
 								outline class="numeric-input" step="0.5"
-								min="0"
+								min="0" @input="editedABG"
 							></v-text-field>
 						</div>
 					</template>
@@ -152,7 +152,7 @@
 								v-model.number="userBloodGas.abg.Lactate" 
 								type="number" label='Arterial Lactate'
 								outline class="numeric-input" step="0.1"
-								min="0"
+								min="0" @input="editedABG"
 							></v-text-field>
 						</div>
 					</template>
@@ -164,7 +164,9 @@
 		</v-form>
 		<hr style="margin: 0; border-color: #9b9b9b;">
 		<div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; transform: scale(0.9);">
-			<div style="width: 380px; margin: 0 15px;"><v-select v-model="abgGenPick" :items="abgGenOptions"/></div>
+			<div style="width: 380px; margin: 0 15px;" id="abggen-opts" :class="{'user-edited-abg': userEditedABG}">
+				<v-select v-model="abgGenPick" :items="abgGenOptions"/>
+			</div>
 			<v-btn color="primary" @click="generateABG" style="margin: 15px;">
 				Generate
 			</v-btn>
@@ -352,6 +354,7 @@
 			return {
 				abgGenPick: Object.keys(abgGenerators)[0],
 				abgGenOptions: Object.keys(abgGenerators),
+				userEditedABG: true,
 				showDemographics: false,
 				showPaO2: false,
 				showLactate: false,
@@ -386,9 +389,13 @@
 			},
 		},
 		methods: {
+			editedABG() {
+				this.userEditedABG = true;
+			},
 			generateABG() {
 				const genABG = abgGenerators[this.abgGenPick](true)[0];
 				this.userBloodGas = genABG;
+				this.userEditedABG = false;
 			},
 			shuffleABG() {
 				this.abgGenPick = Object.keys(abgGenerators)[Math.ceil(Math.random() * Object.keys(abgGenerators).length) - 1];
@@ -489,5 +496,9 @@
 	}
 	.abg-form .v-text-field {
 		width: 120px;
+	}
+
+	#abggen-opts.user-edited-abg .v-select__selections{
+		color: #999 !important;
 	}
 </style>
