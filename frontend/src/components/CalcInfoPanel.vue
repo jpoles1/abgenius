@@ -115,10 +115,10 @@
 								<br>
 								<center style="margin-bottom: 8px;"><h2>Causes of Anion Gap Acidosis</h2></center>
 								<hr>
-								<p style="text-align: center;">
+								<div style="text-align: center;">
 									There are numerous physiologic processes and biologically active substances which can cause to anion gap acidosis, and it's impossible to remember them all.
-									We recommend the GOLDMARK CAT mnemonic shown below in order to organize your differential around the most important causes of anion gap acidois:
-								</p>
+									We recommend the GOLDMARK CAT mnemonic shown below in order to organize your differential around the most important causes of anion gap acidois<div class="inline-cite">[Mehta 2008]</div>:
+								</div>
 								<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; max-width: 800px; margin: auto;" class="anion-gap-chart">
 									<div style="font-size: 140%;">
 										<b>G</b>lycols (ethylene/propylene)<br>
@@ -143,6 +143,9 @@
 						<center style="margin-bottom: 8px;">
 							<h2>Interpreting: Delta Gap</h2>
 							<hr>
+							The delta gap is a tool which can be used to try and detect a possible additional metabolic acid-base disturbance on top of the known anion-gap metabolic acidosis.
+							In a pure anion-gap metabolic acidosis we expect the Bicarb to fall roughly in proportion to the rise in anion gap. 
+							If this is not the case we should consider the possibility of a 2nd metabolic disorder to account for this observation.<div class="inline-cite">[Wrenn 1990]</div> 
 							<div style="font-size: 115%; margin-top: 12px; margin-bottom: 12px; border: 1px solid #555; padding: 8px; width: 725px; max-width: 100%;">
 								Delta Gap = ΔΔ Gap = Δ Anion Gap - Δ Bicarb = {{results.serumAnionGap.gap - refRngs["AnionGap"].upper}} - {{refRngs["aBicarb"].lower - abg.bicarb}} = <b>{{results.serumDeltaGap.gap}}</b>
 								<hr style="border-color: #555; margin: 8px;">
@@ -580,6 +583,7 @@ import Vue from "vue";
 import * as BG from "./BloodGas";
 import { arrayEq } from "@/util";
 import Gamblegram from "@/components/Gamblegram.vue";
+import { MainRefManager } from "@/components/References";
 
 export default Vue.extend({
 	components: {
@@ -596,6 +600,18 @@ export default Vue.extend({
 			PaCO2Mid: BG.RefRngMidpoint("PaCO2"),
 			arrayEq,
 		};
+	},
+	watch: {
+		activeChip() {
+			setTimeout(() => {
+				MainRefManager.augmentCitations();
+			}, 500);
+		},
+	},
+	mounted() {
+		this.$nextTick(() => {
+			MainRefManager.augmentCitations();
+		});
 	},
 });
 </script>
@@ -638,5 +654,36 @@ export default Vue.extend({
 	.primary-disturb-tab {
 		background-color: #222;
 		padding: 20px;
+	}
+
+	.inline-cite {
+		position: relative;
+		display: inline;
+	}
+	.inline-cite-popup {
+		background-color: #555; 
+		border-radius: 3px;
+		min-width: 180px; 
+		max-width: 240px;
+		max-height: 180px; 
+		font-size: 60%; 
+		position: absolute; 
+		top: 30px; 
+		left: -40px; 
+		padding: 8px;
+		box-shadow: #222 3px 3px 3px;
+	}
+	.inline-cite-popup:not(.inline-cite-popup-show) {
+		display: none;
+	}
+	.inline-cite a{
+		color: white;
+		text-decoration: none;
+		transition: 600ms;
+	}
+	.inline-cite a:hover{
+		/*color: #e7ea78;*/
+		color: #f6aeae;
+		text-decoration: underline;
 	}
 </style>
