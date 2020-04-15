@@ -494,9 +494,11 @@
 								</v-layout>
 							</center>
 							<div class="flex-break" style="margin: 10px;"/>
-							<transition name="infos" mode="out-in">
-								<CalcInfoPanel id="genius-info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="genBloodGas.abg" :results="results"/>
-							</transition>
+							<div id="info-panel-container">
+								<transition name="infos" mode="out-in">
+									<CalcInfoPanel id="genius-info-panel" v-if="activeChip !== undefined" :activeChip="activeChip" :abg="genBloodGas.abg" :results="results"/>
+								</transition>
+							</div>
 							<div class="flex-break" style="margin: 0px;"/>
 						</v-card-text>
 					</v-card>
@@ -712,7 +714,7 @@
 					return;
 				}
 				this.activeChip = chipID;
-				goTo("#info-chips");
+				goTo("#info-panel-container");
 			},
 			abgUrlCopy() {
 				this.$toast("Copied ABG url to clipboard, share away!");

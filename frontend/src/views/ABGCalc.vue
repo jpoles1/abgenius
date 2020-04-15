@@ -318,10 +318,12 @@
 			Please <a href="/tos" target="_blank" style="color: white; text-decoration: none;">see our ToS</a> for more info.
 		</div>
 		<hr>
-		<transition name="infos" mode="out-in">
-			<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" style="margin-bottom: 20px;"
-			:activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
-		</transition>
+		<div id="info-panel-container">
+			<transition name="infos" mode="out-in">
+				<CalcInfoPanel id="info-panel" v-if="activeChip !== undefined" style="margin-bottom: 20px;"
+				:activeChip="activeChip" :abg="userBloodGas.abg" :results="results"/>
+			</transition>
+		</div>
 		<v-expansion-panel>
 			<v-expansion-panel-content>
 				<template v-slot:header>
@@ -443,7 +445,7 @@
 					return;
 				}
 				this.activeChip = chipID;
-				goTo("#info-chips");
+				goTo("#info-panel-container");
 			},
 		},
 		mounted() {
