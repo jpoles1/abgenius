@@ -163,14 +163,14 @@
 			</v-layout>
 		</v-form>
 		<hr style="margin: 0; border-color: #9b9b9b;">
-		<div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; transform: scale(0.9);">
-			<div style="width: 380px; margin: 0 15px;" id="abggen-opts" :class="{'user-edited-abg': userEditedABG}">
+		<div id="abggen" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; transform: scale(0.8);">
+			<div style="width: 380px;" :class="{'user-edited-abg': userEditedABG}">
 				<v-select v-model="abgGenPick" :items="abgGenOptions"/>
 			</div>
-			<v-btn color="primary" @click="generateABG" style="margin: 15px;">
+			<v-btn color="primary" @click="generateABG" style="margin: 0 5px 0 15px; transform: scale(0.9);">
 				Generate
 			</v-btn>
-			<v-btn color="primary" @click="shuffleABG">
+			<v-btn color="primary" @click="shuffleABG" style="margin: 0 15px 0 5px; transform: scale(0.9);">
 				<v-icon>
 					fa fa-random
 				</v-icon>
@@ -499,8 +499,7 @@
 	.abg-form .v-text-field {
 		width: 120px;
 	}
-
-	#abggen-opts.user-edited-abg .v-select__selections{
+	#abggen .user-edited-abg .v-select__selections{
 		color: #999 !important;
 	}
 </style>
