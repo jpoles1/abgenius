@@ -20,8 +20,8 @@
 					></v-text-field>
 				</v-layout>
 			</div>
-			<center><h2>Arterial Blood Gas</h2></center><br>
-			<v-layout text-xs-center wrap justify-center>
+			<center><h2>Arterial Blood Gas</h2></center>
+			<v-layout text-xs-center wrap justify-center style="margin-top: 8px;">
 				<v-tooltip top>
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
@@ -83,8 +83,8 @@
 					</span>
 				</v-tooltip>
 			</v-layout>
-			<center><h2>Electrolytes</h2></center><br>
-			<v-layout text-xs-center wrap justify-center>
+			<center><h2>Electrolytes</h2></center>
+			<v-layout text-xs-center wrap justify-center style="margin-top: 8px;">
 				 <v-tooltip top>
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
