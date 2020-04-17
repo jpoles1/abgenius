@@ -24,17 +24,25 @@ const mainRefs: Citation[] = [
 		url: "https://globalrph.com/common-laboratory-lab-values-abgs/",
 		notes: "Quality set of reference ranges with lots of other great info",
 	}),
-	new Citation("Mehta 2008", {
-		name: "Mehta, A. N., Emmett, J. B., & Emmett, M. (2008). GOLD MARK: an anion gap mnemonic for the 21st century. The lancet, 372(9642), 892.",
-		url: "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(08)61398-7/fulltext",
-	}),
-	new Citation("Pocket ICU", {
-		name: "\"Interpretation of Arterial Blood Gases.\" Pocket ICU Management, PocketMedicine.com, Inc, 2010. Anesthesia Central.",
-		url: "https://anesth.unboundmedicine.com/anesthesia/view/Pocket-ICU-Management/534207/all/Interpretation_of_Arterial_Blood_Gases",
+	new Citation("Hamm 2015", {
+		name: "Hamm, L. L., Nakhoul, N., & Hering-Smith, K. S. (2015). Acid-base homeostasis. Clinical Journal of the American Society of Nephrology, 10(12), 2232-2242.",
+		url: "https://cjasn.asnjournals.org/content/10/12/2232",
 	}),
 	new Citation("Kellum 2005", {
 		name: "Kellum, J. A. (2005). Clinical review: reunification of acid–base physiology. Critical Care, 9(5), 500.",
 		url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1297616/",
+	}),
+	new Citation("Mehta 2008", {
+		name: "Mehta, A. N., Emmett, J. B., & Emmett, M. (2008). GOLD MARK: an anion gap mnemonic for the 21st century. The lancet, 372(9642), 892.",
+		url: "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(08)61398-7/fulltext",
+	}),
+	new Citation("Narins 1980", {
+		name: "Narins, R. G., & Emmett, M (1980). Simple and mixed acid-base disorders: a practical approach. Medicine, 59(3), 161-187.",
+		url: "https://journals.lww.com/md-journal/Citation/1980/05000/Simple_and_Mixed_Acid_Base_Disorders__A_Practical.1.aspx#pdf-link",
+	}),
+	new Citation("Pocket ICU", {
+		name: "\"Interpretation of Arterial Blood Gases.\" Pocket ICU Management, PocketMedicine.com, Inc, 2010. Anesthesia Central.",
+		url: "https://anesth.unboundmedicine.com/anesthesia/view/Pocket-ICU-Management/534207/all/Interpretation_of_Arterial_Blood_Gases",
 	}),
 	new Citation("Patel & Sharma 2019", {
 		name: "Patel, S., & Sharma, S. (2019). Physiology, Respiratory Acidosis. In StatPearls [Internet]. StatPearls Publishing.",
@@ -70,10 +78,6 @@ const extraRefs = [
 	new Citation("Azad 2016", {
 		name: "Azad, A. K. (2016). Simple Algorithm of Arterial Blood Gas Analysis to Ensure Consistent, Correct and Quick Responses. Anesthesia & Critical Care: Open Access.",
 		url: "https://medcraveonline.com/JACCOA/JACCOA-05-00199",
-	}),
-	new Citation("Narins 1980", {
-		name: "Narins, R. G., & Emmett, M (1980). Simple and mixed acid-base disorders: a practical approach. Medicine, 59(3), 161-187.",
-		url: "https://journals.lww.com/md-journal/Citation/1980/05000/Simple_and_Mixed_Acid_Base_Disorders__A_Practical.1.aspx#pdf-link",
 	}),
 	new Citation("Albert 1967", {
 		name: "Albert, M. S., Dell, R. B., & Winters, R. W. (1967). Quantitative displacement of acid-base equilibrium in metabolic acidosis. Annals of internal medicine, 66(2), 312-322.",

@@ -558,9 +558,6 @@
 						<center>
 							<h2>Interpreting: Metabolic Compensation</h2>
 							<hr>
-							<p style="font-size: 100%; margin-top: 12px;">
-								In order to counteract the rise in pH which results from excess P<sub>a</sub>CO2
-							</p>
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
@@ -583,6 +580,25 @@
 											<v-icon small>fa-times</v-icon>Incomplete Metabolic Compensation
 										</v-chip>
 									</div>
+								</div>
+							</div>
+							<div style="font-size: 100%; margin-top: 12px; text-align: left;">
+								In order to counteract the decrease in pH which results from excess P<sub>a</sub>CO<sub>2</sub>, the body first responds by trying to buffer the increase in proton concentration using its primary acid-base buffers: bicarbonate, phososphate and certain proteins. 
+								Because these buffers are already present throughout the body (in the plasma, interstitial and intracellular fluid compartments), this initial buffering occurs quickly and is often referred to as acute metabolic compensation.<div class="inline-cite">[Narins 1980]</div>
+								<br><br>
+								Once a respiratory acidosis has persisted for >6-12 hours, the sustained change in pH will potentiate the kidney to produc new bicarbonate by excretion of acids into the urine.
+								At homeostasis the healthy kidney resorbs nearly 100% of filtered bicarbonate (mostly in the proximal tubule), such that minimal quantities remain in the urine.
+								Given there is no additional bicarb that can be resorbed from the urine, the majority of compensation for respiratory acidosis is a result of generation of new [HCO<sub>3</sub><sup>-</sup>].
+								This process occurs by means of urinary acid excretion, particularly excretion of either tiratable acids or ammonium (NH<sub>4</sub><sup>+</sup>).
+								<div class="inline-cite">[Hamm 2015|Narins 1980]</div>
+
+								<div style="max-width: 100%; width: 500px; margin: auto;">
+									<img src="img/renal_acid_secretion.svg" style="width: 100%;"/>
+									<br>
+									<i style="font-size: 80%;">
+										Ammonium is the primary acid excreted in both the normal and the acidotic patient. As shown above, it plays a much greater role in compensating for acidotic states.
+										<div class="inline-cite">[Hamm 2015]</div>
+									</i>
 								</div>
 							</div>
 						</center>
@@ -685,8 +701,8 @@ export default Vue.extend({
 		max-height: 180px; 
 		font-size: 60%; 
 		position: absolute; 
-		top: 30px; 
-		left: -40px; 
+		bottom:	20px; 
+		left: -240px; 
 		padding: 8px;
 		box-shadow: #222 3px 3px 3px;
 	}
