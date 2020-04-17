@@ -531,11 +531,15 @@
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
-										<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
-										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{((abg.PaCO2 - PaCO2Mid) / 2)}} + 24 &plusmn; 2 = {{22 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{26 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
+										<h3>Patient [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}} | P<sub>a</sub>CO<sub>2</sub> = {{abg.PaCO2}}</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 2) + {{aBicarbMid}} &plusmn; 2</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{((abg.PaCO2 - PaCO2Mid) / 2) + aBicarbMid}} &plusmn; 2 = {{aBicarbMid - 2 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{aBicarbMid + 2 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
 										<div class="ref-rng-box">
 											<i>
-												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 2) + 24 &plusmn; 2
+												&Delta; [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = &Delta;P<sub>a</sub>CO<sub>2</sub> / 2 &plusmn; 2
+												<br>
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = (P<sub>a</sub>CO<sub>2</sub> - Mid(P<sub>a</sub>CO<sub>2</sub>)) / 2 + Mid([HCO<sub>3</sub><sup>-</sup>]) &plusmn; 2
+												<br>
 											</i>
 										</div>
 										<hr>
@@ -560,11 +564,15 @@
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
-										<h3>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}}</h3>
-										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 24).toFixed(1)}} &plusmn; 2 = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 22).toFixed(1)}} to {{(((abg.PaCO2 - PaCO2Mid) / 3) + 26).toFixed(1)}}</h3>
+										<h3>Patient [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}} | P<sub>a</sub>CO<sub>2</sub> = {{abg.PaCO2}}</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + {{aBicarbMid}} &plusmn; 2</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{(((abg.PaCO2 - PaCO2Mid) / 3) + aBicarbMid).toFixed(1)}} &plusmn; 2 = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 22).toFixed(1)}} to {{(((abg.PaCO2 - PaCO2Mid) / 3) + 26).toFixed(1)}}</h3>
 										<div class="ref-rng-box">
 											<i>
-												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + 24 &plusmn; 2
+												&Delta; [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = &Delta;P<sub>a</sub>CO<sub>2</sub> / 3 &plusmn; 2
+												<br>
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = (P<sub>a</sub>CO<sub>2</sub> - Mid(P<sub>a</sub>CO<sub>2</sub>)) / 3 + Mid([HCO<sub>3</sub><sup>-</sup>]) &plusmn; 2
+												<br>
 											</i>
 										</div>
 										<hr>
@@ -606,6 +614,7 @@ export default Vue.extend({
 		return {
 			refRngs: BG.RefRngs,
 			PaCO2Mid: BG.RefRngMidpoint("PaCO2"),
+			aBicarbMid: BG.RefRngMidpoint("aBicarb"),
 			arrayEq,
 		};
 	},
@@ -648,7 +657,7 @@ export default Vue.extend({
 		background-color: #272727;
 		padding: 5px 14px;
 		display: inline-block;
-		font-size: 80%;
+		font-size: 85%;
 		border-radius: 3px;
 		margin-top: 6px;
 	}
