@@ -1,5 +1,5 @@
-import { CitationManager } from "./inline-cite.js/src/CitationManager";
-import { Citation } from "./inline-cite.js/src/Citation";
+import { CitationManager } from "incite.js/src/CitationManager";
+import { Citation } from "incite.js/src/Citation";
 
 const mainRefs: Citation[] = [
 	new Citation("ATS", {
