@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	import * as Sentry from "@sentry/browser";
-	const productionMode = window.location.host === "abg.jpoles1.com";
+	const productionMode = window.location.host === "abgenius.app";
 	const prodDSN = "https://9a2fdf7aafe74d0ab96d31291a4e80e6@sentry.jpoles1.com/10";
 	const devDSN = "https://9a2fdf7aafe74d0ab96d31291a4e80e6@sentry.jpoles1.com/10";
 	Sentry.init({
