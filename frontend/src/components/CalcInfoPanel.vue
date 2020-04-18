@@ -67,7 +67,7 @@
 								<center style="margin-bottom: 8px;"><h2>Interpreting: Anion Gap</h2></center>
 								<v-layout wrap justify-center style="margin: 22px; text-align: center;">
 									<div class="decision-box">
-										<h3>Anion Gap = [Na<sup>+</sup>] - [Cl<sup>-</sup>] - [HCO<sub>3</sub><sup>-</sup>] = {{results.serumAnionGap.gap}}</h3>
+										<h3>Anion Gap = [Na<sup>+</sup>] - [Cl<sup>-</sup>] - [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{results.serumAnionGap.gap}}</h3>
 										<div class="ref-rng-box">
 											<i>
 												Ref Range&nbsp; &#8776; &nbsp;{{refRngs.AnionGap.lower + "&nbsp; to &nbsp;" + refRngs.AnionGap.upper}}
@@ -524,7 +524,7 @@
 					</v-container>
 					<v-container v-if="['Compensatory Metabolic Acidosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Metabolic Compensation</h2>
+							<h2>Interpreting: Compensatory Metabolic Acidosis</h2>
 							<hr>
 							<p style="font-size: 100%; margin-top: 12px;">
 							</p>
@@ -532,13 +532,13 @@
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
 										<h3>Patient [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}} | P<sub>a</sub>CO<sub>2</sub> = {{abg.PaCO2}}</h3>
-										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 2) + {{aBicarbMid}} &plusmn; 2</h3>
 										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{((abg.PaCO2 - PaCO2Mid) / 2) + aBicarbMid}} &plusmn; 2 = {{aBicarbMid - 2 - ((PaCO2Mid - abg.PaCO2) / 2)}} to {{aBicarbMid + 2 - ((PaCO2Mid - abg.PaCO2) / 2)}}</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 2) + {{aBicarbMid}} &plusmn; 2</h3>
 										<div class="ref-rng-box">
 											<i>
 												&Delta; [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = &Delta;P<sub>a</sub>CO<sub>2</sub> / 2 &plusmn; 2
 												<br>
-												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = (P<sub>a</sub>CO<sub>2</sub> - Mid(P<sub>a</sub>CO<sub>2</sub>)) / 2 + Mid([HCO<sub>3</sub><sup>-</sup>]) &plusmn; 2
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = (P<sub>a</sub>CO<sub>2</sub> - Mid(P<sub>a</sub>CO<sub>2</sub>)) / 2 + Mid([&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) &plusmn; 2
 												<br>
 											</i>
 										</div>
@@ -556,19 +556,19 @@
 					</v-container>
 					<v-container v-if="['Compensatory Metabolic Alkalosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Metabolic Compensation</h2>
+							<h2>Interpreting: Compensatory Metabolic Alkalosis</h2>
 							<hr>
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
 										<h3>Patient [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{abg.bicarb}} | P<sub>a</sub>CO<sub>2</sub> = {{abg.PaCO2}}</h3>
-										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + {{aBicarbMid}} &plusmn; 2</h3>
 										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = {{(((abg.PaCO2 - PaCO2Mid) / 3) + aBicarbMid).toFixed(1)}} &plusmn; 2 = {{(((abg.PaCO2 - PaCO2Mid) / 3) + 22).toFixed(1)}} to {{(((abg.PaCO2 - PaCO2Mid) / 3) + 26).toFixed(1)}}</h3>
+										<h3>Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = ((P<sub>a</sub>CO<sub>2</sub> - {{PaCO2Mid}}) / 3) + {{aBicarbMid}} &plusmn; 2</h3>
 										<div class="ref-rng-box">
 											<i>
 												&Delta; [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = &Delta;P<sub>a</sub>CO<sub>2</sub> / 3 &plusmn; 2
 												<br>
-												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = (P<sub>a</sub>CO<sub>2</sub> - Mid(P<sub>a</sub>CO<sub>2</sub>)) / 3 + Mid([HCO<sub>3</sub><sup>-</sup>]) &plusmn; 2
+												Expected [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] = (P<sub>a</sub>CO<sub>2</sub> - Mid(P<sub>a</sub>CO<sub>2</sub>)) / 3 + Mid([&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]) &plusmn; 2
 												<br>
 											</i>
 										</div>
@@ -583,20 +583,42 @@
 								</div>
 							</div>
 							<div style="font-size: 100%; margin-top: 12px; text-align: left;">
-								In order to counteract the decrease in pH which results from excess P<sub>a</sub>CO<sub>2</sub>, the body first responds by trying to buffer the increase in proton concentration using its primary acid-base buffers: bicarbonate, phososphate and certain proteins. 
-								Because these buffers are already present throughout the body (in the plasma, interstitial and intracellular fluid compartments), this initial buffering occurs quickly and is often referred to as acute metabolic compensation.<div class="incite">[Narins 1980]</div>
-								<br><br>
-								Once a respiratory acidosis has persisted for >6-12 hours, the sustained change in pH will potentiate the kidney to produc new bicarbonate by excretion of acids into the urine.
+								The normal physiological response to compensate for an isolated respiratory acidosis has an acute phase and a chronic phase (chronic = complete compensation).
+
+								<br><br><h3>Acute Compensation</h3>
+								In order to counteract the decrease in pH which results from excess P<sub>a</sub>CO<sub>2</sub> in a respiratory acidosis, the body first utilizes its pre-existing acid-base buffers: mainly phososphate and certain proteins. 
+								Because these buffers are already present throughout the body's fluid compartments, this initial buffering occurs quickly and is often referred to as acute metabolic compensation.
+								To understand how this buffering process generates the mild initial increase in [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] associated with acute compensation for respiratory acidosis we can look to the cytoplasm of red blood cells (RBCs), a major site of this buffering.
+								Inside these RBCs is an enzyme called carbonic anhydrase which accelerates a reaction occuring throughout the body: the hydration of the excess CO<sub>2</sub> to H<sub>2</sub>CO<sub>3</sub>. 
+								Each molecule of H<sub>2</sub>CO<sub>3</sub> formed can then give up a proton to a buffer with a greater pKa (e.g. H<sub>2</sub>PO<sub>4</sub><sup>-</sup> or Hemoglobin).
+								The result is a new molecule of HCO<sub>3</sub><sup>-</sup> as well as a protonated buffer (e.g. H<sub>3</sub>PO<sub>4</sub>).
+								<div class="incite">[Narins 1980]</div> 
+								Though there are formulas which can be used to calculate the [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] expected in acute compensation, they are not included here given that we cannot differentiate acute respiratory acidosis versus a mixed respiratory + metabolic disorder without additional clinical history (both are considered incomplete compensation).
+
+								<br><br><h3>Chronic Compensation</h3>								
+								Once a respiratory acidosis has persisted for >6-12 hours, the sustained change in pH will potentiate the kidney to produce new bicarbonate by excretion of acids into the urine.
 								At homeostasis the healthy kidney resorbs nearly 100% of filtered bicarbonate (mostly in the proximal tubule), such that minimal quantities remain in the urine.
-								Given there is no additional bicarb that can be resorbed from the urine, the majority of compensation for respiratory acidosis is a result of generation of new [HCO<sub>3</sub><sup>-</sup>].
-								This process occurs by means of urinary acid excretion, particularly excretion of either tiratable acids or ammonium (NH<sub>4</sub><sup>+</sup>).
+								Given there is no additional bicarb that can be resorbed from the urine, the majority of compensation for respiratory acidosis must result of the generation of new HCO<sub>3</sub><sup>-</sup>.
+								This process occurs by means of urinary acid excretion (Fig 1), particularly ammonium (NH<sub>4</sub><sup>+</sup>; Fig 2) and tiratable acids (mainly H<sub>3</sub>PO<sub>4</sub>).
 								<div class="incite">[Hamm 2015|Narins 1980]</div>
 
-								<div style="max-width: 100%; width: 500px; margin: auto;">
-									<img src="img/renal_acid_secretion.svg" style="width: 100%;"/>
+								<center style="margin: 14px auto; font-weight: bold;">
+									Net Renal Acid Excretion = Titratable Acid + Ammonium - Urinary Bicarb Loss
+								</center>
+
+								<div style="max-width: 100%; width: 500px; margin: auto; margin-top: 20px;">
+									<img src="img/renal_acid_secretion.svg" style="width: 100%; border-radius: 3px;"/>
 									<br>
 									<i style="font-size: 80%;">
-										Ammonium is the primary acid excreted in both the normal and the acidotic patient. As shown above, it plays a much greater role in compensating for acidotic states.
+										Fig 1: Ammonium is the primary acid excreted in both the normal and the acidotic patient. As shown above, it plays a much greater role in compensating for acidotic states.
+										<div class="incite">[Hamm 2015]</div>
+									</i>
+								</div>
+								<div style="max-width: 100%; width: 500px; margin: auto; margin-top: 20px;">
+									<img src="img/bicarb_nh4_gen.svg" style="width: 100%; border-radius: 3px;"/>
+									<br>
+									<i style="font-size: 80%;">
+										Fig 2: Biochemical mechanism for HCO<sub>3</sub><sup>-</sup> generation from CO<sub>2</sub> by excretion of protons with NH<sub>4</sub><sup>+</sup>.  
 										<div class="incite">[Hamm 2015]</div>
 									</i>
 								</div>
