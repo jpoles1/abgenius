@@ -339,17 +339,19 @@
 								<div v-if="activeChip === 'Primary Respiratory Alkalosis'">
 									<h2>Causes of Primary Respiratory Alkalosis</h2>
 									<hr>
-									<p>
+									<div>
 										Any process causing hyperventilation (an increased respiratory rate or tidal volume) will result in an increased rate of CO<sub>2</sub> elimination, shifting the equilibrium towards dehydration of H<sub>2</sub>CO<sub>3</sub> to CO<sub>2</sub> and removal  of bicarbonate from the blood.
-									</p>
+										<div class="incite">[Narins 1980]</div>
+									</div>
 									<div style="display: flex; justify-content: space-around; flex-wrap: wrap; flex: 1;">
 										<div style="width: 45%; min-width: 240px; margin: 18px; border-radius: 8px; background-color: #262626; box-shadow: 0px 0px 5px #202020 inset; padding: 24px 20px;">
 											<h4 style="margin-bottom: 8px;">Central Causes of Hyperventilation</h4>
 											<hr>
 											<ul style="text-align: left;">
-												<li>Head injury/Stroke</li>
+												<li>Head injury/Stroke/Intracranial tumor</li>
 												<li>Anxiety, pain, fear, stress</li>
-												<li>Pharmaceuticals/toxins (salicylates)</li>
+												<li>Fever/sepsis</li>
+												<li>Pharmaceuticals/toxins (eg. salicylates, stimulants)</li>
 												<li>Hypoxic respiratory drive</li>
 												<li>Hyperthyroidism</li>
 											</ul>
@@ -358,7 +360,8 @@
 											<h4 style="margin-bottom: 8px;">Pulmonary Causes</h4>
 											<hr>
 											<ul style="text-align: left;">
-												<li>Pulmonary embolisms, pneumothorax, pneumonia, and acute asthma or COPD</li>
+												<li>Pneumothorax, pneumonia, and acute asthma or COPD</li>
+												<li>Pulmonary emboli</li>
 												<li>Hyperventilation during mechanical ventilation</li>
 											</ul>
 										</div>
@@ -427,9 +430,10 @@
 								<div v-if="activeChip === 'Primary Respiratory Alkalosis'">
 									<h2>Treatment of Primary Respiratory Alkalosis</h2>
 									<hr>
-									<b><u>The mainstay of treatment for primary respiratory alkaloses is the diagnosis and correction of the underlying pathology.</u></b>
+									<b><u>The mainstay of treatment for primary respiratory alkaloses is the diagnosis and correction of the underlying pathology.</u></b><div class="incite">[Adrogue 2014]</div>
 									<ul style="text-align: left;">
-										<li>Anxiolytics may help to reduce psychogenic hyperventilation.</li>
+										<li>Supplemental oxygen therapy can be used to treat hypoxic hyperventilation.</li> 
+										<li>Closed-circuit rebreathing or anxiolytics may be used to treat psychogenic hyperventilation.</li>
 										<li>Prolonged hyperventilation may culminate in respiratory failure and the need for intubation and mechanical ventilation.</li>
 										<li>Patients with iatrogenic respiratory alkalsosis require close monitoring of their ventilator settings, and may benefit from a reduced respiratory rate.</li>
 									</ul>						
@@ -524,10 +528,8 @@
 					</v-container>
 					<v-container v-if="['Compensatory Metabolic Acidosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Compensatory Metabolic Acidosis</h2>
+							<h2>Interpreting: Metabolic Compensation for Respiratory Alkalosis</h2>
 							<hr>
-							<p style="font-size: 100%; margin-top: 12px;">
-							</p>
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
 									<div>
@@ -556,7 +558,7 @@
 					</v-container>
 					<v-container v-if="['Compensatory Metabolic Alkalosis'].includes(activeChip)" key="disturb">
 						<center>
-							<h2>Interpreting: Compensatory Metabolic Alkalosis</h2>
+							<h2>Interpreting: Metabolic Compensation for Respiratory Acidosis</h2>
 							<hr>
 							<div style="display: flex; justify-content: space-around; max-width: 100%;  flex-wrap: wrap; margin-top: 25px;">
 								<div class="decision-box" style="display: flex; align-items: center; margin-bottom: 20px;">
@@ -583,7 +585,7 @@
 								</div>
 							</div>
 							<div style="font-size: 100%; margin-top: 12px; text-align: left;">
-								The normal physiological response to compensate for an isolated respiratory acidosis has an acute phase and a chronic phase (chronic = complete compensation).
+								The normal physiological response to compensate for a respiratory acidosis has an acute phase and a chronic phase (chronic = complete compensation).
 
 								<br><br><h3>Acute Compensation</h3>
 								In order to counteract the decrease in pH which results from excess P<sub>a</sub>CO<sub>2</sub> in a respiratory acidosis, the body first utilizes its pre-existing acid-base buffers: mainly phososphate and certain proteins. 
