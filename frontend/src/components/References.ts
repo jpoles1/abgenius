@@ -7,6 +7,10 @@ const mainRefs: Citation[] = [
 		url: "http://www.thoracic.org/professionals/clinical-resources/critical-care/clinical-education/abgs.php",
 		notes: "Good resource to learn to quickly interpret ABGs with a stepwise algorithm",
 	}),
+	new Citation("Adrogue 2014", {
+		name: "Adrogué, H. J., & Madias, N. E. (2014). Respiratory acidosis, respiratory alkalosis, and mixed disorders. Comprehensive Clinical Nephrology E-Book, 169.",
+		url: "https://www.sciencedirect.com/science/article/pii/B9780323058766000149",
+	}),
 	new Citation("Brinkman & Sharma 2019", {
 		name: "Brinkman, J. E., & Sharma, S. (2019). Physiology, Respiratory Alkalosis. In StatPearls [Internet]. StatPearls Publishing.",
 		url: "https://www.ncbi.nlm.nih.gov/books/NBK482117/",

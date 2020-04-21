@@ -554,6 +554,33 @@
 									</div>
 								</div>
 							</div>
+							<div style="font-size: 100%; margin-top: 12px; text-align: left;">
+								The normal physiological response to compensate for a respiratory alkalosis has an acute phase and a chronic phase (chronic = complete compensation).
+
+								<br><br><h3>Acute Compensation</h3>
+								In order to counteract the increase in pH which results from decreased P<sub>a</sub>CO<sub>2</sub> in a respiratory alkalosis, the body first utilizes its pre-existing acid-base buffers.
+								These buffers (hemoglobin and other proteins; to a lesser extent phosphate) give up protons to HCO<sub>3</sub><sup>-</sup>.
+								The resulting H<sub>2</sub>CO<sub>3</sub> then undergoes a reaction catalyzed by carbonic anhydrase, becoming H<sub>2</sub>O and CO<sub>2</sub> (Fig 1).
+								The end result is a rapid albeit modest decrease in [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;].
+								Because these buffers and enzymes are already present in the cytoplasm of circulating erythrocytes, this initial buffering occurs very quickly and is often referred to as acute metabolic compensation.
+								<div class="incite">[Narins 1980]</div> 
+								<br>
+								<div style="font-size: 85%; margin-top: 12px; font-style: italic;">
+									Note: Though there are formulas which can be used to estimate the range of [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] expected in acute compensation, they are not included here given that we cannot differentiate acute respiratory alkalosis versus a mixed respiratory + metabolic disorder without additional clinical history (both are considered incomplete compensation herein).
+								</div>
+
+								<br><br><h3>Chronic Compensation</h3>								
+								Over the course of several days, the sustained change in pH caused by a respiratory alkalosis will potentiate the kidney to retain acids and thus further consume bicarbonate.
+								This delayed yet significantly more potent compensatory mechanism results in the maximal/complete compensation which is associated with chronic respiratory alkaosis.
+								<div class="incite">[Narins 1980]</div>
+								<div style="max-width: 100%; width: 560px;; margin: auto; margin-top: 40px;">
+									<img src="img/acid-base-buffer.svg" style="width: 100%; border-radius: 3px;"/>
+									<br>
+									<i style="font-size: 80%;">
+										Fig 1: A reversible set of acid-base buffering reactions serve to regulate plasma pH, rapidly correcting mild perturbations without the involvement of the kidneys.
+									</i>
+								</div>
+							</div>
 						</center>
 					</v-container>
 					<v-container v-if="['Compensatory Metabolic Alkalosis'].includes(activeChip)" key="disturb">
@@ -589,41 +616,61 @@
 
 								<br><br><h3>Acute Compensation</h3>
 								In order to counteract the decrease in pH which results from excess P<sub>a</sub>CO<sub>2</sub> in a respiratory acidosis, the body first utilizes its pre-existing acid-base buffers: mainly phososphate and certain proteins. 
-								Because these buffers are already present throughout the body's fluid compartments, this initial buffering occurs quickly and is often referred to as acute metabolic compensation.
+								Because these buffers and enzymes are already present in the cytoplasm of circulating erythrocytes, this initial buffering occurs very quickly and is often referred to as acute metabolic compensation.
 								To understand how this buffering process generates the mild initial increase in [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] associated with acute compensation for respiratory acidosis we can look to the cytoplasm of red blood cells (RBCs), a major site of this buffering.
 								Inside these RBCs is an enzyme called carbonic anhydrase which accelerates a reaction occuring throughout the body: the hydration of the excess CO<sub>2</sub> to H<sub>2</sub>CO<sub>3</sub>. 
 								Each molecule of H<sub>2</sub>CO<sub>3</sub> formed can then give up a proton to a buffer with a greater pKa (e.g. H<sub>2</sub>PO<sub>4</sub><sup>-</sup> or Hemoglobin).
 								The result is a new molecule of HCO<sub>3</sub><sup>-</sup> as well as a protonated buffer (e.g. H<sub>3</sub>PO<sub>4</sub>).
 								<div class="incite">[Narins 1980]</div> 
-								Though there are formulas which can be used to calculate the [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] expected in acute compensation, they are not included here given that we cannot differentiate acute respiratory acidosis versus a mixed respiratory + metabolic disorder without additional clinical history (both are considered incomplete compensation).
+								<br>
+								<div style="font-size: 85%; margin-top: 12px; font-style: italic;">
+									Note: Though there are formulas which can be used to calculate the [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] expected in acute compensation, they are not included here given that we cannot differentiate acute respiratory acidosis versus a mixed respiratory + metabolic disorder without additional clinical history (both are considered incomplete compensation herein).
+								</div>
 
 								<br><br><h3>Chronic Compensation</h3>								
 								Once a respiratory acidosis has persisted for >6-12 hours, the sustained change in pH will potentiate the kidney to produce new bicarbonate by excretion of acids into the urine.
 								At homeostasis the healthy kidney resorbs nearly 100% of filtered bicarbonate (mostly in the proximal tubule), such that minimal quantities remain in the urine.
 								Given there is no additional bicarb that can be resorbed from the urine, the majority of compensation for respiratory acidosis must result of the generation of new HCO<sub>3</sub><sup>-</sup>.
-								This process occurs by means of urinary acid excretion (Fig 1), particularly ammonium (NH<sub>4</sub><sup>+</sup>; Fig 2) and tiratable acids (mainly H<sub>3</sub>PO<sub>4</sub>).
+								This process occurs by means of urinary acid excretion (Fig 2), particularly ammonium (NH<sub>4</sub><sup>+</sup>; Fig 3) and tiratable acids (mainly H<sub>3</sub>PO<sub>4</sub>).
 								<div class="incite">[Hamm 2015|Narins 1980]</div>
 
-								<center style="margin: 14px auto; font-weight: bold;">
-									Net Renal Acid Excretion = Titratable Acid + Ammonium - Urinary Bicarb Loss
-								</center>
+								  <v-carousel hide-delimiters :height="$vuetify.breakpoint.xsOnly ? 340 : 540"  :cycle="false" style="width: 100%; margin-top: 20px;">
+									<v-carousel-item>
+										<div style="max-width: 100%; width: 600px; margin: auto; margin-top: 20px;">
+											<img src="img/acid-base-buffer.svg" style="width: 100%; border-radius: 3px;"/>
+											<br>
+											<i style="font-size: 80%;">
+												Fig 1: A reversible set of acid-base buffering reactions serve to regulate plasma pH, rapidly correcting mild perturbations without the involvement of the kidneys.
+											</i>
+										</div>
+									</v-carousel-item>
+									<v-carousel-item>
+										<center style="margin: 14px auto; font-weight: bold;">
+											Net Renal Acid Excretion = Titratable Acid + Ammonium - Urinary Bicarb Loss
+										</center>
 
-								<div style="max-width: 100%; width: 500px; margin: auto; margin-top: 20px;">
-									<img src="img/renal_acid_secretion.svg" style="width: 100%; border-radius: 3px;"/>
-									<br>
-									<i style="font-size: 80%;">
-										Fig 1: Ammonium is the primary acid excreted in both the normal and the acidotic patient. As shown above, it plays a much greater role in compensating for acidotic states.
-										<div class="incite">[Hamm 2015]</div>
-									</i>
-								</div>
-								<div style="max-width: 100%; width: 500px; margin: auto; margin-top: 20px;">
-									<img src="img/bicarb_nh4_gen.svg" style="width: 100%; border-radius: 3px;"/>
-									<br>
-									<i style="font-size: 80%;">
-										Fig 2: Biochemical mechanism for HCO<sub>3</sub><sup>-</sup> generation from CO<sub>2</sub> by excretion of protons with NH<sub>4</sub><sup>+</sup>.  
-										<div class="incite">[Hamm 2015]</div>
-									</i>
-								</div>
+										<div style="max-width: 100%; width: 640px; margin: auto; margin-top: 20px;">
+											<img src="img/renal_acid_secretion.svg" style="width: 100%; border-radius: 3px;"/>
+											<br>
+											<i style="font-size: 80%;">
+												Fig 2: Ammonium is the primary acid excreted in both the normal and the acidotic patient. As shown above, it plays a much greater role in compensating for acidotic states.
+												<div class="incite">[Hamm 2015]</div>
+											</i>
+										</div>
+									</v-carousel-item>
+									<v-carousel-item>
+										<div style="max-width: 100%; width: 700px; margin: auto; margin-top: 20px;">
+											<img src="img/bicarb_nh4_gen.svg" style="width: 100%; border-radius: 3px;"/>
+											<br>
+											<i style="font-size: 80%;">
+												Fig 3: Biochemical mechanism for HCO<sub>3</sub><sup>-</sup> generation from CO<sub>2</sub> by excretion of protons with NH<sub>4</sub><sup>+</sup>.  
+												<div class="incite">[Hamm 2015]</div>
+											</i>
+										</div>
+									</v-carousel-item>
+								</v-carousel>
+
+								
 							</div>
 						</center>
 					</v-container>
@@ -742,5 +789,11 @@ export default Vue.extend({
 		/*color: #e7ea78;*/
 		color: #f6aeae;
 		text-decoration: underline;
+	}
+	.v-carousel .v-responsive__content {
+		width: 100%;
+	}
+	.v-carousel .v-btn {
+		color: #ffffffaa;
 	}
 </style>
