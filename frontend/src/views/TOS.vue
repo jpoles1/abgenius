@@ -27,16 +27,6 @@
 			In no event shall the the system's authors be liable for special, direct, indirect or consequential damages, charges, claims, costs, demands, losses fees or expenses of any nature or kind arising from use of the ABGenius system.
 			By using the ABGenius system, documentation and/or any software found therein, the User agrees to abide by United States and International copyright laws and all other applicable laws involving copyright.
 		</p>
-		<h2>Code of Ethics:</h2>
-        <ul>
-            <li>Treat all other users of this site with respect and dignity.</li>
-            <li>Do not publish any HPI on this website. Any information which might jeopradize the privacy of a patient is forbidden.</li>
-            <li>With great content comes great responsibility:</li>
-            <ul>
-                <li>Editors should take great care to publish high quality cases such that learners can hone their skills. Include references to authoritative sources (journals, textbooks, etc.) where possible.</li> 
-                <li>Learners should consider all cases they find on this site as the opinoin of their authors. Read the material with a critical/skeptical eye, and validate information with authoritative sources.</li> 
-            </ul>
-        </ul>
         <hr>
 		<h2>Terminology:</h2>
         <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and any
