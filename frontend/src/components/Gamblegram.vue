@@ -23,7 +23,7 @@ export default Vue.extend({
 	data() {
 		return {
 			width: 440,
-			height: 340,
+			height: 380,
 		};
 	},
 	methods: {

@@ -88,23 +88,27 @@
 									Instead, we use the anion gap to decide if there is a significant contribution of H<sup>+</sup> ions from unmeasured acidic species in a patient's blood. 
 									We rely on the principle of electroneutrality (described below)	to indirectly detect increases in the negatively charged particles produced be deprotonation.
 								</p>
-								<v-layout row justify-center wrap style="border-radius: 8px; background-color: #262626; padding: 18px; margin: 20px 0; box-shadow: 0px 0px 5px #202020 inset;">
+								<v-layout row justify-center wrap style="border-radius: 8px; background-color: #262626; padding: 18px; margin: 20px; box-shadow: 0px 0px 5px #202020 inset;">
 									<v-flex md7 sm12 style="margin-bottom: 30px;">
 										<Gamblegram :abg="abg" :results="results"/>
 									</v-flex>
 									<v-flex md5 style="background-color: #333; padding: 22px; box-shadow: 0px 0px 5px #202020 inset;">
 										<p>
-											This plot provides a visual representation of the balance between the "strong" anions and cations disolved in the serum. 
+											The Gamblegram is a plot which provides a visual representation of the balance between the commonly measured anions and cations which contribute most to the net electrical charge of the serum.
 											Interpretation relies on the following rules:
 											<ul>
 												<li>
-													Human serum is electroneutral, so the concentrations of anions and cations should cancel out.
+													Human serum is electroneutral, so overall the concentration multiplied by charge of anions vs cations should cancel out.
 												</li>
 												<li>
-													We measure the charged particles which dissociate completely and are present in the highest concentrations in serum, because they have the strongest effects on the overall balance of charges. We call them "strong ions".
+													We commonly measure the charged particles which are present in the highest concentrations in serum and have the strongest effects on the overall balance of charges.
 												</li>
 												<li>
 													We cannot measure every charged species, so we must estimate the gap between the unknown anions and unknown cations, termed the anion gap. 
+													A healthy individual will have a greater charge from unmeasured anions and thus the gap has a normal range of {{refRngs.AnionGap.lower}} to {{refRngs.AnionGap.upper}}.
+												</li>
+												<li>
+													When the anion gap exceeds the upper limit of normal, this suggests the presence of additional unmeasured anions <i>(see causes)</i>.  
 												</li>
 											</ul>
 										</p>
