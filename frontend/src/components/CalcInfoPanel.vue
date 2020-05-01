@@ -234,17 +234,18 @@
 										</div>
 									</v-layout>
 									<p style="font-size: 90%; margin: 28px 0 36px 0; max-width: 600px; text-align: justify;">
-										Put simply, respiratory acid-base disorders result from changes in the balance of the biochemical processes which add and remove from the pools of CO<sub>2</sub> disolved in the blood.
-										Changes in the concentration of disolved CO<sub>2</sub> can be measured as a function of the partial pressure of arterial blood CO<sub>2</sub> (abbreviated PaCO<sub>2</sub>).
+										Respiratory acid-base disorders are characterized by disruptions of the balance beteween the processes which add and remove from the quantities of CO<sub>2</sub> carried in the blood.
+										Changes in the concentration of total blood CO<sub>2</sub> can be measured as a function of the partial pressure of arterial blood CO<sub>2</sub> (abbreviated PaCO<sub>2</sub>).
 										<br><br>
-										How then does a change in disolved CO<sub>2</sub> change the pH of the blood? 
-										A simplified understanding of the complex biochemistry occuring here can be acheived by examining Fig 1 below.
-										Here we see the disolution of CO<sub>2</sub> followed by its reaction with water (H<sub>2</sub>O) to form carbonic acid (H<sub>2</sub>CO<sub>3</sub>).
-										An H<sup>+</sup> ion can then dissociate from the carbonic acid cancelling out the buffering capacity of the body's stores of HCO<sub>3</sub><sup>-</sup>, and decreasing blood pH. 
-										This same reaction can be driven in reverse when levels of disolved CO<sub>2</sub> are low, increasing blood pH.
+										How then does a change in blood CO<sub>2</sub> levels change the blood's pH?
+										Let's examine this biochemical process through the lens of a respiratory acidosis, in which there is excess CO<sub>2</sub> in the blood.
+										In Figure 1 we can see that disolution of additional CO<sub>2</sub> into the blood can drive to the right a reversible reaction with water (H<sub>2</sub>O) to form carbonic acid (H<sub>2</sub>CO<sub>3</sub>).
+										This reaction will proceed spontaneously, however it occurs significantly faster when catalyzed by the enzyme carbonic anhydrase, which can be found in many cells, particularly red blood cells.
+										Similarly, the increase in H<sub>2</sub>CO<sub>3</sub> will continue to drive the reactions depicted in Figure 1 to the right, resulting in dissociation of H<sup>+</sup> ions to form bicarbonate (HCO<sub>3</sub><sup>-</sup>).
+										Because these protons are now dissociated from their conjugate base (HCO<sub>3</sub><sup>-</sup>) they contribute to the concentration of free protons [H<sup>+</sup>] in solution and thus cause a decrease in blood pH.
+										This same set of reactions can be driven in reverse when levels of disolved CO<sub>2</sub> are low, decreasing blood [H<sup>+</sup>], and thus increasing blood pH.
 									</p>
-									<img src="/img/co2_to_bicarb.png"
-									height=100 style="border-radius: 3px;"/>
+									<img src="/img/co2_to_bicarb.png" height=140 style="border-radius: 3px;"/>
 								</center>
 								<center v-if="['Primary Metabolic Acidosis', 'Primary Metabolic Alkalosis'].includes(activeChip)" key="disturb">
 									<div>
