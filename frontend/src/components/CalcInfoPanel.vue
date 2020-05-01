@@ -120,7 +120,7 @@
 								<center style="margin-bottom: 8px;"><h2>Causes of Anion Gap Acidosis</h2></center>
 								<hr>
 								<div style="text-align: center;">
-									There are numerous physiologic processes and biologically active substances which can cause to anion gap acidosis, and it's impossible to remember them all.
+									There are numerous physiologic processes and biologically active substances which can cause an elevation in anion gap with acidosis, and it can certainly be difficult to remember them all.
 									We recommend the GOLDMARK CAT mnemonic shown below in order to organize your differential around the most important causes of anion gap acidois<div class="incite">[Mehta 2008]</div>:
 								</div>
 								<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; max-width: 800px; margin: auto;" class="anion-gap-chart">
