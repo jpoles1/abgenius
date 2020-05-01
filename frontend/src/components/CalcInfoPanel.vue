@@ -161,14 +161,14 @@
 								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap > 6 ? '#4CAF50' : '#333'}">
 									if &nbsp;<u>Delta Gap &gt; 6</u>&nbsp; then
 									<hr>
-									We have a superimposed <u>metabolic alkalosis</u>!
+									Consider a superimposed <u>metabolic alkalosis</u>!
 									<hr>
 									Given the rise in anion gap is more than fall in bicarb.
 								</div>
 								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap < -6 ? '#4CAF50' : '#333'}">
 									if &nbsp;<u>Delta Gap &lt; -6</u>&nbsp; then
 									<hr>
-									We have a superimposed <u>metabolic acidosis</u>!
+									Consider a superimposed <u>metabolic acidosis</u>!
 									<hr>
 									Given the rise in anion gap is less than fall in bicarb.
 								</div>
@@ -176,7 +176,7 @@
 								<div class="decision-box" :style="{'background-color': results.serumDeltaGap.gap >= -6 && results.serumDeltaGap.gap <= 6 ? '#4CAF50' : '#333'}">
 									<b>OTHERWISE:</b>
 									<br>
-									There are no additional metabolic acid-base disorders present.
+									No additional metabolic acid-base disorders detected.
 								</div>
 							</v-layout>
 						</center>
