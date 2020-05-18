@@ -8,8 +8,8 @@ self.__precacheManifest = [
     "url": "/js/about.e05fcc14.js"
   },
   {
-    "revision": "25bccca47452b9800ab9",
-    "url": "/js/app.b52ed055.js"
+    "revision": "5341df8249b38fc92e56",
+    "url": "/js/app.91e19b82.js"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
@@ -24,12 +24,12 @@ self.__precacheManifest = [
     "url": "/img/lungs_clear.svg"
   },
   {
-    "revision": "ea30cc0fcbf9c2c98d47c4d7478c493f",
+    "revision": "135afae0e6f7662c62a8435b6f1453f2",
     "url": "/index.html"
   },
   {
-    "revision": "f1451af49e43cde5fa2b78572f57f987",
-    "url": "/img/lungs.svg"
+    "revision": "8973273de9433bb7ca6e6573a553c8f6",
+    "url": "/img/acid-base-buffer.svg"
   },
   {
     "revision": "8f7511353660bc0b45b7c97dbc4e4d6f",
@@ -42,6 +42,10 @@ self.__precacheManifest = [
   {
     "revision": "f30aafb09a0178d486dd2d2a5fdfe847",
     "url": "/img/renal_acid_secretion.svg"
+  },
+  {
+    "revision": "f1451af49e43cde5fa2b78572f57f987",
+    "url": "/img/lungs.svg"
   },
   {
     "revision": "946c64e720b5276e86ac95c445a9b191",
@@ -68,15 +72,11 @@ self.__precacheManifest = [
     "url": "/img/bicarb_nh4_gen.svg"
   },
   {
-    "revision": "8973273de9433bb7ca6e6573a553c8f6",
-    "url": "/img/acid-base-buffer.svg"
-  },
-  {
     "revision": "814f549d2b71b0424bde",
     "url": "/css/chunk-vendors.7d9bee0f.css"
   },
   {
-    "revision": "25bccca47452b9800ab9",
-    "url": "/css/app.12c05b95.css"
+    "revision": "5341df8249b38fc92e56",
+    "url": "/css/app.e6bf205f.css"
   }
 ];
