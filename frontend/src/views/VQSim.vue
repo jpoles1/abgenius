@@ -1,6 +1,6 @@
 <template>
 	<div style="padding: 15px; max-width: 1400px; margin: auto; text-align: center;">
-		<h1 style="">NYU Pulmonary Gas Exchange Simulator</h1>
+		<h1 style="">Pulmonary Gas Exchange Simulator</h1>
 		<div style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 30px">
 			<!--<div v-for="(data, field) in inputData" :key="field" style="text-align: left; margin-bottom: 14px; border-radius: 4px;">
 				<span style="font-size: 80%;">&nbsp;&nbsp;&nbsp;{{ data.label }}</span>
