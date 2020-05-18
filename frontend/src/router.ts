@@ -7,6 +7,7 @@ import Authorize from "./views/Authorize.vue";
 import Logout from "./views/Logout.vue";
 import ABGCalc from "./views/ABGCalc.vue";
 import ABGTrain from "./views/ABGTrain.vue";
+import VQSim from "./views/VQSim.vue";
 import TrainDash from "./views/TrainDash.vue";
 import Davenport from "./components/Davenport.vue";
 import TOS from "./views/TOS.vue";
@@ -26,6 +27,11 @@ export default new Router({
 			path: "/train",
 			name: "train",
 			component: ABGTrain,
+		},
+		{
+			path: "/vq",
+			name: "vqsim",
+			component: VQSim,
 		},
 		{
 			path: "/dash",
