@@ -87,6 +87,10 @@
 						<span class="output-label">Overall R:</span>
 						<span class="align-end">{{ sim.results.resp_quotient.toFixed(2) }}</span>
 					</div>
+					<br>
+					<a :href="abgURL" target="blank" style="color: white; font-size: 110%;" v-show="invalidInputs.length === 0">
+						Generate ABG from results
+					</a>
 				</div>
 			</v-card>
 		</div>
@@ -96,8 +100,11 @@
 <script lang="ts">
 import { VQSim } from "@/components/VQSim";
 import vqview from "@/components/VQView.vue";
+import { RefRngs } from "@/components/BloodGas";
+import { randFloat } from "@/components/BloodGasGen";
 import Vue from "vue";
 import { vqPresets } from "@/components/VQPresets";
+
 export default Vue.extend({
 	components: {
 		vqview,
@@ -189,9 +196,20 @@ export default Vue.extend({
 		},
 	},
 	computed: {
-		invalidInputs() {
-			const fieldNames = Object.keys((this as any).inputData);
-			const invalidInputs = fieldNames.reduce(
+		calcBicarb(): number {
+			return 3 * this.sim.results.pa_co2! * Math.pow(10, this.sim.results.a_pH! - (81 / 10));
+		},
+		abgURL(): string {
+			const Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper,  0);
+			const Cl = randFloat(
+				Na - (RefRngs.AnionGap!.upper - 1 + this.calcBicarb),
+				Na - (RefRngs.AnionGap!.lower + 1 + this.calcBicarb),
+				0,
+			);
+			return `/?pH=${this.sim.results.a_pH.toFixed(2)}&PaCO2=${this.sim.results.pa_co2.toFixed(0)}&bicarb=${this.calcBicarb.toFixed(0)}&Na=${Na}&Cl=${Cl}`;
+		},
+		invalidInputs(): string[] {
+			return Object.keys(this.inputData).reduce(
 				(agg, fieldName) => {
 					if ((this.sim as any)[fieldName] < (this.inputData as any)[fieldName].range[0] || (this.sim as any)[fieldName] > (this.inputData as any)[fieldName].range[1]) {
 						agg.push(fieldName);
@@ -200,7 +218,6 @@ export default Vue.extend({
 				},
 				[] as string[],
 			);
-			return invalidInputs;
 		},
 	},
 	mounted() {

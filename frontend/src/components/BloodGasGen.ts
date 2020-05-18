@@ -1,10 +1,10 @@
 import {BloodGas, DisturbType, RefRngs, RefRngMidpoint} from "./BloodGas";
 
-function floatFix(f: number, precision: number): number {
+export function floatFix(f: number, precision: number): number {
 	return parseFloat(f.toFixed(precision));
 }
 
-function randFloat(min: number, max: number, precision: number): number {
+export function randFloat(min: number, max: number, precision: number): number {
 	return floatFix((Math.random() * (max - min)) + min, precision);
 }
 function randPick<T>(arr: T[]): T {
