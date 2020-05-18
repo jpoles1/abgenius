@@ -15,6 +15,19 @@ describe("Predetermined Results", () => {
 		expect(sim.results.venous_admixture_pct.toFixed(2)).toBe((1.69).toFixed(2));
 		expect(sim.results.resp_quotient.toFixed(2)).toBe((0.8).toFixed(2));
 	});
+	test("Emphysema", () => {
+		const sim = new VQSim(vqPresets[1]);
+		sim.run_sim();
+		expect(sim.results.a_pH.toFixed(2)).toBe((7.28).toFixed(2));
+		expect(sim.results.pa_o2.toFixed(2)).toBe((44.67).toFixed(2));
+		expect(sim.results.pa_co2.toFixed(2)).toBe((65.32).toFixed(2));
+		expect(sim.results.art_o2_con.toFixed(2)).toBe((15.10).toFixed(2));
+		expect(sim.results.art_co2_con.toFixed(2)).toBe((59.35).toFixed(2));
+		expect(sim.results.hgb_sat.toFixed(2)).toBe((72.67).toFixed(2));
+		expect(sim.results.deadspace_pct.toFixed(2)).toBe((51.70).toFixed(2));
+		expect(sim.results.venous_admixture_pct.toFixed(2)).toBe((45.85).toFixed(2));
+		expect(sim.results.resp_quotient.toFixed(2)).toBe((0.8).toFixed(2));
+	});
 	test("Bronchial Obstruction", () => {
 		const sim = new VQSim(vqPresets[3]);
 		sim.run_sim();
