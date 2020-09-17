@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"abgenius/envload"
-	"abgenius/logging"
+	"github.com/jpoles1/abgenius/envload"
+	"github.com/jpoles1/abgenius/logging"
 	"testing"
 )
 

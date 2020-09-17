@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"abgenius/logging"
+	"github.com/jpoles1/abgenius/logging"
 	"errors"
 
 	"github.com/fatih/color"

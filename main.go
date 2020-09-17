@@ -1,10 +1,10 @@
 package main
 
 import (
-	"abgenius/controllers"
-	"abgenius/envload"
-	"abgenius/microservices"
-	"abgenius/routers"
+	"github.com/jpoles1/abgenius/controllers"
+	"github.com/jpoles1/abgenius/envload"
+	"github.com/jpoles1/abgenius/microservices"
+	"github.com/jpoles1/abgenius/routers"
 	"math"
 
 	"github.com/go-chi/chi"

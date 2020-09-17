@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"abgenius/models"
+	"github.com/jpoles1/abgenius/models"
 
 	mgo "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"

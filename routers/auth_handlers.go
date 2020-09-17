@@ -1,9 +1,9 @@
 package routers
 
 import (
-	"abgenius/envload"
-	"abgenius/logging"
-	"abgenius/models"
+	"github.com/jpoles1/abgenius/envload"
+	"github.com/jpoles1/abgenius/logging"
+	"github.com/jpoles1/abgenius/models"
 	"net/http"
 	"time"
 

@@ -1,9 +1,9 @@
 package routers
 
 import (
-	"abgenius/controllers"
-	"abgenius/envload"
-	"abgenius/logging"
+	"github.com/jpoles1/abgenius/controllers"
+	"github.com/jpoles1/abgenius/envload"
+	"github.com/jpoles1/abgenius/logging"
 	"encoding/json"
 	"errors"
 	"net/http"

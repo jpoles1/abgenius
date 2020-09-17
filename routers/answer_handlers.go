@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"abgenius/models"
+	"github.com/jpoles1/abgenius/models"
 	"encoding/json"
 	"net/http"
 

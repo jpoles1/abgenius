@@ -1,7 +1,7 @@
 package envload
 
 import (
-	"abgenius/logging"
+	"github.com/jpoles1/abgenius/logging"
 	"errors"
 	"fmt"
 	"os"
