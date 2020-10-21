@@ -26,7 +26,7 @@
 			<br>
 			PPV: When you said the process was present how often were you right?
 			<br>
-			PPV: When you said the process was not present how often were you right?
+			NPV: When you said the process was not present how often were you right?
 		</div>
 	</center>
 </template>
