@@ -72,6 +72,14 @@
 						<span class="align-end">{{ sim.results.art_co2_con.toFixed(2) }} mL/L of blood</span>
 					</div>
 					<div class="result-row">
+						<span class="output-label">Arterial HCO<sub>3</sub> Concentration:</span>
+						<span class="align-end">{{ calcBicarb.toFixed(2) }} mmol/L of blood</span>
+					</div>
+					<div class="result-row">
+						<span class="output-label">Base Excess:</span>
+						<span class="align-end">{{ calcBaseExcess.toFixed(2) }}</span>
+					</div>
+					<div class="result-row">
 						<span class="output-label">Hemoglobin Saturation:</span>
 						<span class="align-end">{{ sim.results.hgb_sat.toFixed(2) }}%</span>
 					</div>
@@ -198,6 +206,19 @@ export default Vue.extend({
 	computed: {
 		calcBicarb(): number {
 			return 3 * this.sim.results.pa_co2! * Math.pow(10, this.sim.results.a_pH! - (81 / 10));
+		},
+		calcBaseExcess(): number {
+			//Lang, W., & Zander, R. (2002). The accuracy of calculated base excess in blood. Clinical chemistry and laboratory medicine, 40(4), 404–410. https://doi.org/10.1515/CCLM.2002.065
+			//BE = (1−0.0143 . cHb) . [{0.0304 . pCO2. 10 ^ (ph−6.1)−24.26} + (9.5+1.63 . cHb) . (pH −7.4)] −0.2 . cHb . (1−sO2)
+			//return (1 - 0.0143 * this.sim.hgb) * ((0.0304 * this.sim.results.pa_co2! * Math.pow(10, (this.sim.results.a_pH! - 6.1)) - 24.26) + (9.5+1.63 * this.sim.hgb) * (this.sim.results.a_pH! - 7.4)) - 0.2 * this.sim.hgb * (1 - this.sim.results.hgb_sat/100)
+			//
+			//Siggaard-Andersen O. (1971). An acid-base chart for arterial blood with normal and pathophysiological reference areas. Scandinavian journal of clinical and laboratory investigation, 27(3), 239–245. https://doi.org/10.3109/00365517109080214
+			//B.E. = 0.02786 * pCO2 * 10 (pH - 6.1) + 13.77 * pH - 124.58
+			return 0.02786 * this.sim.results.pa_co2! * Math.pow(10, (this.sim.results.a_pH! - 6.1)) + 13.77 * this.sim.results.a_pH! - 124.58;
+			//
+			//From Ken Berger
+			//BE = 37 * (EXP((pHa@37C-7.4+0.345x(ln(PaCO2@37C/40))) / (0.55-0.09x(ln(PaCO2@37C/40))))-1)
+			//return  37 * (Math.exp((this.sim.results.a_pH!-7.4+0.345 * (Math.log(this.sim.results.pa_co2!/40))) / (0.55-0.09*(Math.log(this.sim.results.pa_co2!/40))))-1)
 		},
 		abgURL(): string {
 			const Na = randFloat(RefRngs.Na!.lower, RefRngs.Na!.upper,  0);
