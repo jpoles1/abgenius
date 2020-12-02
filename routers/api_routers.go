@@ -32,6 +32,11 @@ func APIRouter(r chi.Router, apiHandler APIHandler) chi.Router {
 				r.Post("/submit", apiHandler.PostSubmitAnswer)
 				r.Get("/list", apiHandler.GetUserAnswers)
 			})
+			r.Route("/vqpresets/", func(r chi.Router) {
+				r.Get("/{id}", apiHandler.GetVQPresetList)
+				r.Post("/", apiHandler.PostUdpateVQPresetList)
+				r.Get("/myPresets", apiHandler.GetMyVQPresetLists)
+			})
 		})
 	})
 	return r
