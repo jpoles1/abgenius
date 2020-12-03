@@ -204,7 +204,7 @@ export class BloodGas {
 					} else {
 						if (this.abg.PaCO2! <= this.compensatedPaCO2() + 2) {
 							disturbList.push(DisturbType.CompleteComp);
-						} else if (this.abg.PaCO2! > RefRngs.PaCO2!.upper + 1) {
+						} else {
 							disturbList.push(DisturbType.RespAcid);
 						}
 					}
@@ -214,13 +214,15 @@ export class BloodGas {
 					disturbList.push(DisturbType.MetAlk);
 					if (this.abg.PaCO2! >= this.compensatedPaCO2() - 2) {
 						disturbList.push(DisturbType.CompleteComp);
-					} else if (this.abg.PaCO2! < RefRngs.PaCO2!.lower - 1) {
+					} else {
 						disturbList.push(DisturbType.RespAlk);
 					}
 				} else if (this.abg.PaCO2! < RefRngs["PaCO2"]!.lower) {
 					disturbList.push(DisturbType.RespAlk);
 					if (this.abg.bicarb! <= this.compensatedBicarb() + 2) {
 						disturbList.push(DisturbType.CompleteComp);
+					} else {
+						disturbList.push(DisturbType.MetAlk);
 					}
 				}
 			} else {
@@ -228,14 +230,15 @@ export class BloodGas {
 					disturbList.push(DisturbType.MetAcid);
 					if (this.abg.PaCO2! <= this.compensatedPaCO2() + 2) {
 						disturbList.push(DisturbType.CompleteComp);
-					}
-					if (this.abg.PaCO2! > RefRngs.PaCO2!.upper + 1) {
+					} else {
 						disturbList.push(DisturbType.RespAcid);
 					}
 				} else if (this.abg.PaCO2! > RefRngs["PaCO2"]!.upper) {
 					disturbList.push(DisturbType.RespAcid);
 					if (this.abg.bicarb! >= this.compensatedBicarb() - 2) {
 						disturbList.push(DisturbType.CompleteComp);
+					} else {
+						disturbList.push(DisturbType.MetAcid);
 					}
 				}
 			}
