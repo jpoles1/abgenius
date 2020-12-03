@@ -116,9 +116,7 @@ describe("Blood gas scenarios", () => {
 		expect(scenario1.realisticABG()).toEqual(true);
 		expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Acidemia);
 		expect(scenario1.serumAnionGap()).toEqual({gap: 10, disturb: BG.DisturbType.Normal});
-		expect(scenario1.guessDisturbances()).toEqual([
-			BG.DisturbType.RespAcid,
-		]);
+		expect(scenario1.guessDisturbances()).toEqual([BG.DisturbType.RespAcid, BG.DisturbType.MetAcid]);
 	});
 	test("Compensated Respiratory Acidosis", () => {
 		const scenario1 = new BG.BloodGas({
@@ -133,10 +131,7 @@ describe("Blood gas scenarios", () => {
 		expect(scenario1.realisticABG()).toEqual(true);
 		expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Acidemia);
 		expect(scenario1.serumAnionGap()).toEqual({gap: 5, disturb: BG.DisturbType.Normal});
-		expect(scenario1.guessDisturbances()).toEqual([
-			BG.DisturbType.RespAcid,
-			BG.DisturbType.CompleteComp,
-		]);
+		expect(scenario1.guessDisturbances()).toEqual([BG.DisturbType.RespAcid]);
 	});
 	test("Uncompensated Respiratory Alkalosis", () => {
 		const scenario1 = new BG.BloodGas({
@@ -151,7 +146,7 @@ describe("Blood gas scenarios", () => {
 		expect(scenario1.realisticABG()).toEqual(true);
 		expect(scenario1.phDisturbance()).toEqual(BG.DisturbType.Alkalemia);
 		expect(scenario1.serumAnionGap()).toEqual({gap: 11, disturb: BG.DisturbType.Normal});
-		expect(scenario1.guessDisturbances()).toEqual([BG.DisturbType.RespAlk]);
+		expect(scenario1.guessDisturbances()).toEqual([BG.DisturbType.RespAlk, BG.DisturbType.MetAlk]);
 	});
 	/*
 	test("Met Acidosis", () => {
