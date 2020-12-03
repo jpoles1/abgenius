@@ -732,7 +732,7 @@
 					DisturbType.RespAcid, DisturbType.RespAlk,
 					DisturbType.MetAlk, DisturbType.MetAcid,
 					DisturbType.AnionGap,
-					DisturbType.CompleteComp,
+					//DisturbType.CompleteComp,
 				];
 				return primaryDisturb.filter((disturb) => {
 					// Can only add one respiratory disorder
