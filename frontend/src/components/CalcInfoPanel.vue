@@ -550,6 +550,8 @@
 											</i>
 										</div>
 										<hr>
+										<MetabolicCompRule/>
+										<hr>
 										<v-chip :color="results.completeCompensation ? 'success' : '#383838'">
 											<v-icon small>fa-check</v-icon>&nbsp;Complete Metabolic Compensation
 										</v-chip>
@@ -606,6 +608,8 @@
 												<br>
 											</i>
 										</div>
+										<hr>
+										<MetabolicCompRule/>
 										<hr>
 										<v-chip :color="results.completeCompensation ? 'success' : '#383838'">
 											<v-icon small>fa-check</v-icon>&nbsp;Complete Metabolic Compensation
@@ -691,11 +695,13 @@ import Vue from "vue";
 import * as BG from "./BloodGas";
 import { arrayEq } from "@/util";
 import Gamblegram from "@/components/Gamblegram.vue";
+import MetabolicCompRule from "@/components/1245-rule.vue";
 import { MainRefManager } from "@/components/References";
 
 export default Vue.extend({
 	components: {
 		Gamblegram,
+		MetabolicCompRule
 	},
 	props: {
 		activeChip: String,
