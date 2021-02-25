@@ -11,7 +11,7 @@ function randPick<T>(arr: T[]): T {
 	return arr[Math.floor(arr.length * Math.random())];
 }
 
-const upperLimitPaCO2 = 80;
+const upperLimitPaCO2 = 90;
 const lowerLimitPaCO2 = 15;
 const upperLimitBicarb = 54;
 const lowerLimitBicarb = 4;
@@ -35,7 +35,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	},
 	"Compensated Respiratory Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
-		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.upper + 10, 100, truncateValues ? 0 : floatLenMax);
+		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.upper + 10, upperLimitPaCO2, truncateValues ? 0 : floatLenMax);
 		const bicarbMidpoint = newGas.compensatedBicarb();
 		newGas.abg.bicarb = randFloat(bicarbMidpoint - 2, bicarbMidpoint + 2, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
@@ -49,7 +49,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	},
 	"Uncompensated Respiratory Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
-		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.upper + 6, 90, truncateValues ? 0 : floatLenMax);
+		newGas.abg.PaCO2 = randFloat(RefRngs.PaCO2!.upper + 6, upperLimitPaCO2, truncateValues ? 0 : floatLenMax);
 		const bicarbMidpoint = (((newGas.abg.PaCO2 - RefRngMidpoint("PaCO2")) / 10) + 24);
 		newGas.abg.bicarb = randFloat(bicarbMidpoint - 1, bicarbMidpoint + 1, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : 10);
@@ -63,7 +63,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	},
 	"Compensated Respiratory Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
-		newGas.abg.PaCO2 = randFloat(10, RefRngs.PaCO2!.lower - 10, truncateValues ? 0 : floatLenMax);
+		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 6, truncateValues ? 0 : floatLenMax);
 		const bicarbMidpoint = newGas.compensatedBicarb();
 		newGas.abg.bicarb = randFloat(bicarbMidpoint - 1, bicarbMidpoint + 1, truncateValues ? 0 : floatLenMax);
 		newGas.abg.pH = floatFix(newGas.pHExpected(), truncateValues ? 2 : floatLenMax);
@@ -77,7 +77,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 	},
 	"Uncompensated Respiratory Alkalosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
-		newGas.abg.PaCO2 = randFloat(15, RefRngs.PaCO2!.lower - 6, truncateValues ? 0 : floatLenMax);
+		newGas.abg.PaCO2 = randFloat(lowerLimitPaCO2, RefRngs.PaCO2!.lower - 6, truncateValues ? 0 : floatLenMax);
 		const bicarbMidpoint = ((newGas.abg.PaCO2 - RefRngMidpoint("PaCO2")) / 5) + 24;
 		newGas.abg.bicarb = randFloat(bicarbMidpoint - 1, bicarbMidpoint + 1, truncateValues ? 0 : floatLenMax);
 		newGas.abg.bicarb = Math.max(newGas.compensatedBicarb() + 3, newGas.abg.bicarb);
