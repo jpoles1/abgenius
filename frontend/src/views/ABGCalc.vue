@@ -256,7 +256,7 @@
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.expectedCompensation)'>
 							fa-wind
 						</v-icon>
-						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.expectedCompensation)'>
+						<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.expectedCompensation)'>
 							fa-vial
 						</v-icon>
 					</v-avatar>
@@ -276,7 +276,7 @@
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.disturbances[0])'>
 							fa-wind
 						</v-icon>
-						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.disturbances[0])'>
+						<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.disturbances[0])'>
 							fa-vial
 						</v-icon>
 					</v-avatar>
@@ -299,7 +299,7 @@
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.expectedCompensation)'>
 							fa-wind
 						</v-icon>
-						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.expectedCompensation)'>
+						<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.expectedCompensation)'>
 							fa-vial
 						</v-icon>
 					</v-avatar>

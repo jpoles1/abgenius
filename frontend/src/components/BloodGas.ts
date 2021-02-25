@@ -45,7 +45,7 @@ export enum DisturbType {
 	Alkalemia = "Alkalemia",
 	Hypoxemia = "Hypoxemia",
 	Hyperoxemia = "Hyperoxemia",
-	MetAcid = "Metabolic Acidosis",
+	MetAcid = "Non-Gap Metabolic Acidosis",
 	RespAcid = "Respiratory Acidosis",
 	MetAlk = "Metabolic Alkalosis",
 	RespAlk = "Respiratory Alkalosis",

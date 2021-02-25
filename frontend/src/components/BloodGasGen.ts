@@ -119,7 +119,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		);
 		return [newGas, [DisturbType.MetAlk, DisturbType.IncompleteComp]];
 	},
-	"Compensated Metabolic Acidosis": (truncateValues: boolean = true) => {
+	"Compensated Non-Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.bicarb = randFloat(4, RefRngs.aBicarb!.lower - 4, truncateValues ? 0 : floatLenMax);
 		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;
@@ -133,7 +133,7 @@ export const abgGenerators: {[disturb: string]: (truncateValues: boolean) => [Bl
 		);
 		return [newGas, [DisturbType.MetAcid]];
 	},
-	"Uncompensated Metabolic Acidosis": (truncateValues: boolean = true) => {
+	"Uncompensated Non-Gap Metabolic Acidosis": (truncateValues: boolean = true) => {
 		const newGas = new BloodGas({abg: {}});
 		newGas.abg.bicarb = randFloat(lowerLimitBicarb, RefRngs.aBicarb!.lower - 1, truncateValues ? 0 : floatLenMax);
 		const wintersFormulaMid = (1.5 * newGas.abg.bicarb!) + 8;

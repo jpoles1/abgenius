@@ -211,7 +211,7 @@
 												<v-icon small>fa-arrow-down</v-icon>pH&nbsp;<b>=</b>&nbsp;Acidemia
 											</v-chip>
 											<hr>
-											<v-chip :color="results.disturbances[0] == 'Metabolic Acidosis' ? 'success' : '#383838'">
+											<v-chip :color="results.disturbances[0] == 'Non-Gap Metabolic Acidosis' ? 'success' : '#383838'">
 												<v-icon small>fa-arrow-down</v-icon>[HCO<sub>3</sub>]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
 											</v-chip>
 											<v-chip :color="results.disturbances[0] == 'Respiratory Acidosis' ? 'success' : '#383838'">
@@ -254,7 +254,7 @@
 									</p>
 									<img src="/img/co2_to_bicarb.png" height=140 style="border-radius: 3px;"/>
 								</center>
-								<center v-if="['Primary Metabolic Acidosis', 'Primary Metabolic Alkalosis'].includes(activeChip)" key="disturb">
+								<center v-if="['Primary Non-Gap Metabolic Acidosis', 'Primary Metabolic Alkalosis'].includes(activeChip)" key="disturb">
 									<div>
 										<h2>Primary Metabolic Acid-Base Disturbances</h2>
 										<v-layout wrap justify-center style="margin-top: 28px;">
@@ -321,8 +321,8 @@
 									</div>
 									<i>Quick Tip: <u>Bartter</u> syndrome mimics <u>loop diuretics</u>, while <u>Gitelman</u> syndrome mimics <u>thiazide diuretics</u>.</i>
 								</div>
-								<div v-if="activeChip === 'Primary Metabolic Acidosis'">
-									<h2>Causes of Primary Non-gap Metabolic Acidosis</h2>
+								<div v-if="activeChip === 'Primary Non-Gap Metabolic Acidosis'">
+									<h2>Causes of Primary Non-Gap Metabolic Acidosis</h2>
 									<hr>
 									<p>
 									</p>
@@ -430,8 +430,8 @@
 									</div>
 									<i>Quick Tip: In those rare cases of severe alkalosis (pH > 7.55 or signs of cardiac/CNS damage) with volume overload or renal failure, infusion of hydrochloric acid (HCl) into a central line or dialysis may be indicated.</i>
 								</div>
-								<div v-if="activeChip === 'Primary Metabolic Acidosis'">
-									<h2>Treatment of Primary Metabolic Acidosis</h2>
+								<div v-if="activeChip === 'Primary Non-Gap Metabolic Acidosis'">
+									<h2>Treatment of Primary Non-Gap Metabolic Acidosis</h2>
 									<hr>
 									<b><u>The mainstay of treatment for metabolic acidosis is the diagnosis and correction of the underlying pathology.</u></b>
 								</div>

@@ -123,13 +123,11 @@
 				const nPoints = 500;
 				const selectedGenerators = [
 					"Normal",
-					"Uncompensated Respiratory Acidosis", "Compensated Respiratory Acidosis",
-					"Uncompensated Respiratory Alkalosis", "Compensated Respiratory Alkalosis",
-					"Compensated Metabolic Acidosis", "Compensated Metabolic Alkalosis",
-					"Uncompensated Metabolic Acidosis", "Uncompensated Metabolic Alkalosis",
+					"Compensated Respiratory Acidosis", "Uncompensated Respiratory Acidosis",
+					"Compensated Respiratory Alkalosis", "Uncompensated Respiratory Alkalosis",
+					"Compensated Non-Gap Metabolic Acidosis", "Uncompensated Non-Gap Metabolic Acidosis",
+					"Compensated Metabolic Alkalosis", "Uncompensated Metabolic Alkalosis",
 					"Compensated Anion Gap Metabolic Acidosis", "Uncompensated Anion Gap Metabolic Acidosis",
-					"Anion Gap Metabolic Acidosis + Respiratory Acidosis", "Metabolic Acidosis + Respiratory Acidosis",
-					"Metabolic Alkalosis + Respiratory Alkalosis",
 					//"Compensated Positive Delta Gap", "Uncompensated Positive Delta Gap",
 					//"Compensated Negative Delta Gap", "Uncompensated Negative Delta Gap",
 				];

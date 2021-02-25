@@ -184,7 +184,7 @@
 							<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
 								fa-wind
 							</v-icon>
-							<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
+							<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
 								fa-vial
 							</v-icon>
 							<v-icon small v-else-if='["Incomplete Compensation"].includes(disturb)'>
@@ -192,7 +192,7 @@
 							</v-icon>
 						</div>
 						<div style="margin: 0 8px 0 18px; font-size: 90%">
-							<span v-if='disturb == "Metabolic Acidosis"'>
+							<span v-if='disturb == "Non-Gap Metabolic Acidosis"'>
 								Non-Gap Metabolic Acidosis
 							</span>
 							<span v-else-if='disturb == "Anion Gap"'>
@@ -219,7 +219,7 @@
 						<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
 							fa-wind
 						</v-icon>
-						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
+						<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
 							fa-vial
 						</v-icon>
 						<v-icon small v-else-if='["Incomplete Compensation"].includes(disturb)'>
@@ -227,7 +227,7 @@
 						</v-icon>
 					</div>
 					<div style="margin: 0 8px 0 18px; font-size: 90%">
-						<span v-if='disturb == "Metabolic Acidosis"'>
+						<span v-if='disturb == "Non-Gap Metabolic Acidosis"'>
 							Non-Gap Metabolic Acidosis
 						</span>
 						<span v-else-if='disturb == "Anion Gap"'>
@@ -295,7 +295,7 @@
 										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
 											fa-wind
 										</v-icon>
-										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
+										<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
 											fa-vial
 										</v-icon>
 										<v-icon small v-else-if='["Incomplete Compensation"].includes(disturb)'>
@@ -309,7 +309,7 @@
 										No Acid Base Disorder
 									</div>
 									<div v-else>
-										<span v-if='disturb == "Metabolic Acidosis"'>
+										<span v-if='disturb == "Non-Gap Metabolic Acidosis"'>
 											Non-Gap Metabolic Acidosis
 										</span>
 										<span v-else-if='disturb == "Anion Gap"'>
@@ -330,7 +330,7 @@
 										<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(disturb)'>
 											fa-wind
 										</v-icon>
-										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
+										<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
 											fa-vial
 										</v-icon>
 										<v-icon small v-else-if='["Incomplete Compensation"].includes(disturb)'>
@@ -344,7 +344,7 @@
 										No Acid Base Disorder
 									</div>
 									<div v-else>
-										<span v-if='disturb == "Metabolic Acidosis"'>
+										<span v-if='disturb == "Non-Gap Metabolic Acidosis"'>
 											Non-Gap Metabolic Acidosis
 										</span>
 										<span v-else-if='disturb == "Anion Gap"'>
@@ -456,7 +456,7 @@
 												<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.disturbances[0])'>
 													fa-wind
 												</v-icon>
-												<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.disturbances[0])'>
+												<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.disturbances[0])'>
 													fa-vial
 												</v-icon>
 											</v-avatar>
@@ -479,7 +479,7 @@
 												<v-icon small v-if='["Respiratory Acidosis", "Respiratory Alkalosis"].includes(results.expectedCompensation)'>
 													fa-wind
 												</v-icon>
-												<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.expectedCompensation)'>
+												<v-icon small v-else-if='["Non-Gap Metabolic Acidosis", "Metabolic Alkalosis"].includes(results.expectedCompensation)'>
 													fa-vial
 												</v-icon>
 											</v-avatar>
