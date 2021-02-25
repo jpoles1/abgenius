@@ -303,8 +303,8 @@
 							fa-vial
 						</v-icon>
 					</v-avatar>
-					<div v-if="results.disturbances[1]">
-						{{results.disturbances[1]}}
+					<div v-if="results.completeCompensation">
+						Complete Compensation
 					</div>
 					<div v-else>
 						Incomplete Compensation
@@ -420,7 +420,7 @@
 					serumDeltaGap: this.userBloodGas.serumDeltaGap(),
 					disturbances: disturb,
 					expectedCompensation: this.userBloodGas.expectedCompensation(),
-					completeCompensation: disturb.includes(BG.DisturbType.CompleteComp),
+					completeCompensation: !disturb.includes(BG.DisturbType.IncompleteComp),
 				};
 				if (!["pH", "O2", "anionGap", "deltaGap", undefined].includes(this.activeChip)) {
 					this.activeChip = undefined;

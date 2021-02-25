@@ -82,7 +82,7 @@
 				return `hsl(${hue}, 100%, 35%)`;
 			},
 			runStats() {
-				const disorderList = [BG.DisturbType.Normal, BG.DisturbType.RespAcid, BG.DisturbType.RespAlk, BG.DisturbType.MetAlk, BG.DisturbType.MetAcid, BG.DisturbType.AnionGap, BG.DisturbType.CompleteComp];
+				const disorderList = [BG.DisturbType.Normal, BG.DisturbType.RespAcid, BG.DisturbType.RespAlk, BG.DisturbType.MetAlk, BG.DisturbType.MetAcid, BG.DisturbType.AnionGap, BG.DisturbType.IncompleteComp];
 				this.confusionDict = {};
 				// Add desired disorders to the dict
 				disorderList.forEach((disorder) => {

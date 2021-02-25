@@ -52,7 +52,7 @@ export enum DisturbType {
 	AnionGap = "Anion Gap",
 	DeltaGap = "Delta Gap",
 	Unknown = "Unknown",
-	CompleteComp = "Complete Compensation",
+	IncompleteComp = "Incomplete Compensation",
 }
 
 export interface Gap {
@@ -202,43 +202,33 @@ export class BloodGas {
 						// Rise in AG is less than fall in HCO3
 						disturbList.push(DisturbType.MetAcid);
 					} else {
-						if (this.abg.PaCO2! <= this.compensatedPaCO2() + 2) {
-							disturbList.push(DisturbType.CompleteComp);
-						} else {
-							disturbList.push(DisturbType.RespAcid);
+						if (this.abg.PaCO2! > this.compensatedPaCO2() + 2) {
+							disturbList.push(DisturbType.IncompleteComp);
 						}
 					}
 				}
 			} else if (this.abg.pH! > RefRngMidpoint("apH")) {
 				if (this.abg.bicarb! > RefRngs["aBicarb"]!.upper) {
 					disturbList.push(DisturbType.MetAlk);
-					if (this.abg.PaCO2! >= this.compensatedPaCO2() - 2) {
-						disturbList.push(DisturbType.CompleteComp);
-					} else {
-						disturbList.push(DisturbType.RespAlk);
+					if (this.abg.PaCO2! < this.compensatedPaCO2() - 2) {
+						disturbList.push(DisturbType.IncompleteComp);
 					}
 				} else if (this.abg.PaCO2! < RefRngs["PaCO2"]!.lower) {
 					disturbList.push(DisturbType.RespAlk);
-					if (this.abg.bicarb! <= this.compensatedBicarb() + 2) {
-						disturbList.push(DisturbType.CompleteComp);
-					} else {
-						disturbList.push(DisturbType.MetAlk);
+					if (this.abg.bicarb! > this.compensatedBicarb() + 2) {
+						disturbList.push(DisturbType.IncompleteComp);
 					}
 				}
 			} else {
 				if (this.abg.bicarb! < RefRngs["aBicarb"]!.lower) {
 					disturbList.push(DisturbType.MetAcid);
-					if (this.abg.PaCO2! <= this.compensatedPaCO2() + 2) {
-						disturbList.push(DisturbType.CompleteComp);
-					} else {
-						disturbList.push(DisturbType.RespAcid);
+					if (this.abg.PaCO2! > this.compensatedPaCO2() + 2) {
+						disturbList.push(DisturbType.IncompleteComp);
 					}
 				} else if (this.abg.PaCO2! > RefRngs["PaCO2"]!.upper) {
 					disturbList.push(DisturbType.RespAcid);
-					if (this.abg.bicarb! >= this.compensatedBicarb() - 2) {
-						disturbList.push(DisturbType.CompleteComp);
-					} else {
-						disturbList.push(DisturbType.MetAcid);
+					if (this.abg.bicarb! < this.compensatedBicarb() - 2) {
+						disturbList.push(DisturbType.IncompleteComp);
 					}
 				}
 			}

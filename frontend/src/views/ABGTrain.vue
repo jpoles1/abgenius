@@ -41,7 +41,7 @@
 								Scroll down to the section entitled "Interpret this ABG" and click on each of the acid-base disturbances which you believe are present. Leave it blank if it's a normal ABG.
 							</li>
 							<li>
-								If the patient has appropriately/completely compensated for the primary acid/base disturbance, click "Complete Compensation".
+								If the patient has not appropriately/completely/chronically compensated for the primary acid/base disturbance, click "Incomplete Compensation".
 							</li>
 							<li>
 								When you are ready, click "submit" and you will be able to see the ABGenius answer. Click on each step in the answer to learn more.
@@ -187,7 +187,7 @@
 							<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
 								fa-vial
 							</v-icon>
-							<v-icon small v-else-if='["Complete Compensation"].includes(disturb)'>
+							<v-icon small v-else-if='["Incomplete Compensation"].includes(disturb)'>
 								fa-balance-scale
 							</v-icon>
 						</div>
@@ -222,7 +222,7 @@
 						<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
 							fa-vial
 						</v-icon>
-						<v-icon small v-else-if='["Complete Compensation"].includes(disturb)'>
+						<v-icon small v-else-if='["Incomplete Compensation"].includes(disturb)'>
 							fa-balance-scale
 						</v-icon>
 					</div>
@@ -298,7 +298,7 @@
 										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
 											fa-vial
 										</v-icon>
-										<v-icon small v-else-if='["Complete Compensation"].includes(disturb)'>
+										<v-icon small v-else-if='["Incomplete Compensation"].includes(disturb)'>
 											fa-balance-scale
 										</v-icon>
 									</v-avatar>
@@ -333,7 +333,7 @@
 										<v-icon small v-else-if='["Metabolic Acidosis", "Metabolic Alkalosis", "Anion Gap"].includes(disturb)'>
 											fa-vial
 										</v-icon>
-										<v-icon small v-else-if='["Complete Compensation"].includes(disturb)'>
+										<v-icon small v-else-if='["Incomplete Compensation"].includes(disturb)'>
 											fa-balance-scale
 										</v-icon>
 									</v-avatar>
@@ -483,8 +483,8 @@
 													fa-vial
 												</v-icon>
 											</v-avatar>
-											<div v-if="results.disturbances[1]">
-												{{results.disturbances[1]}}
+											<div v-if="results.completeCompensation">
+												Complete Compensation
 											</div>
 											<div v-else>
 												Incomplete Compensation
@@ -732,7 +732,7 @@
 					DisturbType.RespAcid, DisturbType.RespAlk,
 					DisturbType.MetAlk, DisturbType.MetAcid,
 					DisturbType.AnionGap,
-					DisturbType.CompleteComp,
+					DisturbType.IncompleteComp,
 				];
 				return primaryDisturb.filter((disturb) => {
 					// Can only add one respiratory disorder
@@ -769,7 +769,7 @@
 					serumDeltaGap: this.genBloodGas.serumDeltaGap(),
 					expectedCompensation: this.genBloodGas.expectedCompensation(),
 					disturbances: disturb,
-					completeCompensation: disturb.includes(DisturbType.CompleteComp),
+					completeCompensation: !disturb.includes(DisturbType.IncompleteComp),
 				};
 			},
 			abgUrl(): string {

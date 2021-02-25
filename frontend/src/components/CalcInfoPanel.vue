@@ -483,10 +483,10 @@
 										<v-chip :color="!results.completeCompensation ? 'warning' : '#383838'">
 											<v-icon small>fa-times</v-icon>Incomplete Respiratory Compensation
 										</v-chip>
-										<br>
+										<!--<br>
 										<v-chip color="error" v-show="!results.completeCompensation && results.disturbances.length == 2">
 											<v-icon small>fa-bell</v-icon>Consider Additional Respiratory Acidosis
-										</v-chip>
+										</v-chip>-->
 									</div>
 								</div>
 								<img src="/img/winters_formula_plot.png" width=300 style="border-radius: 3px;"/>
@@ -522,10 +522,10 @@
 										<v-chip :color="!results.completeCompensation ? 'warning' : '#383838'">
 											<v-icon small>fa-times</v-icon>Incomplete Respiratory Compensation
 										</v-chip>
-										<br>
+										<!--<br>
 										<v-chip color="error" v-show="!results.completeCompensation && results.disturbances.length == 2">
 											<v-icon small>fa-bell</v-icon>Consider Additional Respiratory Alkalosis
-										</v-chip>
+										</v-chip>-->
 									</div>
 								</div>
 							</div>
