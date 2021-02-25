@@ -495,11 +495,11 @@
 								<img src="/img/winters_formula_plot.png" width=300 style="border-radius: 3px;"/>
 							</div>
 							<hr>
-							<b style="font-size: 110%">In Metabolic Acidosis:</b>
+							<i><b>Quick Tip:</b> The compensated P<sub>a</sub>CO<sub>2</sub>&nbsp; will typically roughly approximate the first two digits after the decimal point in the serum pH!</i>
+							<!--
 							<br>
-							<i><b>Quick Tip #1:</b> The compensated P<sub>a</sub>CO<sub>2</sub>&nbsp; should roughly approximate the first two digits after the decimal point in the serum pH</i>
-							<br>
-							<i><b>Quick Tip #2:</b> The compensated P<sub>a</sub>CO<sub>2</sub>&nbsp; should roughly approximate [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] + 15</i>
+							<i><b>Quick Tip #2:</b> The compensated P<sub>a</sub>CO<sub>2</sub>&nbsp; is often close to [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] + 15, but this may fail in extreme disorders</i>
+							-->
 						</center>
 					</v-container>
 					<v-container v-if="['Compensatory Respiratory Acidosis'].includes(activeChip)" key="disturb">
