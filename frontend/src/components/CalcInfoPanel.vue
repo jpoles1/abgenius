@@ -631,8 +631,8 @@
 								Because these buffers and enzymes are already present in the cytoplasm of circulating erythrocytes, this initial buffering occurs very quickly and is often referred to as acute metabolic compensation.
 								To understand how this buffering process generates the mild initial increase in [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] associated with acute compensation for respiratory acidosis we can look to the cytoplasm of red blood cells (RBCs), a major site of this buffering.
 								Inside these RBCs is an enzyme called carbonic anhydrase which accelerates a reaction occuring throughout the body: the hydration of the excess CO<sub>2</sub> to H<sub>2</sub>CO<sub>3</sub>. 
-								Each molecule of H<sub>2</sub>CO<sub>3</sub> formed can then give up a proton to a buffer with a greater pKa (e.g. H<sub>2</sub>PO<sub>4</sub><sup>-</sup> or Hemoglobin).
-								The result is a new molecule of HCO<sub>3</sub><sup>-</sup> as well as a protonated buffer (e.g. H<sub>3</sub>PO<sub>4</sub>).
+								Each molecule of H<sub>2</sub>CO<sub>3</sub> formed can then give up a proton to a buffer with a greater pKa (e.g. HPO<sub>4</sub><sup>-2</sup> or Hemoglobin).
+								The result is a new molecule of HCO<sub>3</sub><sup>-</sup> as well as a protonated buffer (e.g. H<sub>2</sub>PO<sub>4</sub><sup>-</sup>).
 								<div class="incite">[Narins 1980]</div> 
 								<br>
 								<div style="font-size: 85%; margin-top: 12px; font-style: italic;">
@@ -643,7 +643,7 @@
 								Once a respiratory acidosis has persisted for >6-12 hours, the sustained change in pH will potentiate the kidney to produce new bicarbonate by excretion of acids into the urine.
 								At homeostasis the healthy kidney resorbs nearly 100% of filtered bicarbonate (mostly in the proximal tubule), such that minimal quantities remain in the urine.
 								Given there is no additional bicarb that can be resorbed from the urine, the majority of compensation for respiratory acidosis must result of the generation of new HCO<sub>3</sub><sup>-</sup>.
-								This process occurs by means of urinary acid excretion (Fig 2), particularly ammonium (NH<sub>4</sub><sup>+</sup>; Fig 3) and tiratable acids (mainly H<sub>3</sub>PO<sub>4</sub>).
+								This process occurs by means of urinary acid excretion (Fig 2), particularly ammonium (NH<sub>4</sub><sup>+</sup>; Fig 3) and tiratable acids (mainly H<sub>2</sub>PO<sub>4</sub><sup>-</sup>).
 								<div class="incite">[Hamm 2015|Narins 1980]</div>
 
 								  <v-carousel hide-delimiters :height="$vuetify.breakpoint.xsOnly ? 340 : 540"  :cycle="false" style="width: 100%; margin-top: 20px;">
@@ -704,7 +704,7 @@ import { MainRefManager } from "@/components/References";
 export default Vue.extend({
 	components: {
 		Gamblegram,
-		MetabolicCompRule
+		MetabolicCompRule,
 	},
 	props: {
 		activeChip: String,
