@@ -269,12 +269,13 @@
 												<v-chip :color="abg.bicarb > refRngs.aBicarb.upper ? 'success' : '#383838'">
 													<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Alkalosis
 												</v-chip>
+												<br>
 												<v-chip :color="results.serumAnionGap.disturb == 'Normal' && abg.bicarb < refRngs.aBicarb.lower ? 'success' : '#383838'">
-													<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+													<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;<b>=</b>&nbsp;Non-Gap/Hyperchloremic Metabolic Acidosis
 												</v-chip>
 												<br>
 												<v-chip :color="results.serumAnionGap.gap > refRngs.AnionGap.upper ? 'success' : '#383838'">
-													<v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Metabolic Acidosis
+													<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp; + <v-icon small>fa-arrow-up</v-icon>Anion Gap&nbsp;<b>=</b>&nbsp;Anion Gap Metabolic Acidosis
 												</v-chip>
 											</div>
 										</v-layout>
@@ -282,6 +283,7 @@
 											Primary metabolic acid-base disorders are characterized by shifts in the plasma concentrations of bicarbonate.
 											An increase in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-up</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> suggests the presence of a <u>metabolic alkalosis</u>. 
 											On the other hand a decrease in plasma <span style="white-space: nowrap;">bicarbonate concentration (<v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp;)</span> suggests the presence of a <u>metabolic acidosis</u>.
+											In the absence of an elevated anion gap, <v-icon small>fa-arrow-down</v-icon>[&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;]&nbsp; is typically referred to as <u>non-gap or hyperchloremic metabolic acidosis</u>.
 										</p>
 									</div>
 								</center>
