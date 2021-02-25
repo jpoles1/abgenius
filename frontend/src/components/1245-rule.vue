@@ -1,10 +1,15 @@
 <template>
 	<div>
-		<span class="title" @click="visible = !visible">
-			<span v-show="!visible">Learn the</span>
+		<v-chip v-show="!visible" @click="visible = !visible" label>
+			Tap to Learn the 1-2-<span class="strikediag">3</span>-4-5 Rule
+		</v-chip>
+		<span class="title" v-show="visible" @click="visible = !visible">
 			1-2-<span class="strikediag">3</span>-4-5 Rule
 		</span>
 		<div v-show="visible">
+			<div style="max-width: 400px; font-size: 90%; margin-top: 10px;">
+				For every change of 10 in the P<sub>a</sub>CO<sub>2</sub>, we expect the [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] to compensate by the below values.
+			</div> 
 			<table>
 				<tr class="header">
 					<td style="border: none"></td>
@@ -34,9 +39,7 @@
 					<td>-5</td>
 				</tr>
 			</table>
-			<div style="max-width: 500px; font-style: italic; font-size: 80%;">
-				For every change of 10 in the P<sub>a</sub>CO<sub>2</sub>, we expect the [&nbsp;HCO<sub>3</sub><sup>-</sup>&nbsp;] to compensate by the above values.
-				<br>
+			<div style="max-width: 400px; font-style: italic; font-size: 80%;">
 				Note: herein we classiy only chronic compensation as complete metabolic compensation.
 			</div> 
 		</div>

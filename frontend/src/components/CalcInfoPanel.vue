@@ -565,8 +565,11 @@
 								</div>
 							</div>
 							<div style="font-size: 100%; margin-top: 12px; text-align: left;">
-								The normal physiological response to compensate for a respiratory alkalosis has an acute phase and a chronic phase (chronic = complete compensation).
-
+								<center style="font-style: italic" class="decision-box">
+									The normal physiological response to compensate for a respiratory alkalosis has an acute phase and a chronic phase (chronic = complete compensation).
+									<br>
+									In the absence of additional physiologic abnormalities we expect chronic/complete compensation to occur with time.
+								</center>
 								<br><br><h3>Acute Compensation</h3>
 								In order to counteract the increase in pH which results from decreased P<sub>a</sub>CO<sub>2</sub> in a respiratory alkalosis, the body first utilizes its pre-existing acid-base buffers.
 								These buffers (hemoglobin and other proteins; to a lesser extent phosphate) give up protons to HCO<sub>3</sub><sup>-</sup>.
@@ -624,8 +627,11 @@
 								</div>
 							</div>
 							<div style="font-size: 100%; margin-top: 12px; text-align: left;">
-								The normal physiological response to compensate for a respiratory acidosis has an acute phase and a chronic phase (chronic = complete compensation).
-
+								<center style="font-style: italic" class="decision-box">
+									The normal physiological response to compensate for a respiratory acidosis has an acute phase and a chronic phase (chronic = complete compensation).
+									<br>
+									In the absence of additional physiologic abnormalities we expect chronic/complete compensation to occur with time.
+								</center>
 								<br><br><h3>Acute Compensation</h3>
 								In order to counteract the decrease in pH which results from excess P<sub>a</sub>CO<sub>2</sub> in a respiratory acidosis, the body first utilizes its pre-existing acid-base buffers: mainly phososphate and certain proteins. 
 								Because these buffers and enzymes are already present in the cytoplasm of circulating erythrocytes, this initial buffering occurs very quickly and is often referred to as acute metabolic compensation.
