@@ -104,11 +104,14 @@
 													We commonly measure the charged particles which are present in the highest concentrations in serum and have the strongest effects on the overall balance of charges.
 												</li>
 												<li>
-													We cannot measure every charged species, so we must estimate the gap between the unknown anions and unknown cations, termed the anion gap. 
+													It is not practical to measure every charged species, so we must estimate the gap between the unknown anions and unknown cations, termed the anion gap.
 													A healthy individual will have a greater charge from unmeasured anions and thus the gap has a normal range of {{refRngs.AnionGap.lower}} to {{refRngs.AnionGap.upper}}.
 												</li>
+												<li style="font-style: italic;">
+													Note: Some formulas for the anion gap will include K<sup>+</sup> (raising the upper limit of normal to  {{refRngs.AnionGap.upper + 4}}), however we omit it herein for the sake of simplicity. 
+												</li>
 												<li>
-													When the anion gap exceeds the upper limit of normal, this suggests the presence of additional unmeasured anions <i>(see causes)</i>.  
+													When the anion gap exceeds the upper limit of normal, this suggests the presence of additional unmeasured anions <i>(see causes)</i>. There are scenarios in which anion gap can be abnormally low, as a result of excess cations such as hypercalcemia (excess Ca<sup>+2</sup>) or even intoxication with Li<sup>+</sup>.  
 												</li>
 											</ul>
 										</p>
